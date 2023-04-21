@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { bodyContentUseStyles } from '../../components/MainBody/HelperFunctions/BodyContentStyle';
 import { Stack, Text} from '@mantine/core';
-import TestimonialsOrHandouts from '../../components/MainBody/SolutionPageContent/TestimonialOrHandouts';
-import Resources from '../../components/MainBody/SolutionPageContent/Resources';
+import ResourcesHandouts from '../../components/MainBody/SolutionPageContent/ResourcesHandouts';
 import { ISolution } from '@/types/api_types';
 import { HandoutOrTestimonialLink, PageContentType, ResourceLink } from '@/types/dataTypes';
 import getSolutionPageContentForChoice from './api/GetSolutionPageForChoice';
@@ -45,8 +44,8 @@ const SolutionPages: React.FC<SolutionContentProps> = ({solution, hasSolution}) 
         >
           <Text className={classes.text}> {solution.title} </Text>
           {!pageContent.length ? <></> : <div> <PageContent data={pageContent}></PageContent></div>}
-          {!resourceList.length ? <></>:<Resources data={resourceList}></Resources> }
-          {!handoutTestimonialList.length ? <></>:<TestimonialsOrHandouts data={handoutTestimonialList}></TestimonialsOrHandouts> }
+          {!resourceList.length ? <></>:<ResourcesHandouts title= {"Resources"} data={resourceList}></ResourcesHandouts> }
+          {!handoutTestimonialList.length ? <></>:<ResourcesHandouts title={"Handouts/Testimonials"} data={handoutTestimonialList}></ResourcesHandouts> }
         </Stack>
     </div>
   )
