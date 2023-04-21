@@ -1,6 +1,6 @@
 import React from 'react'
 import { Stack, createStyles, rem , Text, Button } from '@mantine/core';
-import { HandoutOrTestimonialLink } from '@/types/dataTypes';
+import { ResourceLink } from '@/types/dataTypes';
 import { IconFileDescription } from '@tabler/icons-react';
 
 
@@ -50,7 +50,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 
-const TestimonialsOrHandouts = ({data}: {data: HandoutOrTestimonialLink[]}) => {
+const Resources = ({title, data}: {title: String,data: ResourceLink[]}) => {
   const { classes } = useStyles()
 
 
@@ -59,17 +59,17 @@ const TestimonialsOrHandouts = ({data}: {data: HandoutOrTestimonialLink[]}) => {
       <Stack
       spacing="xl"
     >
-      <Text className={classes.text}> {"Handouts/Testimonials"} </Text>
-      {data.map((handoutOrTestimonial) => (  
-        <Button key={handoutOrTestimonial.id}
+      <Text className={classes.text}> {title} </Text>
+      {data.map((resource) => (  
+        <Button key={resource.id}
           className={classes.inner}
           variant="outline"
           leftIcon = {<IconFileDescription color='#254885'/>}
           component = "a"
-          href = {handoutOrTestimonial.url}
+          href = {resource.url} 
           target="_blank"
           >
-            {handoutOrTestimonial.title}
+            {resource.title}
         </Button>
       ))}
     </Stack>
@@ -77,4 +77,4 @@ const TestimonialsOrHandouts = ({data}: {data: HandoutOrTestimonialLink[]}) => {
   )
 }
 
-export default TestimonialsOrHandouts
+export default Resources
