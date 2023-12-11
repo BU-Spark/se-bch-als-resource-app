@@ -4,6 +4,8 @@ DOCUMENTATION:
 File Structure:
     --> code
         -> components
+            -> Bookmark
+                -> BookmarkButton.tsx
             -> Footer
                 -> Footer.tsx
                 -> Titles.tsx
@@ -20,9 +22,10 @@ File Structure:
                     -> TestimonialOrHandouts.tsx
                     -> VideoImageParagraphsContent.tsx
                 -> ToggleButton.tsx
-                -> Navbar
-                    -> Nav.tsx      
+            -> Navbar
+                -> Nav.tsx      
             -> Docs.md
+
 
 
 ### Footer 

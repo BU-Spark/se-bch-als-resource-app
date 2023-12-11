@@ -6,23 +6,35 @@ import searchQuestionsChoicesFromJson from '../utils/TempGetNextQuestion';
 import { bodyContentUseStyles } from '../components/MainBody/HelperFunctions/BodyContentStyle';
 import ToggleButton from '../components/MainBody/TogglebButton';
 import SolutionPages from '../utils/SolutionContent';
+import BookmarkButton from '../components/Bookmark/BookmarkButton';
+import axios from 'axios';
 
 interface Props {}
 
 const QuestionaireBodyContent: React.FC<Props> = () => {
   const { classes } = bodyContentUseStyles();
 
+  const initialChoices = [
+    { id: '2', title: 'Communication', link: '/communication' },
+    { id: '3', title: 'Computer Access', link: '/computer-access' },
+    { id: '4', title: 'Home Access', link: '/home-access' },
+    { id: '5', title: 'Smart Phone Access', link: '/smart-phone-access' },
+  ];
+
   // current question state
   const [currQuestion, setCurrQuestion] = useState<IQuestion>({ id: '2', title: 'Which area do you want to look into?' });
 
   // current choices state
-  const [currChoices, setCurrChoices] = useState<IChoice[]>([]);
+  const [currChoices, setCurrChoices] = useState<IChoice[]>(initialChoices);
 
   // currently clicked choice state
   const [clickedChoice, setClickedChoice] = useState<IChoice>({ id: '1', title: 'Home' });
 
   // solution state
   const [solution, setSolution] = useState<ISolution>({ id: '', title: '' });
+
+  //set User ID
+  const [userId, setUserId] = useState(null);
 
   // whether solution has been found
   const [hasSolution, setHasSolution] = useState(false);
@@ -45,21 +57,29 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
 
   // updates choices and questions for clicked choice
   const updateChoicesAndQuestions = useCallback(async (choice: IChoice) => {
+    console.log('Clicked choice:', choice);
     try {
       // search for the next set of choices and question using the clicked choice
       const [question, choicesList, hasSol, sol] = await memoizedSearchQuestionsChoicesFromJson(choice);
-    
+      console.log('New question:', question);
+      console.log('New choices list:', choicesList);
+      console.log('Has solution:', hasSol);
+      console.log('Solution:', sol);
+
       // set whether or not the next step has a solution
       // setHasSolution(hasSol);
     
       // if the next step has a solution, set the solution
       // otherwise, set the clicked choice
       if (hasSol) {
+        console.log('Solution found, updating state...');
         setSolution(sol);
         setHasSolution(true);
       } 
       else {
+        console.log('No solution, updating choices...');
         setSolution({ id: '', title: '' });
+        
         setClickedChoice(choice);
         setHasSolution(false);
       }
@@ -73,6 +93,8 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
           choiceList: currChoices,
         });
         // set the new choices and question
+        console.log('Current question set to:', question);
+        console.log('Current choices set to:', choicesList);
         setCurrChoices(choicesList);
         setCurrQuestion(question);
       }
@@ -96,11 +118,27 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
     }
   }, []);
 
+  // useEffect for fetching user ID
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await axios.get('http://localhost:1338/api/users');
+        // Assuming you want to use the first user in the list
+        const firstUser = response.data[0];
+        setUserId(firstUser.id);
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
   /**
    * Goes to the previous selected question and choices, and updates the current state with previous state
    *///the way we fetch fprevious question was fixed during dev by using reroute
   const prevQuestion = useCallback(() => {
-    if (prevSelectedContent.current.length > 1) {
+    if (prevSelectedContent.current.length > 0) { //updated from 1 to 0 so that it shows up right after first question
       const i = 1;
 
     // if current question has solution
@@ -128,28 +166,49 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
 
   return (
     <div>
-    <Title hasPrev={(prevSelectedContent.current.length > 1)} prevQuestion={prevQuestion} titleImg={image.current} title={pageTitle.current} />
-    {!hasSolution ? 
-    <Stack
-      spacing="xl"
-      className={classes.outer}
-      sx={(theme) => ({
-        backgroundColor:
-          theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
-      })}
-    >
-      <Text className={classes.text}> {currQuestion.title} </Text>
-      {currChoices.map((choice) => (  
-        <div key={choice.id}>
-        <ToggleButton updateContent={updateChoicesAndQuestions} className={classes.inner} choice={choice} />
-        </div>
-      ))} 
-    </Stack>
-    : 
-    <SolutionPages solution={solution} hasSolution={hasSolution}/>
-    }
+      <Title 
+        hasPrev={(prevSelectedContent.current.length > 0)} //update from 1 to 0 so that backbutton shows up right after 1st page
+        prevQuestion={prevQuestion} 
+        titleImg={image.current} 
+        title={pageTitle.current} 
+      />
+  
+      {!hasSolution ? (
+        <Stack
+          spacing="xl"
+          className={classes.outer}
+          sx={(theme) => ({
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+          })}
+        >
+          <Text className={classes.text}> {currQuestion.title} </Text>
+          <Text className={classes.descriptionText}> {currQuestion.description} </Text>
+          {currChoices.map((choice) => (
+            <div key={choice.id}>
+              <ToggleButton 
+                updateContent={() => updateChoicesAndQuestions(choice)} 
+                className={classes.inner} 
+                choice={choice} 
+              />
+            </div>
+          ))}
+        </Stack>
+      ) : (
+        <SolutionPages solution={solution} hasSolution={hasSolution} />
+      )}
+  
+      {/* Conditional rendering for BookmarkButton */}
+      {hasSolution && (
+        <BookmarkButton 
+          pageTitle={solution.title} 
+          pageIdentifier={solution.id} // Assuming solution.id is your unique page identifier
+          userId={userId} // Replace this with actual logic to obtain the userId
+          isSolutionPage={hasSolution}
+        />
+      )}
     </div>
   );
+  
 };
 
 export default QuestionaireBodyContent

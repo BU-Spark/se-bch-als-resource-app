@@ -1,271 +1,808 @@
-{
-   "data":[
-      {
-         "id":4,
-         "attributes":{
-            "Title":"voice preservation",
-            "createdAt":"2023-04-20T18:33:13.822Z",
-            "updatedAt":"2023-04-20T18:33:15.712Z",
-            "publishedAt":"2023-04-20T18:33:15.706Z",
-            "PreviousChoiceConnected":{
-               "data":{
-                  "id":15,
-                  "attributes":{
-                     "ChoiceName":"Voice preservation",
-                     "createdAt":"2023-04-20T05:22:18.303Z",
-                     "updatedAt":"2023-04-20T05:22:22.061Z",
-                     "publishedAt":"2023-04-20T05:22:22.055Z",
-                     "ChoiceToSolutionMap":{
-                        "data":{
-                           "id":4,
-                           "attributes":{
-                              "Title":"voice preservation",
-                              "createdAt":"2023-04-20T18:33:13.822Z",
-                              "updatedAt":"2023-04-20T18:33:15.712Z",
-                              "publishedAt":"2023-04-20T18:33:15.706Z"
-                           }
-                        }
-                     },
-                     "previous_questions_connected":{
-                        "data":[
-                           {
-                              "id":3,
-                              "attributes":{
-                                 "QuestionName":"Somewhat concerned about",
-                                 "createdAt":"2023-04-20T05:18:12.599Z",
-                                 "updatedAt":"2023-04-20T05:18:22.287Z",
-                                 "publishedAt":"2023-04-20T05:18:22.280Z"
-                              }
-                           }
-                        ]
-                     },
-                     "choice_to_question":{
-                        "data":null
-                     }
-                  }
-               }
-            },
-            "Resources":[
-               {
-                  "id":3,
-                  "ResourceTitle":"dummy link",
-                  "ResourceLink":"https://www.youtube.com"
-               }
-            ],
-            "Block":[
-               
-            ],
-            "TestimonialsOrHandouts":[
-               
-            ]
-         }
-      },
-      {
-         "id":5,
-         "attributes":{
-            "Title":"Dummy Title",
-            "createdAt":"2023-04-21T15:09:52.537Z",
-            "updatedAt":"2023-04-21T15:09:54.474Z",
-            "publishedAt":"2023-04-21T15:09:54.466Z",
-            "PreviousChoiceConnected":{
-               "data":{
-                  "id":11,
-                  "attributes":{
-                     "ChoiceName":"The energy it takes to speak",
-                     "createdAt":"2023-04-20T05:20:40.320Z",
-                     "updatedAt":"2023-04-20T05:21:55.082Z",
-                     "publishedAt":"2023-04-20T05:21:55.076Z",
-                     "ChoiceToSolutionMap":{
-                        "data":{
-                           "id":5,
-                           "attributes":{
-                              "Title":"Dummy Title",
-                              "createdAt":"2023-04-21T15:09:52.537Z",
-                              "updatedAt":"2023-04-21T15:09:54.474Z",
-                              "publishedAt":"2023-04-21T15:09:54.466Z"
-                           }
-                        }
-                     },
-                     "previous_questions_connected":{
-                        "data":[
-                           {
-                              "id":3,
-                              "attributes":{
-                                 "QuestionName":"Somewhat concerned about",
-                                 "createdAt":"2023-04-20T05:18:12.599Z",
-                                 "updatedAt":"2023-04-20T05:18:22.287Z",
-                                 "publishedAt":"2023-04-20T05:18:22.280Z"
-                              }
-                           }
-                        ]
-                     },
-                     "choice_to_question":{
-                        "data":null
-                     }
-                  }
-               }
-            },
-            "Resources":[
-               {
-                  "id":4,
-                  "ResourceTitle":"Dummy link ",
-                  "ResourceLink":"https://www.google.com/search?q=google+translate&rlz=1C1VDKB_enUS935US935&oq=go&aqs=chrome.0.69i59j69i57j35i39j46i131i199i433i465i512j69i60l3j69i65.1483j0j7&sourceid=chrome&ie=UTF-8"
-               }
-            ],
-            "Block":[
-               
-            ],
-            "TestimonialsOrHandouts":[
-               
-            ]
-         }
-      },
-      {
-         "id":1,
-         "attributes":{
-            "Title":"Voice Amplification",
-            "createdAt":"2023-04-20T05:43:36.731Z",
-            "updatedAt":"2023-04-21T15:10:37.537Z",
-            "publishedAt":"2023-04-20T05:54:07.946Z",
-            "PreviousChoiceConnected":{
-               "data":{
-                  "id":20,
-                  "attributes":{
-                     "ChoiceName":"Voice amplification",
-                     "createdAt":"2023-04-20T05:26:37.906Z",
-                     "updatedAt":"2023-04-20T05:26:39.092Z",
-                     "publishedAt":"2023-04-20T05:26:39.087Z",
-                     "ChoiceToSolutionMap":{
-                        "data":{
-                           "id":1,
-                           "attributes":{
-                              "Title":"Voice Amplification",
-                              "createdAt":"2023-04-20T05:43:36.731Z",
-                              "updatedAt":"2023-04-21T15:10:37.537Z",
-                              "publishedAt":"2023-04-20T05:54:07.946Z"
-                           }
-                        }
-                     },
-                     "previous_questions_connected":{
-                        "data":[
-                           {
-                              "id":5,
-                              "attributes":{
-                                 "QuestionName":"My speech clarity",
-                                 "createdAt":"2023-04-20T05:25:39.626Z",
-                                 "updatedAt":"2023-04-20T05:25:47.561Z",
-                                 "publishedAt":"2023-04-20T05:25:47.556Z"
-                              }
-                           },
-                           {
-                              "id":6,
-                              "attributes":{
-                                 "QuestionName":"Voice amplification can help you speak with less energy and avoid quick fatigue. Click the button below to learn more about it.",
-                                 "createdAt":"2023-04-20T05:30:33.805Z",
-                                 "updatedAt":"2023-04-20T05:30:35.174Z",
-                                 "publishedAt":"2023-04-20T05:30:35.169Z"
-                              }
-                           }
-                        ]
-                     },
-                     "choice_to_question":{
-                        "data":null
-                     }
-                  }
-               }
-            },
-            "Resources":[
-               
-            ],
-            "Block":[
-               {
-                  "id":1,
-                  "__component":"video.video",
-                  "VideoMedia":{
-                     "data":{
-                        "id":1,
-                        "attributes":{
-                           "name":"What_is_ALS.mp4",
-                           "alternativeText":null,
-                           "caption":null,
-                           "width":null,
-                           "height":null,
-                           "formats":null,
-                           "hash":"What_is_ALS_650739ddef",
-                           "ext":".mp4",
-                           "mime":"video/mp4",
-                           "size":15432.18,
-                           "url":"/uploads/What_is_ALS_650739ddef.mp4",
-                           "previewUrl":null,
-                           "provider":"local",
-                           "provider_metadata":null,
-                           "createdAt":"2023-04-20T05:49:13.176Z",
-                           "updatedAt":"2023-04-20T05:49:13.176Z"
-                        }
-                     }
-                  }
-               },
-               {
-                  "id":3,
-                  "__component":"description-paragraphs.description-paragraphs",
-                  "DescriptionParagraph":"When we speak, we use many muscle groups at the same time. When you try to speak louder (because your voice is weak OR there is noise in the room), you can quickly fatigue the muscles used for speaking. Voice amplification can help you speak with less energy and help avoid quick fatigue."
-               },
-               {
-                  "id":1,
-                  "__component":"description-paragraphs.description-paragraphs",
-                  "DescriptionParagraph":""
-               },
-               {
-                  "id":2,
-                  "__component":"description-paragraphs.description-paragraphs",
-                  "DescriptionParagraph":"When we speak, we use many muscle groups at the same time. When you try to speak louder (because your voice is weak OR there is noise in the room), you can quickly fatigue the muscles used for speaking. Voice amplification can help you speak with less energy and help avoid quick fatigue."
-               }
-            ],
-            "TestimonialsOrHandouts":[
-               {
-                  "id":1,
-                  "__component":"testimonial-handout-link.link-content",
-                  "Title":"HandoutLink",
-                  "Link":"https://www.childrenshospital.org/"
-               },
-               {
-                  "id":1,
-                  "__component":"testimonial-handout-pdf.pdf-content",
-                  "Title":"Handoutpdf",
-                  "PDF":{
-                     "data":{
-                        "id":2,
-                        "attributes":{
-                           "name":"ALS_FactSheet-E_508C.pdf",
-                           "alternativeText":null,
-                           "caption":null,
-                           "width":null,
-                           "height":null,
-                           "formats":null,
-                           "hash":"ALS_Fact_Sheet_E_508_C_c249dcfd4d",
-                           "ext":".pdf",
-                           "mime":"application/pdf",
-                           "size":574.17,
-                           "url":"/uploads/ALS_Fact_Sheet_E_508_C_c249dcfd4d.pdf",
-                           "previewUrl":null,
-                           "provider":"local",
-                           "provider_metadata":null,
-                           "createdAt":"2023-04-20T05:54:00.045Z",
-                           "updatedAt":"2023-04-20T05:54:00.045Z"
-                        }
-                     }
-                  }
-               }
-            ]
-         }
+[
+  {
+    "data": {
+      "id": 1,
+      "attributes": {
+        "Title": "Messsage Banking Solution",
+        "createdAt": "2023-11-16T00:55:19.247Z",
+        "updatedAt": "2023-11-16T02:16:20.523Z",
+        "publishedAt": "2023-11-16T01:54:46.329Z",
+        "SolutionDescription": null
       }
-   ],
-   "meta":{
-      "pagination":{
-         "page":1,
-         "pageSize":25,
-         "pageCount":1,
-         "total":3
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 2,
+      "attributes": {
+        "Title": "Voice Amplification Solution",
+        "createdAt": "2023-11-16T03:55:30.320Z",
+        "updatedAt": "2023-11-21T20:31:29.300Z",
+        "publishedAt": "2023-11-16T03:55:32.617Z",
+        "SolutionDescription": null
       }
-   }
-}
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 4,
+      "attributes": {
+        "Title": "Voice Banking Solution",
+        "createdAt": "2023-11-17T14:01:40.479Z",
+        "updatedAt": "2023-11-17T14:02:15.977Z",
+        "publishedAt": "2023-11-17T14:01:41.714Z",
+        "SolutionDescription": "Voice banking solution"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 5,
+      "attributes": {
+        "Title": "Letter Cueing Solution",
+        "createdAt": "2023-11-17T14:24:20.638Z",
+        "updatedAt": "2023-11-17T14:25:28.241Z",
+        "publishedAt": "2023-11-17T14:24:21.533Z",
+        "SolutionDescription": "Letter Cueing Solution Description"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 6,
+      "attributes": {
+        "Title": "Topic Cueing Solution",
+        "createdAt": "2023-11-17T14:24:49.242Z",
+        "updatedAt": "2023-11-17T14:24:50.126Z",
+        "publishedAt": "2023-11-17T14:24:50.123Z",
+        "SolutionDescription": "Topic Cueing Solution Description"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 7,
+      "attributes": {
+        "Title": "Customized Tabbed Communication Booklet Solution",
+        "createdAt": "2023-11-17T14:26:09.044Z",
+        "updatedAt": "2023-11-21T20:34:51.938Z",
+        "publishedAt": "2023-11-17T14:26:10.164Z",
+        "SolutionDescription": "Customized Tabbed Communication Booklet Solution description"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 8,
+      "attributes": {
+        "Title": "I have a hard time holding a pen",
+        "createdAt": "2023-11-17T14:28:25.021Z",
+        "updatedAt": "2023-11-21T20:35:14.598Z",
+        "publishedAt": "2023-11-17T14:28:25.847Z",
+        "SolutionDescription": "I have a hard time holding a pen  solution Description"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 9,
+      "attributes": {
+        "Title": "I have no difficulty holding a pen",
+        "createdAt": "2023-11-17T14:29:09.745Z",
+        "updatedAt": "2023-11-17T14:29:10.717Z",
+        "publishedAt": "2023-11-17T14:29:10.713Z",
+        "SolutionDescription": "I have no difficulty holding a pen description"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 10,
+      "attributes": {
+        "Title": "Partner Assisted Scanning",
+        "createdAt": "2023-11-17T14:30:00.669Z",
+        "updatedAt": "2023-11-17T14:30:23.502Z",
+        "publishedAt": "2023-11-17T14:30:23.499Z",
+        "SolutionDescription": "Partner Assisted Scanning Description"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 11,
+      "attributes": {
+        "Title": "Model Talker",
+        "createdAt": "2023-11-18T01:58:27.082Z",
+        "updatedAt": "2023-11-21T21:54:11.442Z",
+        "publishedAt": "2023-11-18T01:58:27.077Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 12,
+      "attributes": {
+        "Title": "Acapela",
+        "createdAt": "2023-11-20T00:39:38.372Z",
+        "updatedAt": "2023-11-21T21:54:33.522Z",
+        "publishedAt": "2023-11-20T00:39:38.366Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 13,
+      "attributes": {
+        "Title": "Double Dipping",
+        "createdAt": "2023-11-21T21:51:40.885Z",
+        "updatedAt": "2023-11-21T21:53:33.439Z",
+        "publishedAt": "2023-11-21T21:51:42.389Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 14,
+      "attributes": {
+        "Title": "Voice Keeper",
+        "createdAt": "2023-11-21T21:55:02.332Z",
+        "updatedAt": "2023-11-21T21:55:03.113Z",
+        "publishedAt": "2023-11-21T21:55:03.110Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 15,
+      "attributes": {
+        "Title": "Speak Unique",
+        "createdAt": "2023-11-21T21:55:23.560Z",
+        "updatedAt": "2023-11-21T21:55:24.648Z",
+        "publishedAt": "2023-11-21T21:55:24.644Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 16,
+      "attributes": {
+        "Title": "Cerepoc",
+        "createdAt": "2023-11-21T21:55:39.883Z",
+        "updatedAt": "2023-11-21T21:55:40.623Z",
+        "publishedAt": "2023-11-21T21:55:40.619Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 17,
+      "attributes": {
+        "Title": "Integration of controls with my GSD",
+        "createdAt": "2023-11-21T23:03:54.791Z",
+        "updatedAt": "2023-11-21T23:03:55.960Z",
+        "publishedAt": "2023-11-21T23:03:55.958Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 18,
+      "attributes": {
+        "Title": "I am able to easily use my hands",
+        "createdAt": "2023-11-21T23:08:49.608Z",
+        "updatedAt": "2023-11-21T23:09:04.554Z",
+        "publishedAt": "2023-11-21T23:09:04.552Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 19,
+      "attributes": {
+        "Title": "I sometimes have difficulty with my hands",
+        "createdAt": "2023-11-21T23:09:30.259Z",
+        "updatedAt": "2023-11-21T23:09:31.157Z",
+        "publishedAt": "2023-11-21T23:09:31.149Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 20,
+      "attributes": {
+        "Title": "I cannot use my hands",
+        "createdAt": "2023-11-21T23:09:56.363Z",
+        "updatedAt": "2023-11-21T23:09:57.318Z",
+        "publishedAt": "2023-11-21T23:09:57.315Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 21,
+      "attributes": {
+        "Title": "Pacing your speech",
+        "createdAt": "2023-11-21T23:57:26.393Z",
+        "updatedAt": "2023-11-21T23:57:27.499Z",
+        "publishedAt": "2023-11-21T23:57:27.492Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 22,
+      "attributes": {
+        "Title": "Producing fewer words per breath",
+        "createdAt": "2023-11-21T23:58:30.344Z",
+        "updatedAt": "2023-11-21T23:59:11.731Z",
+        "publishedAt": "2023-11-21T23:58:31.783Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 23,
+      "attributes": {
+        "Title": "Over-articulating some sounds",
+        "createdAt": "2023-11-21T23:59:32.683Z",
+        "updatedAt": "2023-11-21T23:59:43.219Z",
+        "publishedAt": "2023-11-21T23:59:43.218Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 24,
+      "attributes": {
+        "Title": "Quick access tools",
+        "createdAt": "2023-11-22T00:09:31.654Z",
+        "updatedAt": "2023-11-22T00:09:32.908Z",
+        "publishedAt": "2023-11-22T00:09:32.905Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 25,
+      "attributes": {
+        "Title": "Navigation Controls",
+        "createdAt": "2023-12-01T02:29:44.880Z",
+        "updatedAt": "2023-12-01T02:29:47.019Z",
+        "publishedAt": "2023-12-01T02:29:47.016Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 26,
+      "attributes": {
+        "Title": "Command Action Button",
+        "createdAt": "2023-12-01T02:30:14.440Z",
+        "updatedAt": "2023-12-01T02:30:15.146Z",
+        "publishedAt": "2023-12-01T02:30:15.142Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 27,
+      "attributes": {
+        "Title": "Virtual Home Button",
+        "createdAt": "2023-12-01T02:35:19.781Z",
+        "updatedAt": "2023-12-01T02:35:20.664Z",
+        "publishedAt": "2023-12-01T02:35:20.661Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 28,
+      "attributes": {
+        "Title": "Customizable Shortcuts",
+        "createdAt": "2023-12-01T02:35:59.431Z",
+        "updatedAt": "2023-12-01T02:36:00.103Z",
+        "publishedAt": "2023-12-01T02:36:00.101Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 29,
+      "attributes": {
+        "Title": "Swiping Gestures",
+        "createdAt": "2023-12-01T02:41:10.320Z",
+        "updatedAt": "2023-12-01T02:41:11.181Z",
+        "publishedAt": "2023-12-01T02:41:11.178Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 30,
+      "attributes": {
+        "Title": "Word Prediction",
+        "createdAt": "2023-12-01T02:43:04.731Z",
+        "updatedAt": "2023-12-01T02:43:05.494Z",
+        "publishedAt": "2023-12-01T02:43:05.491Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 31,
+      "attributes": {
+        "Title": "Auto Complete",
+        "createdAt": "2023-12-01T02:43:17.244Z",
+        "updatedAt": "2023-12-01T02:43:17.968Z",
+        "publishedAt": "2023-12-01T02:43:17.965Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 32,
+      "attributes": {
+        "Title": "Direct message and commands",
+        "createdAt": "2023-12-01T02:45:35.126Z",
+        "updatedAt": "2023-12-01T02:45:35.797Z",
+        "publishedAt": "2023-12-01T02:45:35.795Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 33,
+      "attributes": {
+        "Title": "Stylus",
+        "createdAt": "2023-12-01T02:52:14.066Z",
+        "updatedAt": "2023-12-01T02:55:03.064Z",
+        "publishedAt": "2023-12-01T02:52:14.814Z",
+        "SolutionDescription": "- Pencil with stylus - \nFlexible Curves with stylus - Finger Stylus\n"
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 34,
+      "attributes": {
+        "Title": "External switch for mouse click",
+        "createdAt": "2023-12-01T03:01:42.143Z",
+        "updatedAt": "2023-12-01T03:02:22.677Z",
+        "publishedAt": "2023-12-01T03:01:42.787Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 35,
+      "attributes": {
+        "Title": "Dwell click activation",
+        "createdAt": "2023-12-01T03:01:54.300Z",
+        "updatedAt": "2023-12-01T03:02:02.948Z",
+        "publishedAt": "2023-12-01T03:01:55.083Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 36,
+      "attributes": {
+        "Title": "Different configuration of click buttons",
+        "createdAt": "2023-12-01T03:02:49.792Z",
+        "updatedAt": "2023-12-01T03:02:50.391Z",
+        "publishedAt": "2023-12-01T03:02:50.389Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 37,
+      "attributes": {
+        "Title": "TrackPad",
+        "createdAt": "2023-12-01T03:03:28.101Z",
+        "updatedAt": "2023-12-01T03:03:39.943Z",
+        "publishedAt": "2023-12-01T03:03:28.710Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 38,
+      "attributes": {
+        "Title": "Voice Command",
+        "createdAt": "2023-12-01T03:05:40.685Z",
+        "updatedAt": "2023-12-01T03:07:22.499Z",
+        "publishedAt": "2023-12-01T03:05:41.497Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 39,
+      "attributes": {
+        "Title": "Speech recognition softare",
+        "createdAt": "2023-12-01T03:06:53.769Z",
+        "updatedAt": "2023-12-01T03:07:00.170Z",
+        "publishedAt": "2023-12-01T03:07:00.168Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 40,
+      "attributes": {
+        "Title": "Eye tracking and head tracking",
+        "createdAt": "2023-12-01T03:16:19.405Z",
+        "updatedAt": "2023-12-01T03:16:20.076Z",
+        "publishedAt": "2023-12-01T03:16:20.073Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 41,
+      "attributes": {
+        "Title": "Live Speech",
+        "createdAt": "2023-12-01T03:18:02.123Z",
+        "updatedAt": "2023-12-01T03:18:02.553Z",
+        "publishedAt": "2023-12-01T03:18:02.551Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 42,
+      "attributes": {
+        "Title": "Personal Voice",
+        "createdAt": "2023-12-01T03:18:24.111Z",
+        "updatedAt": "2023-12-01T03:18:25.000Z",
+        "publishedAt": "2023-12-01T03:18:24.996Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 43,
+      "attributes": {
+        "Title": "Trackball",
+        "createdAt": "2023-12-05T02:49:09.467Z",
+        "updatedAt": "2023-12-05T02:49:56.805Z",
+        "publishedAt": "2023-12-05T02:49:56.803Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 44,
+      "attributes": {
+        "Title": "Joystick",
+        "createdAt": "2023-12-05T02:53:53.561Z",
+        "updatedAt": "2023-12-05T02:54:56.938Z",
+        "publishedAt": "2023-12-05T02:54:56.935Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 45,
+      "attributes": {
+        "Title": "Head Mouse",
+        "createdAt": "2023-12-05T02:59:54.991Z",
+        "updatedAt": "2023-12-05T02:59:55.909Z",
+        "publishedAt": "2023-12-05T02:59:55.907Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 46,
+      "attributes": {
+        "Title": "Re-position the mouse",
+        "createdAt": "2023-12-05T03:06:40.789Z",
+        "updatedAt": "2023-12-05T03:06:52.598Z",
+        "publishedAt": "2023-12-05T03:06:52.595Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 47,
+      "attributes": {
+        "Title": "Place the mouse on your lap",
+        "createdAt": "2023-12-05T03:07:15.822Z",
+        "updatedAt": "2023-12-05T03:07:17.265Z",
+        "publishedAt": "2023-12-05T03:07:17.262Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 48,
+      "attributes": {
+        "Title": "Use of arm supports",
+        "createdAt": "2023-12-05T03:11:28.021Z",
+        "updatedAt": "2023-12-05T03:11:29.289Z",
+        "publishedAt": "2023-12-05T03:11:29.281Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 49,
+      "attributes": {
+        "Title": "Place the mouse at the arm rest level",
+        "createdAt": "2023-12-05T03:12:02.520Z",
+        "updatedAt": "2023-12-05T03:12:03.977Z",
+        "publishedAt": "2023-12-05T03:12:03.973Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 50,
+      "attributes": {
+        "Title": "Other cursor control devices",
+        "createdAt": "2023-12-05T03:23:52.452Z",
+        "updatedAt": "2023-12-05T03:24:09.152Z",
+        "publishedAt": "2023-12-05T03:23:59.375Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 51,
+      "attributes": {
+        "Title": "Adjusting cursor settings",
+        "createdAt": "2023-12-05T03:34:12.035Z",
+        "updatedAt": "2023-12-05T03:34:13.136Z",
+        "publishedAt": "2023-12-05T03:34:13.132Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 52,
+      "attributes": {
+        "Title": "Trackball",
+        "createdAt": "2023-12-05T03:34:34.238Z",
+        "updatedAt": "2023-12-05T03:34:35.433Z",
+        "publishedAt": "2023-12-05T03:34:35.426Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 53,
+      "attributes": {
+        "Title": "Joystick",
+        "createdAt": "2023-12-05T03:38:24.387Z",
+        "updatedAt": "2023-12-05T03:38:25.720Z",
+        "publishedAt": "2023-12-05T03:38:25.706Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 54,
+      "attributes": {
+        "Title": "External touchpad",
+        "createdAt": "2023-12-05T03:38:33.674Z",
+        "updatedAt": "2023-12-05T03:38:53.030Z",
+        "publishedAt": "2023-12-05T03:38:53.024Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 55,
+      "attributes": {
+        "Title": "Place the keyboard at \"lap leve\" via keyboard tray, lap pillow, or your position",
+        "createdAt": "2023-12-05T03:50:34.435Z",
+        "updatedAt": "2023-12-05T03:50:46.592Z",
+        "publishedAt": "2023-12-05T03:50:46.590Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 56,
+      "attributes": {
+        "Title": "Use an external keyboard connected to laptop",
+        "createdAt": "2023-12-05T03:53:16.331Z",
+        "updatedAt": "2023-12-05T03:53:28.619Z",
+        "publishedAt": "2023-12-05T03:53:28.615Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 57,
+      "attributes": {
+        "Title": "Turn off the touchpad via computer settings and use an external cursor control",
+        "createdAt": "2023-12-05T03:53:51.107Z",
+        "updatedAt": "2023-12-05T03:54:06.806Z",
+        "publishedAt": "2023-12-05T03:54:06.801Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 58,
+      "attributes": {
+        "Title": "Filter keys",
+        "createdAt": "2023-12-05T03:56:55.870Z",
+        "updatedAt": "2023-12-05T03:57:09.898Z",
+        "publishedAt": "2023-12-05T03:57:09.896Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 59,
+      "attributes": {
+        "Title": "Stick keys",
+        "createdAt": "2023-12-05T03:57:21.008Z",
+        "updatedAt": "2023-12-05T03:57:51.879Z",
+        "publishedAt": "2023-12-05T03:57:34.178Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 60,
+      "attributes": {
+        "Title": "Slow typing speed",
+        "createdAt": "2023-12-05T04:11:46.297Z",
+        "updatedAt": "2023-12-05T04:11:47.250Z",
+        "publishedAt": "2023-12-05T04:11:47.240Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 61,
+      "attributes": {
+        "Title": "Look at keys while typing",
+        "createdAt": "2023-12-05T04:12:14.244Z",
+        "updatedAt": "2023-12-05T04:12:15.493Z",
+        "publishedAt": "2023-12-05T04:12:15.488Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 62,
+      "attributes": {
+        "Title": "Typing aid",
+        "createdAt": "2023-12-05T04:15:14.878Z",
+        "updatedAt": "2023-12-05T04:15:15.956Z",
+        "publishedAt": "2023-12-05T04:15:15.953Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  },
+  {
+    "data": {
+      "id": 63,
+      "attributes": {
+        "Title": "Angle the keyboard toward your hand",
+        "createdAt": "2023-12-05T04:15:25.780Z",
+        "updatedAt": "2023-12-05T04:15:43.852Z",
+        "publishedAt": "2023-12-05T04:15:43.850Z",
+        "SolutionDescription": null
+      }
+    },
+    "meta": {}
+  }
+]
