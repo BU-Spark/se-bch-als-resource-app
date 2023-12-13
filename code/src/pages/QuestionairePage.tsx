@@ -15,10 +15,10 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
   const { classes } = bodyContentUseStyles();
 
   const initialChoices = [
-    { id: '2', title: 'Communication', link: '/communication' },
-    { id: '3', title: 'Computer Access', link: '/computer-access' },
-    { id: '4', title: 'Home Access', link: '/home-access' },
-    { id: '5', title: 'Smart Phone Access', link: '/smart-phone-access' },
+    { id: '1', title: 'Communication', link: '/communication' },
+    { id: '2', title: 'Computer Access', link: '/computer-access' },
+    { id: '3', title: 'Home Access', link: '/home-access' },
+    { id: '4', title: 'Smart Phone Access', link: '/smart-phone-access' },
   ];
 
   // current question state
@@ -98,17 +98,36 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
         setCurrChoices(choicesList);
         setCurrQuestion(question);
       }
-    
       // if the selected choice is Communication, set the page title to Communication
       if (choice.title === 'Communication') {
         pageTitle.current = 'Communication';
         image.current = '/titleImgCommunication.png';
+      }
+
+      if (choice.title === 'Computer Access') {
+        pageTitle.current = 'Computer\u00A0Access';
+        image.current = '/titleImgComputerAcess.png';  // Adjusted the image path
+      }
+ 
+ 
+      if (choice.title === 'Home Access') {
+        pageTitle.current = 'Home\u00A0Access';
+        image.current = '/titleImgHomeAcess.png';  // Adjusted the image path
+      }
+ 
+ 
+      if (choice.title === 'Smart Phone Access') {
+        pageTitle.current = 'Smart\u00A0Phone\u00A0Access';
+        image.current = '/titleImgPhoneAccess.png';  // Adjusted the image path
       }
     } catch (error) {
       console.error(error);
       // handle error here, for example by setting an error message state
     }
   }, [clickedChoice, currChoices, currQuestion]);
+  
+  
+
   
 
   // run effect only once when component mounts
