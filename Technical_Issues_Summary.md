@@ -6,13 +6,19 @@ Development of a web application featuring a choice-based questionnaire, with th
 
 This current version should have a fully functional branches on Communciation, Computer Access and Smartphone Access. As well as a save feature(bookmark) at each solution page that stores the page identifier under the user the user.
 
+## Update on Data Import/Export
 
-## Export-script usages
+The Export-script and import file descriped below is a customized way of handling data in a new environment. For a more systematic and user friendly method, please check [this README file in dev branch]([https://docs.github.com/tutoria](https://github.com/BU-Spark/se-bch-als-resource-app/blob/dev/ImportExport.md)l). 
+
+For backup purposes, the raw  data is being kept in [this google folder](https://drive.google.com/drive/u/1/folders/1OT68Np0cxpu4Uk_-UDQfF47TE5vFzfi4), which should contain Communication, Computer Access and Smart Phone Access pages.
+
+## Export-script usages 
 
 ### Endpoint permission Setups 
 Make sure to adjust the accessibility of API endpoints in strapi admin domain BEFORE making ANY changes. Go to Settings -> Users & Permissions Plugin -> Roles -> Public -> Permissions. Modify permission level for each collection type accordingly before making any API calls
 
 For endpoint issues, use POSTman or ThunderClient to check debug, more description on "403, 404, 405 issues.md"
+
 
 ### export-chocie-script
 This script is an example script on how to export a specific collection type from strapi to save it on a developer's local repository, as changes made in strapi admin panel will not be explicitly recorded on the repository otherwise.(reccommended to turn all permission on except for delete)
