@@ -356,6 +356,8 @@ To understand the API and pages, naviagte to the the Pages&APIDocs.md file in sr
 
 - When the page load is slow, it does not show a loading icon
 
+- The Bookmark site file is still under constructed. It has the most basic function for this feature, mainly because this feature is not developed yet by the client. Some of the bookmarking do not work because there exits bookmarks with duplicate indentifier ID's, that is something to looking into in the future.
+
 More details can be found in issues section.
 
 ### Summary of we did
@@ -363,9 +365,12 @@ Branch: main: <br>
 -used strapi to update questions, choices, and resource page content <br>
 -resource page includes vidoes, paragraphs, pdf and website links all fetched from strapi <br>
 -created a dynamic questionaire <br>
+-created a new 
 Branch: dev:<br>
 -created dynamic routes for each question. Used routeback to navigate to previous page after clickling back button <br>
 -starter code for saving content into mongodb after clickling on save button <br>
+-new Local Website for Bookmarks: Developed a new local website feature that displays all user bookmarks. This addition enhances user experience by allowing users to easily access and view their saved bookmarks.
+-strapi Update and Import/Export Feature: Upgraded to the latest version of Strapi, leveraging its new capabilities to facilitate the import and export of files. This update streamlines content management, making it more efficient and user-friendly.
 
 ### Deployment
 
