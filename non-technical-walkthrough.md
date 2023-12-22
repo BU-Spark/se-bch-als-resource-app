@@ -13,7 +13,7 @@ This is the website to our official and deployed Strapi:
 https://se-bch-als-resource-app-production.up.railway.app/admin/auth/login
 We have made a general account that you can sing up to use: 
 Username:gwxzhang@bu.edu
-Password: GavinGoat123
+Password: BCHADMIN1519
 
 <img src="src-non-tech-guide/pic1.png"/>
 
