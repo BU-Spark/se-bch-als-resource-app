@@ -39,6 +39,12 @@ This script is the main export script to save all data entries from strapi admin
    - **Requirement:** Implement a description field for questions.
    - **Resolution:** Added `QuestionDescription` field in Strapi and updated the frontend.
 
+5. **Strapi ID and deletion**
+  - **Problem:** When you delete a piece of data from Strapi the ID can't be reused. This might cause issues with relations between datas.
+  - **Resolution:** ID numbers count linear regardless of deletion, can easily replace with new ID, will require restructing of relations. Additionally, Strapi Automatically assigns a random number in cases when transfering json file from one computer to another.
+  [Strapi Dcoumention](https://forum.strapi.io/t/id-field-doesnt-reset-after-delete/685)
+
+
 ### Updated Issues and Solutions
 1. **Save Feature Implementation (Bookmark)**
    - **Issue:** Limited to solution pages as per Figma design.
@@ -84,4 +90,5 @@ This script is the main export script to save all data entries from strapi admin
 ## Conclusion
 This combined document aims to assist future developers by providing detailed records of technical challenges and solutions, encouraging continual updates for efficient knowledge transfer and problem-solving in the development process.
 
-Last edited by **Lionel Chen** on 12/04/23, please contact me for any questions [lionelc@bu.edu]
+Last edited by **William Chan** on 12/07/23, please contact lead engineer, Lionel Chen, for any questions or issues [lionelc@bu.edu]
+additional : William Chan [willchan@bu.edu] Gavin Zhang [Gwz@bu.edu]

@@ -26,9 +26,11 @@ const Nav = () => {
       <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0 }}>
         <Container className={classes.inner} fluid>
         {/* Contains a Group component with an Image component inside, which has properties like maw, mah, ml, mx, radius, src, and alt */}
+        <a href="https://www.childrenshospital.org/" target="_blank" rel="noopener noreferrer">
           <Group>
             <Image maw={100} mah={120} width={120} height={60} ml={32} mx="auto" radius="md" src="../Boston_Children's_Hospital_logo..png" alt="Random image" />
           </Group>
+        </a>
           {/* Also contains a Burger component with properties like size and color, and opened set to false */}
           <Burger size="lg" color="#254885" opened={false} />
         </Container>
