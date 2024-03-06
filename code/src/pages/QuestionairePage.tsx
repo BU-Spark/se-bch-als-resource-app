@@ -1,13 +1,20 @@
-import { Stack, Text } from '@mantine/core';
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import Title from '../components/Title/Titles';
-import { IQuestion, IChoice, IBodyContent, ISolution } from '../types/api_types';
-import searchQuestionsChoicesFromJson from '../utils/TempGetNextQuestion';
-import { bodyContentUseStyles } from '../components/MainBody/HelperFunctions/BodyContentStyle';
-import ToggleButton from '../components/MainBody/TogglebButton';
-import SolutionPages from '../utils/SolutionContent';
-import BookmarkButton from '../components/Bookmark/BookmarkButton';
-import axios from 'axios';
+import { Stack, Text } from "@mantine/core";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import Title from "../components/Title/Titles";
+import {
+  IQuestion,
+  IChoice,
+  IBodyContent,
+  ISolution,
+} from "../types/api_types";
+import searchQuestionsChoicesFromJson from "../utils/TempGetNextQuestion";
+import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
+import ToggleButton from "../components/MainBody/TogglebButton";
+import SolutionPages from "../utils/SolutionContent";
+import BookmarkButton from "../components/Bookmark/BookmarkButton";
+import axios from "axios";
+require("dotenv").config();
+const apiUrl = process.env.API_URL as string;
 
 interface Props {}
 
@@ -15,23 +22,29 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
   const { classes } = bodyContentUseStyles();
 
   const initialChoices = [
-    { id: '2', title: 'Communication', link: '/communication' },
-    { id: '3', title: 'Computer Access', link: '/computer-access' },
-    { id: '4', title: 'Home Access', link: '/home-access' },
-    { id: '5', title: 'Smart Phone Access', link: '/smart-phone-access' },
+    { id: "695", title: "Communication", link: "/communication" },
+    { id: "696", title: "Computer Access", link: "/computer-access" },
+    { id: "697", title: "Home Access", link: "/home-access" },
+    { id: "698", title: "Smart Phone Access", link: "/smart-phone-access" },
   ];
 
   // current question state
-  const [currQuestion, setCurrQuestion] = useState<IQuestion>({ id: '2', title: 'Which area do you want to look into?' });
+  const [currQuestion, setCurrQuestion] = useState<IQuestion>({
+    id: "2",
+    title: "Which area do you want to look into?",
+  });
 
   // current choices state
   const [currChoices, setCurrChoices] = useState<IChoice[]>(initialChoices);
 
   // currently clicked choice state
-  const [clickedChoice, setClickedChoice] = useState<IChoice>({ id: '1', title: 'Home' });
+  const [clickedChoice, setClickedChoice] = useState<IChoice>({
+    id: "1",
+    title: "Home",
+  });
 
   // solution state
-  const [solution, setSolution] = useState<ISolution>({ id: '', title: '' });
+  const [solution, setSolution] = useState<ISolution>({ id: "", title: "" });
 
   //set User ID
   const [userId, setUserId] = useState(null);
@@ -40,81 +53,87 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
   const [hasSolution, setHasSolution] = useState(false);
 
   // page title ref
-  const pageTitle = useRef('Home');
+  const pageTitle = useRef("Home");
 
   // image ref
-  const image = useRef('/titleimghome.PNG');
+  const image = useRef("/titleimghome.PNG");
 
   // previously selected content ref
   const prevSelectedContent = useRef<IBodyContent[]>([]);
 
   // memoized search function for questions and choices
   const memoizedSearchQuestionsChoicesFromJson = useMemo(() => {
-    return async (choice: IChoice): Promise<[IQuestion, IChoice[], boolean, ISolution]> => {
+    return async (
+      choice: IChoice
+    ): Promise<[IQuestion, IChoice[], boolean, ISolution]> => {
       return await searchQuestionsChoicesFromJson(choice);
     };
   }, []);
 
   // updates choices and questions for clicked choice
-  const updateChoicesAndQuestions = useCallback(async (choice: IChoice) => {
-    console.log('Clicked choice:', choice);
-    try {
-      // search for the next set of choices and question using the clicked choice
-      const [question, choicesList, hasSol, sol] = await memoizedSearchQuestionsChoicesFromJson(choice);
-      console.log('New question:', question);
-      console.log('New choices list:', choicesList);
-      console.log('Has solution:', hasSol);
-      console.log('Solution:', sol);
+  const updateChoicesAndQuestions = useCallback(
+    async (choice: IChoice) => {
+      console.log("Clicked choice:", choice);
+      try {
+        // search for the next set of choices and question using the clicked choice
+        const [question, choicesList, hasSol, sol] =
+          await memoizedSearchQuestionsChoicesFromJson(choice);
+        console.log("New question:", question);
+        console.log("New choices list:", choicesList);
+        console.log("Has solution:", hasSol);
+        console.log("Solution:", sol);
 
-      // set whether or not the next step has a solution
-      // setHasSolution(hasSol);
-    
-      // if the next step has a solution, set the solution
-      // otherwise, set the clicked choice
-      if (hasSol) {
-        console.log('Solution found, updating state...');
-        setSolution(sol);
-        setHasSolution(true);
-      } 
-      else {
-        console.log('No solution, updating choices...');
-        setSolution({ id: '', title: '' });
-        
-        setClickedChoice(choice);
-        setHasSolution(false);
+        // set whether or not the next step has a solution
+        // setHasSolution(hasSol);
+
+        // if the next step has a solution, set the solution
+        // otherwise, set the clicked choice
+        if (hasSol) {
+          console.log("Solution found, updating state...");
+          setSolution(sol);
+          setHasSolution(true);
+        } else {
+          console.log("No solution, updating choices...");
+          setSolution({ id: "", title: "" });
+
+          setClickedChoice(choice);
+          setHasSolution(false);
+        }
+
+        // if the question title is not empty, save the current choices, question, and clicked choice
+        // in the previous selected content
+        if (question.title !== "" && !hasSol) {
+          prevSelectedContent.current.push({
+            question: currQuestion,
+            prevChoice: clickedChoice,
+            choiceList: currChoices,
+          });
+          // set the new choices and question
+          console.log("Current question set to:", question);
+          console.log("Current choices set to:", choicesList);
+          setCurrChoices(choicesList);
+          setCurrQuestion(question);
+        }
+
+        // if the selected choice is Communication, set the page title to Communication
+        if (choice.title === "Communication") {
+          pageTitle.current = "Communication";
+          image.current = "/titleImgCommunication.png";
+        }
+      } catch (error) {
+        console.error(error);
+        // handle error here, for example by setting an error message state
       }
-    
-      // if the question title is not empty, save the current choices, question, and clicked choice
-      // in the previous selected content
-      if (question.title !== '' && !hasSol) {
-        prevSelectedContent.current.push({
-          question: currQuestion,
-          prevChoice: clickedChoice,
-          choiceList: currChoices,
-        });
-        // set the new choices and question
-        console.log('Current question set to:', question);
-        console.log('Current choices set to:', choicesList);
-        setCurrChoices(choicesList);
-        setCurrQuestion(question);
-      }
-    
-      // if the selected choice is Communication, set the page title to Communication
-      if (choice.title === 'Communication') {
-        pageTitle.current = 'Communication';
-        image.current = '/titleImgCommunication.png';
-      }
-    } catch (error) {
-      console.error(error);
-      // handle error here, for example by setting an error message state
-    }
-  }, [clickedChoice, currChoices, currQuestion]);
-  
+    },
+    [clickedChoice, currChoices, currQuestion]
+  );
 
   // run effect only once when component mounts
   useEffect(() => {
     if (clickedChoice !== null) {
-      updateChoicesAndQuestions(clickedChoice).catch(error => console.error(error));;
+      updateChoicesAndQuestions(clickedChoice).catch((error) =>
+        console.error(error)
+      );
     }
   }, []);
 
@@ -122,12 +141,12 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await axios.get('http://localhost:1338/api/users');
+        const response = await axios.get(apiUrl);
         // Assuming you want to use the first user in the list
         const firstUser = response.data[0];
         setUserId(firstUser.id);
       } catch (error) {
-        console.error('Error fetching user ID:', error);
+        console.error("Error fetching user ID:", error);
       }
     };
 
@@ -136,59 +155,79 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
 
   /**
    * Goes to the previous selected question and choices, and updates the current state with previous state
-   *///the way we fetch fprevious question was fixed during dev by using reroute
+   */ //the way we fetch fprevious question was fixed during dev by using reroute
   const prevQuestion = useCallback(() => {
-    if (prevSelectedContent.current.length > 0) { //updated from 1 to 0 so that it shows up right after first question
+    if (prevSelectedContent.current.length > 0) {
+      //updated from 1 to 0 so that it shows up right after first question
       const i = 1;
 
-    // if current question has solution
-    if (hasSolution) {
-      setHasSolution(false)
-      return
-    }
-
-      // update current state with previous state
-      setCurrQuestion(prevSelectedContent.current[prevSelectedContent.current.length-i].question);
-      setClickedChoice(prevSelectedContent.current[prevSelectedContent.current.length-i].prevChoice)
-      setCurrChoices(prevSelectedContent.current[prevSelectedContent.current.length-i].choiceList)
-      
-      // remove previous state from the list
-      prevSelectedContent.current.pop()
-
-      // set page title and image to default if previous state is not available
-      if (prevSelectedContent.current.length < 2){
-        pageTitle.current ="Home"
-        image.current = "/titleimghome.PNG"
+      // if current question has solution
+      if (hasSolution) {
+        setHasSolution(false);
+        return;
       }
 
+      // update current state with previous state
+      setCurrQuestion(
+        prevSelectedContent.current[prevSelectedContent.current.length - i]
+          .question
+      );
+      setClickedChoice(
+        prevSelectedContent.current[prevSelectedContent.current.length - i]
+          .prevChoice
+      );
+      setCurrChoices(
+        prevSelectedContent.current[prevSelectedContent.current.length - i]
+          .choiceList
+      );
+
+      // remove previous state from the list
+      prevSelectedContent.current.pop();
+
+      // set page title and image to default if previous state is not available
+      if (prevSelectedContent.current.length < 2) {
+        pageTitle.current = "Home";
+        image.current = "/titleimghome.PNG";
+      }
     }
-  }, [prevSelectedContent, hasSolution, updateChoicesAndQuestions, clickedChoice]);
+  }, [
+    prevSelectedContent,
+    hasSolution,
+    updateChoicesAndQuestions,
+    clickedChoice,
+  ]);
 
   return (
     <div>
-      <Title 
-        hasPrev={(prevSelectedContent.current.length > 0)} //update from 1 to 0 so that backbutton shows up right after 1st page
-        prevQuestion={prevQuestion} 
-        titleImg={image.current} 
-        title={pageTitle.current} 
+      <Title
+        hasPrev={prevSelectedContent.current.length > 0} //update from 1 to 0 so that backbutton shows up right after 1st page
+        prevQuestion={prevQuestion}
+        titleImg={image.current}
+        title={pageTitle.current}
       />
-  
+
       {!hasSolution ? (
         <Stack
           spacing="xl"
           className={classes.outer}
           sx={(theme) => ({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+            backgroundColor:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
           })}
         >
           <Text className={classes.text}> {currQuestion.title} </Text>
-          <Text className={classes.descriptionText}> {currQuestion.description} </Text>
+          <Text className={classes.descriptionText}>
+            {" "}
+            {currQuestion.description}{" "}
+          </Text>
           {currChoices.map((choice) => (
             <div key={choice.id}>
-              <ToggleButton 
-                updateContent={() => updateChoicesAndQuestions(choice)} 
-                className={classes.inner} 
-                choice={choice} 
+              <ToggleButton
+                updateContent={() => updateChoicesAndQuestions(choice)}
+                className={classes.inner}
+                choice={choice}
               />
             </div>
           ))}
@@ -196,11 +235,11 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       ) : (
         <SolutionPages solution={solution} hasSolution={hasSolution} />
       )}
-  
+
       {/* Conditional rendering for BookmarkButton */}
       {hasSolution && (
-        <BookmarkButton 
-          pageTitle={solution.title} 
+        <BookmarkButton
+          pageTitle={solution.title}
           pageIdentifier={solution.id} // Assuming solution.id is your unique page identifier
           userId={userId} // Replace this with actual logic to obtain the userId
           isSolutionPage={hasSolution}
@@ -208,7 +247,6 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       )}
     </div>
   );
-  
 };
 
-export default QuestionaireBodyContent
+export default QuestionaireBodyContent;

@@ -39,7 +39,7 @@ File Structure:
             - applies custom styles from useStyles
         * ChevronIcon
             - displays only if hasPrev is true
-            - onClick triggers prevQuestion function
+            - onClick route to the previous page
         * Return a <div> that contains the ChevronIcon and the Title component
     * Footer.tsx
         * useStyles
