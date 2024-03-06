@@ -1,5 +1,6 @@
 import { Title, createStyles, rem } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons-react";
+// import { NextRouter } from "next/router"; -- uncomment for dynamic routing
 
 /**
  * Titles component
@@ -11,12 +12,12 @@ import { IconChevronLeft } from "@tabler/icons-react";
 let img = "";
 const Titles = ({
   hasPrev,
-  router,
+  prevQuestion, // Change back to router for dynamic routing
   titleImg,
   title,
 }: {
   hasPrev: boolean;
-  router: NextRouter;
+  prevQuestion: any; // Fix when implementing dynamic routing
   titleImg: string;
   title: string;
 }) => {
@@ -38,7 +39,7 @@ const Titles = ({
           className={classes.chevron}
           size="3.4rem"
           stroke={2}
-          onClick={() => router.back()}
+          onClick={prevQuestion}
         />
       ) : null}
       {/* Return a <div> that contains the ChevronIcon and the Title component */}
