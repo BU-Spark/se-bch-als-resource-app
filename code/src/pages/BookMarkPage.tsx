@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useRouter } from "next/router";
+
 import { useBookmarks } from "../contexts/BookmarkContext";
-import BookmarkButton from "../components/BookmarkButton/BookmarkButton";
+
 import ResourcesHandouts from "../components/MainBody/SolutionPageContent/ResourcesHandouts";
+import Title from "../components/Title/Titles";
 
 const BookMarkPage: React.FC = () => {
   const { bookmarks } = useBookmarks();
+  const router = useRouter();
+  const image = useRef("/titleimghome.PNG");
 
   return (
     <div>
-      <h1>Bookmarks</h1>
-      <ResourcesHandouts title={"Bookmarks"} data={bookmarks} />
+      <Title
+        hasPrev={true}
+        router={router}
+        titleImg={image.current}
+        title={"Bookmarks"}
+      />
+      <ResourcesHandouts title={""} data={bookmarks} />
     </div>
   );
 };

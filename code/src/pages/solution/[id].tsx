@@ -101,53 +101,17 @@ const SolutionPages = () => {
         {!resourceList.length ? (
           <></>
         ) : (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-            }}
-          >
-            <div style={{ flexGrow: 1, marginBottom: "8px" }}>
-              {" "}
-              <ResourcesHandouts title={"Resources"} data={resourceList} />
-            </div>
-            <div style={{ marginBottom: "8px" }}>
-              {" "}
-              <BookmarkButton
-                id={solutionId}
-                title="temp"
-                url={`/solution/${solutionId}`}
-              />
-            </div>
-          </div>
+          <ResourcesHandouts title={"Resources"} data={resourceList} />
         )}
 
         {/* Handouts/testimonials */}
         {!handoutTestimonialList.length ? (
           <></>
         ) : (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-            }}
-          >
-            <div style={{ flexGrow: 1, marginBottom: "8px" }}>
-              {" "}
-              <ResourcesHandouts
-                title={"Handouts/Testimonials"}
-                data={handoutTestimonialList}
-              />
-            </div>
-            <div style={{ marginBottom: "8px" }}>
-              {" "}
-              <BookmarkButton
-                id={solutionId}
-                title="hi"
-                url={`/solution/${solutionId}`}
-              />
-            </div>
-          </div>
+          <ResourcesHandouts
+            title={"Handouts/Testimonials"}
+            data={handoutTestimonialList}
+          />
         )}
       </Stack>
     </div>
