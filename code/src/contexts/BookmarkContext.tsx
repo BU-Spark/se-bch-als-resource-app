@@ -6,16 +6,12 @@ import React, {
   ReactNode,
 } from "react";
 
-export type Bookmark = {
-  id: number;
-  title: string;
-  url: string;
-};
+import { ResourceLink } from "@/types/dataTypes";
 
 type BookmarkContextType = {
-  bookmarks: Bookmark[];
-  addBookmark: (newBookmark: Bookmark) => void;
-  removeBookmark: (id: number) => void;
+  bookmarks: ResourceLink[];
+  addBookmark: (newBookmark: ResourceLink) => void;
+  removeBookmark: (id: string) => void;
 };
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(
@@ -37,7 +33,7 @@ type BookmarkProviderProps = {
 export const BookmarkProvider: React.FC<BookmarkProviderProps> = ({
   children,
 }) => {
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => {
+  const [bookmarks, setBookmarks] = useState<ResourceLink[]>(() => {
     return [];
   });
 
@@ -52,11 +48,11 @@ export const BookmarkProvider: React.FC<BookmarkProviderProps> = ({
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
   }, [bookmarks]);
 
-  const addBookmark = (newBookmark: Bookmark) => {
+  const addBookmark = (newBookmark: ResourceLink) => {
     setBookmarks((prevBookmarks) => [...prevBookmarks, newBookmark]);
   };
 
-  const removeBookmark = (id: number) => {
+  const removeBookmark = (id: string) => {
     setBookmarks((prevBookmarks) =>
       prevBookmarks.filter((bookmark) => bookmark.id !== id)
     );

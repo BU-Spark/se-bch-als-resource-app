@@ -114,8 +114,8 @@ const SolutionPages = () => {
             <div style={{ marginBottom: "8px" }}>
               {" "}
               <BookmarkButton
-                id={Number(solutionId)}
-                title="hi"
+                id={solutionId}
+                title="temp"
                 url={`/solution/${solutionId}`}
               />
             </div>
@@ -142,7 +142,7 @@ const SolutionPages = () => {
             <div style={{ marginBottom: "8px" }}>
               {" "}
               <BookmarkButton
-                id={Number(solutionId)}
+                id={solutionId}
                 title="hi"
                 url={`/solution/${solutionId}`}
               />

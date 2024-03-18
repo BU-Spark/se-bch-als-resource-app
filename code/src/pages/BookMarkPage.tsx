@@ -1,6 +1,7 @@
 import React from "react";
 import { useBookmarks } from "../contexts/BookmarkContext";
 import BookmarkButton from "../components/BookmarkButton/BookmarkButton";
+import ResourcesHandouts from "../components/MainBody/SolutionPageContent/ResourcesHandouts";
 
 const BookMarkPage: React.FC = () => {
   const { bookmarks } = useBookmarks();
@@ -8,20 +9,7 @@ const BookMarkPage: React.FC = () => {
   return (
     <div>
       <h1>Bookmarks</h1>
-      <ul>
-        {bookmarks.map((bookmark) => (
-          <li key={bookmark.id}>
-            <a href={bookmark.url} target="_blank" rel="noopener noreferrer">
-              {bookmark.id}
-            </a>
-            <BookmarkButton
-              id={bookmark.id}
-              title={bookmark.title}
-              url={bookmark.url}
-            />
-          </li>
-        ))}
-      </ul>
+      <ResourcesHandouts title={"Bookmarks"} data={bookmarks} />
     </div>
   );
 };

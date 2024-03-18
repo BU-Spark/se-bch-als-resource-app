@@ -2,11 +2,6 @@
 import Image from "next/image";
 import { useBookmarks } from "../../contexts/BookmarkContext";
 import { createStyles } from "@mantine/core";
-import {
-  HandoutOrTestimonialLink,
-  PageContentType,
-  ResourceLink,
-} from "@/types/dataTypes";
 
 const useStyles = createStyles((theme) => ({
   button: {
@@ -27,7 +22,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 type BookmarkButtonProps = {
-  id: number;
+  id: string;
   url: string;
   title: string;
 };
