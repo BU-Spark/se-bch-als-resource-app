@@ -83,12 +83,6 @@ const SolutionPages = () => {
         {/* Solution Title */}
         <Text className={classes.text}> {solutionTitle} </Text>
 
-        <BookmarkButton
-          id={Number(solutionId)}
-          title="hi"
-          url={`/solution/${solutionId}`}
-        />
-
         {/* Use client-side nav */}
         <button onClick={goToBookmarks}>Go to Bookmarks</button>
 
@@ -107,17 +101,53 @@ const SolutionPages = () => {
         {!resourceList.length ? (
           <></>
         ) : (
-          <ResourcesHandouts title={"Resources"} data={resourceList} />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+            }}
+          >
+            <div style={{ flexGrow: 1, marginBottom: "8px" }}>
+              {" "}
+              <ResourcesHandouts title={"Resources"} data={resourceList} />
+            </div>
+            <div style={{ marginBottom: "8px" }}>
+              {" "}
+              <BookmarkButton
+                id={Number(solutionId)}
+                title="hi"
+                url={`/solution/${solutionId}`}
+              />
+            </div>
+          </div>
         )}
 
         {/* Handouts/testimonials */}
         {!handoutTestimonialList.length ? (
           <></>
         ) : (
-          <ResourcesHandouts
-            title={"Handouts/Testimonials"}
-            data={handoutTestimonialList}
-          />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+            }}
+          >
+            <div style={{ flexGrow: 1, marginBottom: "8px" }}>
+              {" "}
+              <ResourcesHandouts
+                title={"Handouts/Testimonials"}
+                data={handoutTestimonialList}
+              />
+            </div>
+            <div style={{ marginBottom: "8px" }}>
+              {" "}
+              <BookmarkButton
+                id={Number(solutionId)}
+                title="hi"
+                url={`/solution/${solutionId}`}
+              />
+            </div>
+          </div>
         )}
       </Stack>
     </div>

@@ -1,13 +1,39 @@
-import React from "react";
+// BookmarkButton.jsx (or .tsx)
+import Image from "next/image";
 import { useBookmarks } from "../../contexts/BookmarkContext";
+import { createStyles } from "@mantine/core";
+import {
+  HandoutOrTestimonialLink,
+  PageContentType,
+  ResourceLink,
+} from "@/types/dataTypes";
+
+const useStyles = createStyles((theme) => ({
+  button: {
+    height: "57px",
+    width: "300px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    border: "2px solid #254885",
+    borderRadius: theme.radius.md,
+    cursor: "pointer",
+    marginLeft: theme.spacing.md,
+    "&:hover": {
+      backgroundColor: "#f0f0f0",
+    },
+  },
+}));
 
 type BookmarkButtonProps = {
   id: number;
-  title: string;
   url: string;
+  title: string;
 };
 
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({ id, title, url }) => {
+  const { classes } = useStyles();
   const { bookmarks, addBookmark, removeBookmark } = useBookmarks();
   const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id);
 
@@ -20,9 +46,17 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ id, title, url }) => {
     }
   };
 
+  const iconPath = isBookmarked ? "/unbookmarked.svg" : "/bookmarked.svg";
+
   return (
-    <button onClick={handleBookmarkClick}>
-      {isBookmarked ? "Unbookmark" : "Bookmark this page"}
+    <button onClick={handleBookmarkClick} className={classes.button}>
+      <Image
+        src={iconPath}
+        alt={isBookmarked ? "Unbookmark" : "Bookmark this page"}
+        width={45}
+        height={45}
+        layout="fixed"
+      />
     </button>
   );
 };
