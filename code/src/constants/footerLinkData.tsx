@@ -1,11 +1,7 @@
 import { FooterLink } from "@/types/dataTypes";
 
 export const footerLinkData: FooterLink[] = [
-    {label:"About Us", link: "https://www.childrenshospital.org/about-us"}, 
-    {label:"Virtual Visits", link: "https://www.childrenshospital.org/programs/virtual-visits"},
-    {label:"MyChildren's Patient Portal", link: "https://apps.childrenshospital.org/mychildrens/index.html"},
-    {label:"Quality and Patient Safety",link: "https://www.childrenshospital.org/about-us/patient-safety-quality"},
-    {label:"Career Opportunities",link: "https://www.childrenshospital.org/career-opportunities"},
-    {label:"Locations",link: "https://www.childrenshospital.org/about-us/locations"},
-    {label:"Education & Training",link: "https://dme.childrenshospital.org/"}
+    {label:"BCH Website", link: "https://www.childrenshospital.org/programs/als-augmentative-communication-program/protocol-assessment-considerations/voice/bch"},
+    {label:"YouTube Resources", link: "https://www.childrenshospital.org/programs/als-augmentative-communication-program/protocol-assessment-considerations/voice/bch"} 
+
 ]

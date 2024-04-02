@@ -3,8 +3,15 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
   min-height: 100vh;
+}
+.mainContainer {
+  min-height: 100vh;
+  position:relative;
+}
+
+.content{
+  padding-bottom:150px;
 }
 
 .description {
@@ -175,9 +182,7 @@
 
 /* Mobile */
 @media (max-width: 700px) {
-  .content {
-    padding: 4rem;
-  }
+
 
   .grid {
     grid-template-columns: 1fr;

@@ -1,15 +1,19 @@
-import React, { Suspense, useEffect, useState } from 'react'
-import { bodyContentUseStyles } from '../components/MainBody/HelperFunctions/BodyContentStyle';
-import { Stack, Text } from '@mantine/core';
-import ResourcesHandouts from '../components/MainBody/SolutionPageContent/ResourcesHandouts';
-import { ISolution } from '../types/api_types';
-import { HandoutOrTestimonialLink, PageContentType, ResourceLink } from '../types/dataTypes';
-import getSolutionContent from './GetSolutionPageForChoice';
-import PageContent from '../components/MainBody/SolutionPageContent/PageContent';
+import React, { Suspense, useEffect, useState } from "react";
+import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
+import { Stack, Text } from "@mantine/core";
+import ResourcesHandouts from "../components/MainBody/SolutionPageContent/ResourcesHandouts";
+import { ISolution } from "../types/api_types";
+import {
+  HandoutOrTestimonialLink,
+  PageContentType,
+  ResourceLink,
+} from "../types/dataTypes";
+import getSolutionContent from "./GetSolutionPageForChoice";
+import PageContent from "../components/MainBody/SolutionPageContent/PageContent";
 
 interface SolutionContentProps {
-  solution: ISolution,
-  hasSolution: boolean
+  solution: ISolution;
+  hasSolution: boolean;
 }
 
 /**
@@ -19,51 +23,60 @@ interface SolutionContentProps {
  * @param solution - The solution to display content for.
  * @param hasSolution - Whether or not the solution has content to display.
  */
-const SolutionPages: React.FC<SolutionContentProps> = ({ solution, hasSolution }): JSX.Element => {
+const SolutionPages: React.FC<SolutionContentProps> = ({
+  solution,
+  hasSolution,
+}): JSX.Element => {
   const { classes } = bodyContentUseStyles();
 
-  const [solutionDescription, setSolutionDescription] = useState<string>('');
+  const [solutionDescription, setSolutionDescription] = useState<string>("");
 
   // State variables to hold page content data
-  let [resourceList, setResourceList] = useState<ResourceLink[]>([])
-  let [handoutTestimonialList, setHandoutTestimonialList] = useState<HandoutOrTestimonialLink[]>([])
-  let [pageContent, setPageContent] = useState<PageContentType[]>([])
-  let [error, setError] = useState<string>("")
+  let [resourceList, setResourceList] = useState<ResourceLink[]>([]);
+  let [handoutTestimonialList, setHandoutTestimonialList] = useState<
+    HandoutOrTestimonialLink[]
+  >([]);
+  let [pageContent, setPageContent] = useState<PageContentType[]>([]);
+  let [error, setError] = useState<string>("");
 
   /**
    * Fetches the solution page content (resources, handouts/testimonials, and page content).
    */
   const getSolutionPageContent = async (): Promise<void> => {
     try {
-      let [title, description, resourceList, handoutsTestimonialsList, pageContent] = await getSolutionContent(solution.id);
+      let [
+        title,
+        description,
+        resourceList,
+        handoutsTestimonialsList,
+        pageContent,
+      ] = await getSolutionContent(solution.id);
+      resourceList[0].id = solution.id;
       setResourceList(resourceList);
       setHandoutTestimonialList(handoutsTestimonialsList);
       setPageContent(pageContent);
-  
+
       // Check if description is provided
       if (description) {
         setSolutionDescription(description);
       } else {
         // Handle the absence of description, maybe set a default value or leave it empty
-        setSolutionDescription('No description available.');
+        setSolutionDescription("No description available.");
       }
-  
     } catch (e) {
       setError("Error fetching solution page content");
     }
   };
-  
-  
 
   // Fetches solution page content if it has a solution and an id
   useEffect(() => {
     if (hasSolution && solution.id !== "") {
-      getSolutionPageContent()
+      getSolutionPageContent();
     }
-  }, [hasSolution])
+  }, [hasSolution]);
 
   if (error) {
-    return <div>Error: {error}</div>
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -73,7 +86,9 @@ const SolutionPages: React.FC<SolutionContentProps> = ({ solution, hasSolution }
         className={classes.outer}
         sx={(theme) => ({
           backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
         })}
       >
         {/* Title */}
@@ -83,7 +98,7 @@ const SolutionPages: React.FC<SolutionContentProps> = ({ solution, hasSolution }
         {solutionDescription && (
           <Text className={classes.descriptionText}>{solutionDescription}</Text>
         )}
-        
+
         {/* Page content */}
         {!pageContent.length ? (
           <></>
@@ -113,7 +128,7 @@ const SolutionPages: React.FC<SolutionContentProps> = ({ solution, hasSolution }
         )}
       </Stack>
     </div>
-  )
-}
+  );
+};
 
-export default SolutionPages
+export default SolutionPages;
