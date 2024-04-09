@@ -5,12 +5,35 @@ export interface IChoice {
   link?: string;
 }
 
-export interface ILogic{
+export interface ILogicActionDetail {
+  to: {
+      type: string;
+      value: string;
+  };
+}
+
+export interface ILogicConditionVar {
+  type: string;
+  value: string;
+}
+
+export interface ILogicCondition {
+  op: string;
+  vars: ILogicConditionVar[];
+}
+
+export interface ILogicAction {
+  action: string;
+  details: ILogicActionDetail;
+  condition: ILogicCondition;
+}
+
+export interface ILogic {
   type: string;
   ref: string;
-  actions: Array<Object>;
-  
+  actions: ILogicAction[];
 }
+
 
 export interface IQuestion {
   id: string;
