@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Head from 'next/head';
 import Title from '../components/Title/Titles';
 import { IQuestionList,IBodyContent,IChoice,IQuestion } from "../types/api_types";
-import { Loader, Stack, Text,Button, rem } from '@mantine/core';
+import { Loader, Stack, Text,Button,Tooltip, rem } from '@mantine/core';
 import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
 import { useRouter } from 'next/router';
 
@@ -13,7 +13,7 @@ const CommunicationPage: React.FC<Props> = () => {
     const { classes } = bodyContentUseStyles();
     const prevSelectedContent = useRef<IBodyContent[]>([]);
 
-
+    const [tooltipChoiceId, setTooltipChoiceId] = useState("");
     const heroImage = useRef("/titleImgCommunication.png");
     const pageTitle = useRef("Communication");
     const [questionList, setQuestionList] = useState<IQuestionList | null>(null);
@@ -39,13 +39,18 @@ const CommunicationPage: React.FC<Props> = () => {
         currentCategory: "" 
         });
         const handleChoiceClick = useCallback((choice: IChoice) => {
+            if(!choice.link){
+                setTooltipChoiceId(choice.id);
+                setTimeout(() => setTooltipChoiceId(""), 2300); // hide tooltip after 4 seconds
+                return;
+            }
             // Append the selected choice to the choiceList in IBodyContent
             const updatedChoiceList = [...bodyContent.choiceList, choice];
             setBodyContent({...bodyContent, choiceList: updatedChoiceList, prevChoice: choice});
     
             // Find the next question based on the choice (if applicable)
             // For example, assuming 'link' field in IChoice is used to determine the next question
-            const nextQuestionId = choice.link; // Modify this logic as per your data structure
+            const nextQuestionId = choice.link; 
             const nextQuestion = questionList?.questions.find(q => q.ref === nextQuestionId);
             if (nextQuestion) {
                 setCurrQuestion(nextQuestion);
@@ -120,7 +125,7 @@ const CommunicationPage: React.FC<Props> = () => {
                 hasPrev={true} 
                 titleImg={heroImage.current}
                 title={pageTitle.current}
-                onPrevClick={goBackToPreviousQuestion} // Pass the function as a prop
+                onPrevClick={goBackToPreviousQuestion} 
             />
                 {isLoading ? (
                      <div style={{ display: "flex",marginTop:"15vh", justifyContent: "center", alignItems: "center" }}>
@@ -144,21 +149,26 @@ const CommunicationPage: React.FC<Props> = () => {
                           {" "}
                           {currQuestion.description}{" "}
                         </Text>
-              
-                    {currChoices?.map((choice) => (
-                        <div key={choice.id}>
-                            <Button
-                                variant="outline"
-                                className={classes.inner}
-                                onClick={() => handleChoiceClick(choice)}
-                            >
-                                <Text fz="xl" style={{ fontSize: '16px', whiteSpace: "normal", textAlign: 'center', textDecoration: 'none' }}>
-                                    {choice.label}
-                                </Text>
-                            </Button>
-                        </div>
-                    ))}
-              
+                        {currChoices?.map((choice) => (
+    <Tooltip
+        key={choice.id}
+        label="No logic set for this question"
+        opened={tooltipChoiceId === choice.id}
+        position="top"
+        withArrow
+    >
+        <Button
+            variant="outline"
+            className={classes.inner}
+            onClick={() => handleChoiceClick(choice)}
+        >
+            <Text fz="xl" style={{ fontSize: '16px', whiteSpace: "normal", textAlign: 'center', textDecoration: 'none' }}>
+                {choice.label}
+            </Text>
+        </Button>
+    </Tooltip>
+))}
+
                       </Stack>
 
                     ) : (
