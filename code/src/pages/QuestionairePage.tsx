@@ -301,17 +301,6 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
             {" "}
             {currQuestion.description}{" "}
           </Text>
-          {/* <Button key={choice.id}
-            className={className}
-            variant="outline"
-            // Contains an onClick event handler that triggers the updateContent function with the choice as an argument
-            onClick = {() => {updateContent(choice)}}
-            > */}
-              {/* <Link href={"/"+choice}> */}
-              {/* Inside the Button, a Text component is rendered with fz set to "xl", fontSize set to rem(16), whiteSpace set to "normal", and textAlign set to 'center'. The text displayed is choice.title. */}
-              {/* <Text fz = "xl" style={{fontSize: rem(16), whiteSpace: "normal", textAlign: 'center'}}>{choice.label}</Text> */}
-              {/* </Link> */}
-        {/* </Button> */}
 
         {currChoices.map((choice) => (
   <div key={choice.id}>
