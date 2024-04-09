@@ -1,11 +1,14 @@
 export interface IChoice {
   id: string;
-  title: string;
+  ref: string;
+  label: string;
 }
 
 export interface IQuestion {
   id: string;
   title: string;
+  ref: string;
+  type: string;
   description?: string    //updated with optional description field
 }
 
