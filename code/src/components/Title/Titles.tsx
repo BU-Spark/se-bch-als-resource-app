@@ -12,7 +12,7 @@ import { IconChevronLeft} from '@tabler/icons-react';
 
 
 //displays the title passed as a prop and applies custom styles from useStyles
-const Titles = ({hasPrev, prevQuestion, titleImg, title}:{hasPrev: boolean, prevQuestion: () => any, titleImg: string, title: string}) => {
+const Titles = ({hasPrev, titleImg, title}:{hasPrev: boolean, titleImg: string, title: string}) => {
   const { classes} = useStyles();
   const ChevronIcon = IconChevronLeft;
 
@@ -25,7 +25,6 @@ const Titles = ({hasPrev, prevQuestion, titleImg, title}:{hasPrev: boolean, prev
         className={classes.chevron}
         size="3.4rem"
         stroke={2}
-        onClick={prevQuestion}
       /></Link>) : null}
       
       {/* Return a <div> that contains the ChevronIcon and the Title component */}
