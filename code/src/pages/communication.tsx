@@ -137,12 +137,7 @@ const CommunicationPage: React.FC<Props> = () => {
                         <Stack
                         spacing="xl"
                         className={classes.outer}
-                        sx={(theme) => ({
-                          backgroundColor:
-                            theme.colorScheme === "dark"
-                              ? theme.colors.dark[8]
-                              : theme.colors.gray[0],
-                        })}
+
                       >
                         <Text className={classes.text}> {currQuestion.title} </Text>
                         <Text className={classes.descriptionText}>
