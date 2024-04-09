@@ -4,6 +4,13 @@ export interface IChoice {
   label: string;
 }
 
+export interface ILogic{
+  type: string;
+  ref: string;
+  actions: Array<Object>;
+  
+}
+
 export interface IQuestion {
   id: string;
   title: string;
