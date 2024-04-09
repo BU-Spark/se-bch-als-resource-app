@@ -2,6 +2,7 @@ export interface IChoice {
   id: string;
   ref: string;
   label: string;
+  link?: string;
 }
 
 export interface ILogic{
@@ -16,6 +17,7 @@ export interface IQuestion {
   title: string;
   ref: string;
   type: string;
+  choices?: IChoice[];
   description?: string    //updated with optional description field
 }
 
@@ -25,7 +27,13 @@ export interface ISolution {
 }
 
 export interface IBodyContent {
-  question: IQuestion,
-  prevChoice: IChoice,
-  choiceList: IChoice[]
+  currentQuestion: IQuestion;
+  prevChoice: IChoice;
+  choiceList: IChoice[];
+  currentCategory: string;
+}
+
+export interface IQuestionList{
+  questions: IQuestion[];
+  logic: ILogic[];
 }
