@@ -55,6 +55,12 @@ const CommunicationPage: React.FC<Props> = () => {
             if (nextQuestion) {
                 setCurrQuestion(nextQuestion);
                 setCurrChoices(nextQuestion.choices || []);
+                if (nextQuestion.type === "statement") {
+                    setHasSolution(true);
+                }
+                else{
+                    setHasSolution(false);
+                }
                 console.log(updatedChoiceList);
             }
         }, [bodyContent, questionList]);
@@ -102,6 +108,11 @@ const CommunicationPage: React.FC<Props> = () => {
             if (previousQuestion) {
               setCurrQuestion(previousQuestion);
               setCurrChoices(previousQuestion.choices || []);
+              if (previousQuestion.type === "statement") {
+                setHasSolution(true);
+              } else {
+                setHasSolution(false);
+              }
             }
           }
         } else {
