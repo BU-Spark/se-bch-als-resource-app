@@ -4,6 +4,38 @@ import {
     IChoice, ILogic, IQuestionList, IQuestion, ISolution, IBodyContent
 } from '../../types/api_types';
 
+
+function extractBetweenResources(text: string): string | null {
+    const startTag = "[\\*resources\\*]";
+    const endTag = "[\\*resources\\*]";
+    const startIndex = text.indexOf(startTag);
+    const endIndex = text.indexOf(endTag, startIndex + startTag.length);
+
+    if (startIndex === -1 || endIndex === -1) {
+        return null; // One of the tags not found
+    }
+
+    return text.substring(startIndex + startTag.length, endIndex).trim();
+}
+
+function removeResourcesSection(text: string): string {
+    const startTag = "[\\*resources\\*]";
+    const endTag = "[\\*resources\\*]";
+    const startIndex = text.indexOf(startTag);
+    const endIndex = text.indexOf(endTag, startIndex + startTag.length);
+
+    if (startIndex === -1 || endIndex === -1) {
+        return text; // Tags not found, return original text
+    }
+
+    // Get the part of the string before the start tag and after the end tag
+    const beforeStartTag = text.substring(0, startIndex);
+    const afterEndTag = text.substring(endIndex + endTag.length);
+
+    // Combine these two parts to form the new string
+    return (beforeStartTag + afterEndTag).trim();
+}
+
 export default async function retrieveQuestions(req: NextApiRequest, res: NextApiResponse) {
     const { flowName } = req.query; 
     //flowName would be either communication, computer-access, home-access, or smart-phone-access. This is the name of the form that we want to retrieve the questions for. 
@@ -11,10 +43,14 @@ export default async function retrieveQuestions(req: NextApiRequest, res: NextAp
             try {
                 const response = await fetch(`${TYPEFORM_API_URL}/forms/${COMMUNICATION_FORM_ID}`);
                 const data = await response.json();
+         
     
                 // Transform fields to IQuestion[]
                 const questions: IQuestion[] = data.fields.map((field: any) => {
-                    const question: IQuestion = {
+                const descriptionWithResources = field.properties.description || '';
+                const descriptionWithoutResources = field.properties.description ? removeResourcesSection(field.properties.description) : "";
+
+                const question: IQuestion = {
                         id: field.id,
                         title: field.title,
                         ref: field.ref,
@@ -36,7 +72,7 @@ export default async function retrieveQuestions(req: NextApiRequest, res: NextAp
                                     v.type === "choice" && v.value === choice.ref
                                 )
                             )?.details.to.value;
-        
+                           
                             return {
                                 id: choice.id,
                                 ref: choice.ref,
@@ -44,34 +80,35 @@ export default async function retrieveQuestions(req: NextApiRequest, res: NextAp
                                 link: toValue // Set the link to the ref ID of the next question
                             };
                         }),
-                        description: field.properties.description
+                        description: descriptionWithoutResources
+                        
                     };
 
-    
-                    const resourceTagPattern = /\[\\\*resources\\\*\] \{[^}]*\} \[\\\*resources\\\*\]/;
-                    const resourceMatch = resourceTagPattern.exec(field.properties.description);
+                    const resourceMatch = extractBetweenResources(descriptionWithResources)
+
+                   
                     if (field.type === 'statement' && resourceMatch) {
                         console.log("found URL");
-                        const tagPattern = /{([^}]*)}/;
-                        const tagMatch = tagPattern.exec(resourceMatch[0]);
-                        if (tagMatch) {
-                            const tagValue = tagMatch[1];
-                            const resourceString = `{${tagValue.replace(/\[https?:\/\/[^\]]+\]\((https?:\/\/[^\)]+)\)/g, '$1')}}`;
-               
-    
+                        
+                        const cleanedResourceString = resourceMatch.replace(/\[https?:\/\/[^\]]+\]\((https?:\/\/[^\)]+)\)/g, '$1');
+                        console.log("resourceMatch", cleanedResourceString);
                         try {
-                            const resourceData = JSON.parse(resourceString);
-                            question.solutions = [{
-                                id: field.ref,
-                                title: resourceData.title,
-                                url: resourceData.url
-                            }];
+                        const resourceData: Array<{ title: string; url: string }> = JSON.parse(cleanedResourceString);
+
+                        question.solutions = resourceData.map(rd => ({
+                            id: field.ref,
+                            title: rd.title,
+                            url: rd.url
+                        }));
+
+                    
                         } catch (jsonParseError) {
                             console.error("Error parsing JSON from resources tag", jsonParseError);
                             // Handle error or set default values if required
                         }
                     }
-                }
+                    
+    
     
                     return question;
                 
@@ -84,6 +121,7 @@ export default async function retrieveQuestions(req: NextApiRequest, res: NextAp
     
                 res.status(200).json(questionList);
             } catch (error) {
+                console.log(error);
                 res.status(500).json({ error: 'Internal Server Error' });
             }
         } else {
