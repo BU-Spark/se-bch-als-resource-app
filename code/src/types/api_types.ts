@@ -41,19 +41,21 @@ export interface IQuestion {
   ref: string;
   type: string;
   choices?: IChoice[];
+  solutions?: ISolution[];
   description?: string    //updated with optional description field
 }
 
 export interface ISolution {
   id: string;
   title: string;
+  url: string;
 }
 
 export interface IBodyContent {
   currentQuestion: IQuestion;
   prevChoice: IChoice;
   choiceList: IChoice[];
-  currentCategory: string;
+  currentCategory?: string;
 }
 
 export interface IQuestionList{
