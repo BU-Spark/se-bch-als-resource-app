@@ -11,14 +11,18 @@ interface Props {}
 const CommunicationPage: React.FC<Props> = () => {
     const router = useRouter();
     const { classes } = bodyContentUseStyles();
-    const prevSelectedContent = useRef<IBodyContent[]>([]);
-
     const [tooltipChoiceId, setTooltipChoiceId] = useState("");
     const heroImage = useRef("/titleImgCommunication.png");
     const pageTitle = useRef("Communication");
     const [questionList, setQuestionList] = useState<IQuestionList | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [hasSolution, setHasSolution] = useState(false);
+    const [solutionContent, setSolutionContent] = useState<IQuestion>({
+      id: "",
+      title: "",
+      ref: "",
+      type: "",
+      });
     const [currQuestion, setCurrQuestion] = useState<IQuestion>({
         id: "0",
         title: "Which area do you want to look into?",
@@ -55,8 +59,10 @@ const CommunicationPage: React.FC<Props> = () => {
             if (nextQuestion) {
                 setCurrQuestion(nextQuestion);
                 setCurrChoices(nextQuestion.choices || []);
+
                 if (nextQuestion.type === "statement") {
                     setHasSolution(true);
+                    setSolutionContent(nextQuestion);
                 }
                 else{
                     setHasSolution(false);
@@ -174,13 +180,23 @@ const CommunicationPage: React.FC<Props> = () => {
         </Button>
     </Tooltip>
 ))}
-
                       </Stack>
 
                     ) : (
-                        <div>
-                            <h3>solution</h3>
-                        </div>
+                      // If there is a solution:
+                      <div>
+                      <Stack spacing="xl" className={classes.outer}>
+                          <Text className={classes.text}>{currQuestion.title}</Text>
+                          <Text className={classes.descriptionText}>{currQuestion.description}</Text>
+              
+                          <Text className={classes.text}>Resources</Text>
+                          {solutionContent.solutions && solutionContent.solutions.map((solution, index) => (
+                              <Button key={index} onClick={() => window.open(solution.url, "_blank")}>
+                                  {solution.title}
+                              </Button>
+                          ))}
+                      </Stack>
+                  </div>
                     )
                 )}
       
