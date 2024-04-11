@@ -99,11 +99,11 @@ const Resources = ({
             </div>
             <div style={{ marginBottom: "8px" }}>
               {" "}
-              <BookmarkButton
+              {/* <BookmarkButton
                 id={resource.id}
                 title={resource.title}
                 url={resource.url}
-              />
+              /> */}
             </div>
           </div>
         ))}
