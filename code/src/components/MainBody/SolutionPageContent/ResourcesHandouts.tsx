@@ -97,13 +97,14 @@ const Resources = ({
                 {resource.title}
               </Button>
             </div>
-            <div style={{ marginBottom: "8px" }}>
+            <div style={{ marginBottom: "8px", marginLeft: "8px" }}>
               {" "}
-              {/* <BookmarkButton
+              <BookmarkButton
                 id={resource.id}
                 title={resource.title}
                 url={resource.url}
-              /> */}
+                solutionPage={false}
+              />
             </div>
           </div>
         ))}

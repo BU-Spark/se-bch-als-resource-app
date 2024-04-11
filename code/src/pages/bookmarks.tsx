@@ -41,6 +41,7 @@ const Bookmarks = () => {
     "Smart Phone Access": [],
   };
 
+  // Handles bookmark categorization
   bookmarks.forEach((bookmark: ResourceLink) => {
     if (bookmark.url in categorizedBookmarks) {
       categorizedBookmarks[bookmark.url].push(bookmark);
@@ -49,6 +50,7 @@ const Bookmarks = () => {
     }
   });
 
+  // Handles URL encoding on load
   useEffect(() => {
     const fetchAndAddBookmarks = async () => {
       try {
@@ -82,6 +84,7 @@ const Bookmarks = () => {
     a.title.localeCompare(b.title)
   );
 
+  // Handles construction of URL
   useEffect(() => {
     const bookmarkIds = sortedBookmarks
       .map((bookmark) => bookmark.id)

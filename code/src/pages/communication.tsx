@@ -272,6 +272,7 @@ const CommunicationPage: React.FC<Props> = () => {
               id={solutionContent.ref}
               title={solutionContent.title}
               url={pageTitle.current}
+              solutionPage={true}
             />
             {/* setting url to pagetitle because need to switch url to category */}
           </Stack>
