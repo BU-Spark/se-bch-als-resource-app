@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Text } from "@mantine/core";
 import getSolutionContent from "@/utils/GetSolutionPageForChoice";
 import { ResourceLink } from "@/types/dataTypes";
+import { IQuestion, IQuestionList } from "@/types/api_types";
 
 import ResourcesHandouts from "../components/MainBody/SolutionPageContent/ResourcesHandouts";
 import Title from "../components/Title/Titles";
@@ -17,6 +18,8 @@ const Bookmarks = () => {
   const image = useRef("/titleimghome.PNG");
   const [bookmarkURL, setBookmarkURL] = useState("");
   const router = useRouter();
+
+  const BASE_URL = "http://localhost:3000/";
 
   type OriginalKeys =
     | "Communication"
@@ -47,28 +50,33 @@ const Bookmarks = () => {
   });
 
   useEffect(() => {
-    const fetchAndAddBookmark = async (id: string) => {
+    const fetchAndAddBookmarks = async () => {
       try {
-        const data = await getSolutionContent(id);
-        const resourceLink = data[2];
-        resourceLink[0].id = id;
-        addBookmark(resourceLink[0]);
+        const response = await fetch(
+          "/api/retrieveQuestions?flowName=communication"
+        );
+        const data = await response.json();
+        if (typeof router.query.ids === "string") {
+          const refsFromUrl = router.query.ids.split(",");
+          const questionsToAdd = data.questions.filter((question: IQuestion) =>
+            refsFromUrl.includes(question.ref)
+          );
+          questionsToAdd.forEach((question: IQuestion) => {
+            const newBookmark = {
+              id: question.ref,
+              title: question.title,
+              url: "Communication",
+            };
+            addBookmark(newBookmark);
+          });
+        }
       } catch (error) {
         console.error("Error fetching bookmark data:", error);
       }
     };
 
-    if (typeof router.query.ids === "string") {
-      const ids = router.query.ids.split(",");
-      ids.forEach((id) => {
-        if (bookmarks.some((bookmark) => bookmark.id === id)) {
-          return;
-        } else {
-          fetchAndAddBookmark(id);
-        }
-      });
-    }
-  }, [router.query.ids, addBookmark]);
+    fetchAndAddBookmarks();
+  }, [router.query.refs, addBookmark]);
 
   const sortedBookmarks = [...bookmarks].sort((a, b) =>
     a.title.localeCompare(b.title)
@@ -78,7 +86,7 @@ const Bookmarks = () => {
     const bookmarkIds = sortedBookmarks
       .map((bookmark) => bookmark.id)
       .join(",");
-    const newUrl = `http://localhost:3000/bookmarks?ids=${encodeURIComponent(
+    const newUrl = `${BASE_URL}bookmarks?ids=${encodeURIComponent(
       bookmarkIds
     )}`;
     setBookmarkURL(newUrl);

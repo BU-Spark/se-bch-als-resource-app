@@ -1,5 +1,5 @@
 import { useBookmarks } from "../../contexts/BookmarkContext";
-import { createStyles, Text, Button } from "@mantine/core";
+import { Text, Button } from "@mantine/core";
 import { bodyContentUseStyles } from "../MainBody/HelperFunctions/BodyContentStyle";
 import { ResourceLink } from "@/types/dataTypes";
 
@@ -12,7 +12,6 @@ type BookmarkButtonProps = {
 };
 
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({ id, title, url }) => {
-  // const { classes } = useStyles();
   const { classes } = bodyContentUseStyles();
 
   const { bookmarks, addBookmark, removeBookmark } = useBookmarks();
