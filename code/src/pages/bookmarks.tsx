@@ -97,7 +97,14 @@ const Bookmarks = () => {
 
   return (
     <div>
-      <Title hasPrev={true} titleImg={image.current} title={"Bookmarks"} />
+      <Title
+        hasPrev={true}
+        titleImg={image.current}
+        title={"Bookmarks"}
+        onPrevClick={() => {
+          router.push("/communication");
+        }}
+      />
 
       {sortedBookmarks.length > 0 ? (
         <div>
