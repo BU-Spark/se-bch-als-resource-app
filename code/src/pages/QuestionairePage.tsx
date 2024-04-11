@@ -43,7 +43,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
     { id: "698",ref: "0", label: "Smart Phone Access", link: "/smart-phone-access" },
   ];
   const [currChoices, setCurrChoices] = useState<IChoice[]>(initialChoices);
-  const [solution, setSolution] = useState<ISolution>({ id: "", title: "" });
+
 
   
 
@@ -320,7 +320,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
 
         </Stack>
       ) : (
-        <SolutionPages solution={solution} hasSolution={hasSolution} />
+     <h1>Solution</h1>
       )}
 
       {/* Conditional rendering for BookmarkButton */}
