@@ -191,7 +191,7 @@ const CommunicationPage: React.FC<Props> = () => {
                           <Text className={classes.descriptionText}>{currQuestion.description}</Text>
                             {solutionContent.attachment && solutionContent.attachment.type === "video" && (
                                 <iframe
-                                  width="560"
+                                  width="100%"
                                   height="315"
                                   src={solutionContent.attachment.href}
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
