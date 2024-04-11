@@ -189,26 +189,35 @@ const CommunicationPage: React.FC<Props> = () => {
                       <Stack spacing="xl" className={classes.outer}>
                           <Text className={classes.text}>{currQuestion.title}</Text>
                           <Text className={classes.descriptionText}>{currQuestion.description}</Text>
+                            {solutionContent.attachment && solutionContent.attachment.type === "video" && (
+                                <iframe
+                                  width="560"
+                                  height="315"
+                                  src={solutionContent.attachment.href}
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                  allowFullScreen
+                                ></iframe>
+                              )}
+
+
+
 
                           {solutionContent.solutions && solutionContent.solutions.map((solution) => (
-                              <div
-                                 
-                                  style={{ display: "flex", alignItems: "flex-end" }}
-                              >
-                                  <div style={{ flexGrow: 1, marginBottom: "8px" }}>
-                                      <Button
-                                          className={classes.inner}
-                                          variant="outline"
-                                          leftIcon={<IconFileDescription color="#254885" />}
-                                          component="a"
-                                          href={solution.url}
-                                          target="_blank"
-                                      >
-                                          {solution.title}
-                                      </Button>
-                                  </div>
-
+                            <div style={{ display: "flex", alignItems: "flex-end" }}>
+                              <div style={{ flexGrow: 1, marginBottom: "8px" }}>
+                                <Button
+                                  className={classes.inner}
+                                  variant="outline"
+                                  leftIcon={<IconFileDescription color="#254885" />}
+                                  component="a"
+                                  href={solution.url}
+                                  target="_blank"
+                                >
+                                  {solution.title}
+                                </Button>
                               </div>
+  
+                            </div>
                           ))}
                       </Stack>
                   </div>

@@ -1,8 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { COMMUNICATION_FORM_ID, TYPEFORM_API_URL } from '../../constants/globals';
 import {
-    IChoice, ILogic, IQuestionList, IQuestion, ISolution, IBodyContent
+    IChoice, ILogic, IQuestionList, IQuestion, IAttachment,ISolution, IBodyContent
 } from '../../types/api_types';
+
+function getYouTubeEmbedUrl(url:string) {
+    const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+
+    if (match && match[2].length === 11) {
+        return `https://www.youtube.com/embed/${match[2]}`;
+    } else {
+        
+        return null;
+    }
+}
 
 
 function extractBetweenResources(text: string): string | null {
@@ -49,12 +61,17 @@ export default async function retrieveQuestions(req: NextApiRequest, res: NextAp
                 const questions: IQuestion[] = data.fields.map((field: any) => {
                 const descriptionWithResources = field.properties.description || '';
                 const descriptionWithoutResources = field.properties.description ? removeResourcesSection(field.properties.description) : "";
-
+                const attachmentUrl = field.attachment ? getYouTubeEmbedUrl(field.attachment.href) : null;
+                const attachmentItem: IAttachment | undefined = attachmentUrl ? {
+                    type: field.attachment.type,
+                    href: attachmentUrl
+                } : undefined;
                 const question: IQuestion = {
                         id: field.id,
                         title: field.title,
                         ref: field.ref,
                         type: field.type,
+                        attachment: attachmentItem,
                         choices: field.properties.choices?.map((choice: any) => {
                             // Find the logic action that corresponds to this choice
                             const action = data.logic.find((logic: any) => 

@@ -43,6 +43,12 @@ export interface IQuestion {
   choices?: IChoice[];
   solutions?: ISolution[];
   description?: string    //updated with optional description field
+  attachment?: IAttachment;
+}
+
+export interface IAttachment {
+  "type": string;
+  "href": string;
 }
 
 export interface ISolution {
