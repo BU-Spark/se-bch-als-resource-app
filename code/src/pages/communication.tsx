@@ -5,6 +5,8 @@ import { IQuestionList,IBodyContent,IChoice,IQuestion } from "../types/api_types
 import { Loader, Stack, Text,Button,Tooltip, rem } from '@mantine/core';
 import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
 import { useRouter } from 'next/router';
+import { IconFileDescription } from "@tabler/icons-react";
+
 
 interface Props {}
 
@@ -150,7 +152,6 @@ const CommunicationPage: React.FC<Props> = () => {
                     </div>
                 ) : (
                     !hasSolution ? (
-
                         <Stack
                         spacing="xl"
                         className={classes.outer}
@@ -188,19 +189,32 @@ const CommunicationPage: React.FC<Props> = () => {
                       <Stack spacing="xl" className={classes.outer}>
                           <Text className={classes.text}>{currQuestion.title}</Text>
                           <Text className={classes.descriptionText}>{currQuestion.description}</Text>
-              
-                          <Text className={classes.text}>Resources</Text>
-                          {solutionContent.solutions && solutionContent.solutions.map((solution, index) => (
-                              <Button key={index} onClick={() => window.open(solution.url, "_blank")}>
-                                  {solution.title}
-                              </Button>
+
+                          {solutionContent.solutions && solutionContent.solutions.map((solution) => (
+                              <div
+                                 
+                                  style={{ display: "flex", alignItems: "flex-end" }}
+                              >
+                                  <div style={{ flexGrow: 1, marginBottom: "8px" }}>
+                                      <Button
+                                          className={classes.inner}
+                                          variant="outline"
+                                          leftIcon={<IconFileDescription color="#254885" />}
+                                          component="a"
+                                          href={solution.url}
+                                          target="_blank"
+                                      >
+                                          {solution.title}
+                                      </Button>
+                                  </div>
+
+                              </div>
                           ))}
                       </Stack>
                   </div>
-                    )
-                )}
-      
-        </div>
+              )
+          )}
+      </div>
     );
 };
 
