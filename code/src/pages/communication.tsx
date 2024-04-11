@@ -13,10 +13,13 @@ import { useRouter } from "next/router";
 import { IconFileDescription } from "@tabler/icons-react";
 import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 
+import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
+
 interface Props {}
 
 const CommunicationPage: React.FC<Props> = () => {
   const router = useRouter();
+  const { focusedBookmark, setFocusedBookmark } = useFocusedBookmark();
   const { classes } = bodyContentUseStyles();
   const [tooltipChoiceId, setTooltipChoiceId] = useState("");
   const heroImage = useRef("/titleImgCommunication.png");
@@ -166,6 +169,17 @@ const CommunicationPage: React.FC<Props> = () => {
       ) || null
     );
   };
+
+  useEffect(() => {
+    if (focusedBookmark) {
+      // Clear the focused bookmark after loading the state
+      console.log(focusedBookmark);
+
+      // Set solution state using the focusedBookmark ResourceLink
+
+      setFocusedBookmark(null);
+    }
+  }, [focusedBookmark, setFocusedBookmark]);
 
   return (
     <div>
