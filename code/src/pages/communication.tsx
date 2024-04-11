@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { IconFileDescription } from "@tabler/icons-react";
 
 
+
 interface Props {}
 
 const CommunicationPage: React.FC<Props> = () => {
@@ -194,16 +195,12 @@ const CommunicationPage: React.FC<Props> = () => {
                                   width="100%"
                                   height="315"
                                   src={solutionContent.attachment.href}
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                   allowFullScreen
                                 ></iframe>
                               )}
-
-
-
-
-                          {solutionContent.solutions && solutionContent.solutions.map((solution) => (
-                            <div style={{ display: "flex", alignItems: "flex-end" }}>
+                              <Text className={classes.text}>Resources:</Text>
+                          {solutionContent.solutions && solutionContent.solutions.map((solution, index) => (
+                            <div style={{ display: "flex", alignItems: "flex-end" }} key={index}>
                               <div style={{ flexGrow: 1, marginBottom: "8px" }}>
                                 <Button
                                   className={classes.inner}
@@ -212,17 +209,32 @@ const CommunicationPage: React.FC<Props> = () => {
                                   component="a"
                                   href={solution.url}
                                   target="_blank"
+                                  style={{ justifyContent: 'flex-start',textDecoration: 'underline',
+                                  textUnderlineOffset: '2px', 
+                                  textDecorationThickness: '2px'
+                                }} 
                                 >
                                   {solution.title}
                                 </Button>
                               </div>
-  
                             </div>
                           ))}
+                      
+                      <Button
+                      className = {classes.inner}
+                      variant="outline"
+                      style={{marginTop:"40px"}}>
+                      <Text fz="xl" style={{ fontSize: '16px', whiteSpace: "normal", textAlign: 'center', textDecoration: 'none' }}>
+                          Save These Resources
+                      </Text>
+                      </Button>
                       </Stack>
+
+          
                   </div>
               )
           )}
+
       </div>
     );
 };
