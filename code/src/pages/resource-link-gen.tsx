@@ -31,7 +31,9 @@ export default function ResourceLinkGenerator() {
   const handleGenerateJSON = () => {
     const filteredInputFields = inputFields.filter(field => field.title.trim() !== '' || field.url.trim() !== '');
     const jsonString = JSON.stringify(filteredInputFields);
-    setGeneratedJson(jsonString);
+    const modifiedJsonString = '[*resources*]' + jsonString + '[*resources*]';
+
+    setGeneratedJson(modifiedJsonString);
   };
 
 return (
