@@ -27,6 +27,7 @@ const CommunicationPage: React.FC<Props> = () => {
   const [questionList, setQuestionList] = useState<IQuestionList | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSolution, setHasSolution] = useState(false);
+  const [fromSolutionPage, setFromSolutionPage] = useState(false);
   const [solutionContent, setSolutionContent] = useState<IQuestion>({
     id: "",
     title: "",
@@ -135,8 +136,9 @@ const CommunicationPage: React.FC<Props> = () => {
   const goBackToPreviousQuestion = () => {
     console.log("goBackToPreviousQuestion Triggered");
     //Check if came from bookmark
-    if (focusedBookmark) {
-      router.push("/");
+    if (fromSolutionPage) {
+      setFromSolutionPage(false);
+      router.push("/bookmarks");
       return;
     }
     // Check if there are any previous choices
@@ -174,18 +176,20 @@ const CommunicationPage: React.FC<Props> = () => {
       ) || null
     );
   };
-  
 
   useEffect(() => {
     if (focusedBookmark) {
       const solutionRef = focusedBookmark.id;
-  
+      setFromSolutionPage(true);
+
       if (!questionList) {
         setIsLoading(true);
-  
+
         const fetchData = async () => {
           try {
-            const response = await fetch("/api/retrieveQuestions?flowName=communication");
+            const response = await fetch(
+              "/api/retrieveQuestions?flowName=communication"
+            );
             const data = await response.json();
             setQuestionList(data);
           } catch (error) {
@@ -193,14 +197,17 @@ const CommunicationPage: React.FC<Props> = () => {
             setIsLoading(false);
           }
         };
-  
+
         fetchData();
       }
-  
+
       if (questionList) {
         // Find the focused question based on solutionRef
-        const focusedQuestion = questionList.questions.find(question => question.ref === solutionRef) || null;
-  
+        const focusedQuestion =
+          questionList.questions.find(
+            (question) => question.ref === solutionRef
+          ) || null;
+
         if (focusedQuestion) {
           console.log("Focused question:", focusedQuestion);
           setSolutionContent(focusedQuestion);
@@ -208,13 +215,10 @@ const CommunicationPage: React.FC<Props> = () => {
           setFocusedBookmark(null);
         }
       }
-  
+
       // Set solution state using the focusedBookmark ResourceLink
-     
     }
   }, [focusedBookmark, setFocusedBookmark, questionList]);
-  
-
 
   return (
     <div>
