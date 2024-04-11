@@ -48,7 +48,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ id, title, url }) => {
             textDecoration: "none",
           }}
         >
-          Save These Resources
+          {isBookmarked ? "Unsave these Resources" : "Save These Resources"}
         </Text>
       </Button>
       <Button

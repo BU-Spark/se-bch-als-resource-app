@@ -248,7 +248,7 @@ const CommunicationPage: React.FC<Props> = () => {
                   style={{ display: "flex", alignItems: "flex-end" }}
                   key={index}
                 >
-                  <div style={{ flexGrow: 1, marginBottom: "8px" }}>
+                  <div style={{ flexGrow: 1, marginBottom: "10px" }}>
                     <Button
                       className={classes.inner}
                       variant="outline"
