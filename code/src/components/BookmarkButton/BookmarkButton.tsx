@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useBookmarks } from "../../contexts/BookmarkContext";
-import { createStyles } from "@mantine/core";
+import { createStyles, Text, Button } from "@mantine/core";
+import { bodyContentUseStyles } from "../MainBody/HelperFunctions/BodyContentStyle";
 
 const useStyles = createStyles((theme) => ({
   button: {
@@ -27,7 +28,9 @@ type BookmarkButtonProps = {
 };
 
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({ id, title, url }) => {
-  const { classes } = useStyles();
+  // const { classes } = useStyles();
+  const { classes } = bodyContentUseStyles();
+
   const { bookmarks, addBookmark, removeBookmark } = useBookmarks();
   const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id);
 
@@ -43,15 +46,25 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ id, title, url }) => {
   const iconPath = isBookmarked ? "/unbookmarked.svg" : "/bookmarked.svg";
 
   return (
-    <button onClick={handleBookmarkClick} className={classes.button}>
-      <Image
-        src={iconPath}
-        alt={isBookmarked ? "Unbookmark" : "Bookmark this page"}
-        width={45}
-        height={45}
-        layout="fixed"
-      />
-    </button>
+    <Button
+    className = {classes.inner}
+    variant="outline"
+    style={{marginTop:"40px"}}>
+    <Text fz="xl" style={{ fontSize: '16px', whiteSpace: "normal", textAlign: 'center', textDecoration: 'none' }}>
+        Save These Resources
+    </Text>
+    </Button>
+    // <button onClick={handleBookmarkClick} className={classes.button}>
+    //   <Image
+    //     src={iconPath}
+    //     alt={isBookmarked ? "Unbookmark" : "Bookmark this page"}
+    //     width={45}
+    //     height={45}
+    //     layout="fixed"
+    //   />
+    // </button>
+
+
   );
 };
 

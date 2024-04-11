@@ -6,7 +6,7 @@ import { Loader, Stack, Text,Button,Tooltip, rem } from '@mantine/core';
 import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
 import { useRouter } from 'next/router';
 import { IconFileDescription } from "@tabler/icons-react";
-
+import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 
 
 interface Props {}
@@ -205,7 +205,7 @@ const CommunicationPage: React.FC<Props> = () => {
                                 <Button
                                   className={classes.inner}
                                   variant="outline"
-                                  leftIcon={<IconFileDescription color="#254885" />}
+                                  leftIcon={< IconFileDescription color="#254885" />}
                                   component="a"
                                   href={solution.url}
                                   target="_blank"
@@ -219,15 +219,9 @@ const CommunicationPage: React.FC<Props> = () => {
                               </div>
                             </div>
                           ))}
-                      
-                      <Button
-                      className = {classes.inner}
-                      variant="outline"
-                      style={{marginTop:"40px"}}>
-                      <Text fz="xl" style={{ fontSize: '16px', whiteSpace: "normal", textAlign: 'center', textDecoration: 'none' }}>
-                          Save These Resources
-                      </Text>
-                      </Button>
+                      <BookmarkButton id={solutionContent.ref} title={solutionContent.title} 
+                      url={pageTitle.current}/> 
+                      {/* setting url to pagetitle because need to switch url to category */}
                       </Stack>
 
           

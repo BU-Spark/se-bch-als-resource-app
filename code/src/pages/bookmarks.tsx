@@ -69,7 +69,6 @@ const Bookmarks = () => {
     <div>
       <Title
         hasPrev={true}
-        prevQuestion={() => {}}
         titleImg={image.current}
         title={"Bookmarks"}
       />
