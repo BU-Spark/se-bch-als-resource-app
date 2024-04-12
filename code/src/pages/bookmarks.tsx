@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { useRouter } from "next/router";
-import { Text } from "@mantine/core";
-import getSolutionContent from "@/utils/GetSolutionPageForChoice";
+import { Text, Loader } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
 import { IQuestion, IQuestionList } from "@/types/api_types";
 
@@ -17,6 +16,8 @@ const Bookmarks = () => {
   const { bookmarks, addBookmark } = useBookmarks();
   const image = useRef("/titleimghome.PNG");
   const [bookmarkURL, setBookmarkURL] = useState("");
+  const [initialUrlLoaded, setInitialUrlLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const BASE_URL = "http://localhost:3000/";
@@ -52,8 +53,12 @@ const Bookmarks = () => {
 
   // Handles URL encoding on load
   useEffect(() => {
+    if (initialUrlLoaded) {
+      return;
+    }
     const fetchAndAddBookmarks = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch(
           "/api/retrieveQuestions?flowName=communication"
         );
@@ -72,6 +77,8 @@ const Bookmarks = () => {
             addBookmark(newBookmark);
           });
         }
+        setInitialUrlLoaded(true);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching bookmark data:", error);
       }
@@ -105,52 +112,66 @@ const Bookmarks = () => {
           router.push("/communication");
         }}
       />
-
-      {sortedBookmarks.length > 0 ? (
-        <div>
-          <div className={classes.outer}>
-            <Text
-              style={{
-                color: "#254885",
-                marginBottom: "0px",
-                fontWeight: "bold",
-                fontSize: "1.7em",
-              }}
-            >
-              Save Your Resources
-            </Text>
-            <Text
-              style={{
-                color: "#68759C",
-                fontWeight: "normal",
-                marginBottom: "10px",
-                fontSize: "0.8em",
-              }}
-            >
-              Use the link below to automatically load and access your bookmarks
-              in the future, from any device.
-            </Text>
-            <div>
-              <CopyableLink url={bookmarkURL} />
-            </div>
-          </div>
-          <div className={classes.outer}>
-            {originals.map((original: OriginalKeys) =>
-              categorizedBookmarks[original].length > 0 ? (
-                <ResourcesHandouts
-                  key={original}
-                  title={original}
-                  data={categorizedBookmarks[original]}
-                />
-              ) : (
-                <></>
-              )
-            )}
-          </div>
+      {isLoading ? (
+        <div
+          style={{
+            display: "flex",
+            marginTop: "15vh",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader color="blue" size={110} />
         </div>
       ) : (
-        <div className={classes.outer}>
-          <Text>You don't have any bookmarks.</Text>
+        <div>
+          {sortedBookmarks.length > 0 ? (
+            <div>
+              <div className={classes.outer}>
+                <Text
+                  style={{
+                    color: "#254885",
+                    marginBottom: "0px",
+                    fontWeight: "bold",
+                    fontSize: "1.7em",
+                  }}
+                >
+                  Save Your Resources
+                </Text>
+                <Text
+                  style={{
+                    color: "#68759C",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                    fontSize: "0.8em",
+                  }}
+                >
+                  Use the link below to automatically load and access your
+                  bookmarks in the future, from any device.
+                </Text>
+                <div>
+                  <CopyableLink url={bookmarkURL} />
+                </div>
+              </div>
+              <div className={classes.outer}>
+                {originals.map((original: OriginalKeys) =>
+                  categorizedBookmarks[original].length > 0 ? (
+                    <ResourcesHandouts
+                      key={original}
+                      title={original}
+                      data={categorizedBookmarks[original]}
+                    />
+                  ) : (
+                    <></>
+                  )
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={classes.outer}>
+              <Text>You don't have any bookmarks.</Text>
+            </div>
+          )}
         </div>
       )}
     </div>
