@@ -26,19 +26,45 @@ const CommunicationPage: React.FC<Props> = () => {
   const pageTitle = useRef("Communication");
   const [questionList, setQuestionList] = useState<IQuestionList | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasSolution, setHasSolution] = useState(false);
-  const [solutionContent, setSolutionContent] = useState<IQuestion>({
-    id: "",
-    title: "",
-    ref: "",
-    type: "",
+  // const [hasSolution, setHasSolution] = useState(false);
+  // const [solutionContent, setSolutionContent] = useState<IQuestion>({
+  //   id: "",
+  //   title: "",
+  //   ref: "",
+  //   type: "",
+  // });
+  // const [currQuestion, setCurrQuestion] = useState<IQuestion>({
+  //   id: "0",
+  //   title: "Which area do you want to look into?",
+  //   ref: "0",
+  //   type: "multiple_choice",
+  // });
+
+  const [hasSolution, setHasSolution] = useState(() => {
+    const savedHasSolution = localStorage.getItem('hasSolution');
+    return savedHasSolution ? JSON.parse(savedHasSolution) : false;
   });
-  const [currQuestion, setCurrQuestion] = useState<IQuestion>({
-    id: "0",
-    title: "Which area do you want to look into?",
-    ref: "0",
-    type: "multiple_choice",
+
+  const [solutionContent, setSolutionContent] = useState<IQuestion>(() => {
+    const savedSolutionContent = localStorage.getItem('solutionContent');
+    return savedSolutionContent ? JSON.parse(savedSolutionContent) : {
+      id: "",
+      title: "",
+      ref: "",
+      type: ""
+    };
   });
+
+  const [currQuestion, setCurrQuestion] = useState<IQuestion>(() => {
+    const savedCurrQuestion = localStorage.getItem('currQuestion');
+    return savedCurrQuestion ? JSON.parse(savedCurrQuestion) : {
+      id: "0",
+      title: "Which area do you want to look into?",
+      ref: "0",
+      type: ""
+    };
+  });
+
   const initialChoices = [
     { id: "695", ref: "0", label: "Communication", link: "/communication" },
     { id: "696", ref: "0", label: "Computer Access", link: "/computer-access" },
@@ -50,13 +76,183 @@ const CommunicationPage: React.FC<Props> = () => {
       link: "/smart-phone-access",
     },
   ];
-  const [currChoices, setCurrChoices] = useState<IChoice[]>(initialChoices);
-  const [bodyContent, setBodyContent] = useState<IBodyContent>({
+  const [currChoices, setCurrChoices] = useState<IChoice[]>(() => {
+    const savedChoices = localStorage.getItem('currChoices');
+    return savedChoices ? JSON.parse(savedChoices) : initialChoices;
+  });
+  /*const [bodyContent, setBodyContent] = useState<IBodyContent>({
     currentQuestion: currQuestion,
     prevChoice: initialChoices[0],
     choiceList: [],
     currentCategory: "",
+  });*/
+
+  const [bodyContent, setBodyContent] = useState<IBodyContent>(() => {
+    const savedContent = localStorage.getItem('bodyContent');
+    return savedContent ? JSON.parse(savedContent) : {
+      currentQuestion: currQuestion, 
+      prevChoice: initialChoices[0], 
+      choiceList: [],
+      currentCategory: ""
+    };
   });
+
+  //update bodyContent in local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('bodyContent', JSON.stringify(bodyContent));
+
+    if (bodyContent.choiceList.length > 0) {
+          const lastPage = bodyContent.choiceList[bodyContent.choiceList.length - 1];
+          setCurrQuestion(
+            bodyContent.currentQuestion
+          );
+          setCurrChoices(
+            bodyContent.choiceList
+          );
+    }
+
+  }, [bodyContent]);
+
+  
+  useEffect(() => {
+    localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
+  }, [hasSolution]);
+
+  useEffect(() => {
+    localStorage.setItem('solutionContent', JSON.stringify(solutionContent));
+  }, [solutionContent]);
+
+  useEffect(() => {
+    localStorage.setItem('currQuestion', JSON.stringify(currQuestion));
+  }, [currQuestion]);
+
+  useEffect(() => {
+    localStorage.setItem('currChoices', JSON.stringify(currChoices));
+  }, [currChoices]);
+
+
+  // // Load progress save on component mount
+  // useEffect(() => {
+  //   console.log("Loading from save");
+  //   const serializedBodyContent = localStorage.getItem('prevSelectedContent');
+  //   const serializedHasSolution = localStorage.getItem('hasSolution');
+  //   console.log("Serialized" + serializedHasSolution);
+  //   console.log("Currently: " + hasSolution);
+  //   const serializedSolutionContent = localStorage.getItem('solution');
+  //   if (serializedBodyContent) {
+  //     setBodyContent(JSON.parse(serializedBodyContent) as IBodyContent);      
+  //   }
+  //   if (serializedHasSolution) {
+  //     setHasSolution(JSON.parse(serializedHasSolution) as boolean);
+  //   }
+  //   if (serializedSolutionContent) {
+  //     setSolutionContent(JSON.parse(serializedSolutionContent) as IQuestion);
+  //   }
+  //   console.log("After: " + hasSolution);
+
+  //   if (bodyContent.choiceList.length > 0) {
+  //     const lastPage = bodyContent.choiceList[bodyContent.choiceList.length - 1];
+  //     setCurrQuestion(
+  //       bodyContent.currentQuestion
+  //     );
+  //     setCurrChoices(
+  //       bodyContent.choiceList
+  //     );
+  //     }
+      
+  //   else { 
+  //     bodyContent.choiceList.push({
+  //       question: currQuestion,
+  //       prevChoice: clickedChoice,
+  //       choiceList: currChoices,
+  //     });
+  //   }
+  // }, []); 
+
+  // // Update local storage
+  // const saveProgress = useCallback(() => {
+  //   localStorage.setItem('prevSelectedContent', JSON.stringify(prevSelectedContent.current));
+  //   localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
+  //   localStorage.setItem('solution', JSON.stringify(solution));
+  // }, [hasSolution, solution]);
+
+  // //Save progress whenever these state variables change.
+  // useEffect(() => {
+
+
+  //   if (isFirstRender.current) {
+  //     isFirstRender.current = false; 
+  //     return; 
+  //   }
+    
+  //   saveProgress();
+  // }, [saveProgress, hasSolution, solution]);
+
+  // //New Code
+  // // Load progress save on component mount
+  // useEffect(() => {
+  //   console.log("Loading from save");
+  //   const serializedPrevContent = localStorage.getItem('prevSelectedContent');
+  //   const serializedHasSolution = localStorage.getItem('hasSolution');
+  //   console.log("Serialized" + serializedHasSolution);
+  //   console.log("Currently: " + hasSolution);
+  //   const serializedSolution = localStorage.getItem('solution');
+  //   if (serializedPrevContent) {
+  //     prevSelectedContent.current = JSON.parse(serializedPrevContent) as IBodyContent[];      
+  //   }
+  //   if (serializedHasSolution) {
+  //     setHasSolution(JSON.parse(serializedHasSolution) as boolean);
+  //   }
+  //   if (serializedSolution) {
+  //     setSolution(JSON.parse(serializedSolution) as ISolution);
+  //   }
+  //   console.log("After: " + hasSolution);
+
+  //   if (prevSelectedContent.current.length > 0) {
+  //     const lastPage = prevSelectedContent.current[prevSelectedContent.current.length - 1];
+  //     setCurrQuestion(
+  //       lastPage
+  //         .question
+  //     );
+  //     setClickedChoice(
+  //       lastPage
+  //         .prevChoice
+  //     );
+  //     setCurrChoices(
+  //       lastPage
+  //         .choiceList
+  //     );
+  //     }
+      
+  //   else { 
+  //     prevSelectedContent.current.push({
+  //       question: currQuestion,
+  //       prevChoice: clickedChoice,
+  //       choiceList: currChoices,
+  //     });
+  //   }
+  // }, []); 
+
+  // // Update local storage
+  // const saveProgress = useCallback(() => {
+  //   localStorage.setItem('prevSelectedContent', JSON.stringify(prevSelectedContent.current));
+  //   localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
+  //   localStorage.setItem('solution', JSON.stringify(solution));
+  // }, [hasSolution, solution]);
+
+  // //Save progress whenever these state variables change.
+  // useEffect(() => {
+
+
+  //   if (isFirstRender.current) {
+  //     isFirstRender.current = false; 
+  //     return; 
+  //   }
+    
+  //   saveProgress();
+  // }, [saveProgress, hasSolution, solution]);
+
+
   const handleChoiceClick = useCallback(
     (choice: IChoice) => {
       if (!choice.link) {
@@ -93,6 +289,7 @@ const CommunicationPage: React.FC<Props> = () => {
     },
     [bodyContent, questionList]
   );
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -132,6 +329,7 @@ const CommunicationPage: React.FC<Props> = () => {
 
     fetchData();
   }, []);
+
   const goBackToPreviousQuestion = () => {
     console.log("goBackToPreviousQuestion Triggered");
     // Check if there are any previous choices
