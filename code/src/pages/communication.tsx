@@ -55,6 +55,9 @@ const CommunicationPage: React.FC<Props> = () => {
   //   ref: "0",
   //   type: "multiple_choice",
   // });
+  
+  // so that we don't rewrite the save on first render with the initial data
+  const isFirstRender = useRef(true);
 
   const [hasSolution, setHasSolution] = useState(false);
   const [solutionContent, setSolutionContent] = useState<IQuestion>({
@@ -148,26 +151,48 @@ const CommunicationPage: React.FC<Props> = () => {
 
   }, [bodyContent]);*/
 
-  
-  useEffect(() => {
+
+    // Update local storage
+  const saveProgress = useCallback(() => {
     saveToLocalStorage<boolean>('hasSolution', hasSolution);
-  }, [hasSolution]);
-
-  useEffect(() => {
     saveToLocalStorage<IQuestion>('solutionContent', solutionContent);
-  }, [solutionContent]);
-
-  useEffect(() => {
     saveToLocalStorage<IQuestion>('currQuestion', currQuestion);
-  }, [currQuestion]);
-
-  useEffect(() => {
     saveToLocalStorage<IChoice[]>('currChoices', currChoices);
-  }, [currChoices]);
-
-  useEffect(() => {
     saveToLocalStorage<IBodyContent>('bodyContent',bodyContent);
-  }, [bodyContent]);
+
+  }, [hasSolution, solutionContent]);
+
+  //Save progress whenever these state variables change.
+  useEffect(() => {
+
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false; 
+      return; 
+    }
+    
+    saveProgress();
+  }, [saveProgress, currQuestion, currChoices, bodyContent]);
+  
+  // useEffect(() => {
+  //   saveToLocalStorage<boolean>('hasSolution', hasSolution);
+  // }, [hasSolution]);
+
+  // useEffect(() => {
+  //   saveToLocalStorage<IQuestion>('solutionContent', solutionContent);
+  // }, [solutionContent]);
+
+  // useEffect(() => {
+  //   saveToLocalStorage<IQuestion>('currQuestion', currQuestion);
+  // }, [currQuestion]);
+
+  // useEffect(() => {
+  //   saveToLocalStorage<IChoice[]>('currChoices', currChoices);
+  // }, [currChoices]);
+
+  // useEffect(() => {
+  //   saveToLocalStorage<IBodyContent>('bodyContent',bodyContent);
+  // }, [bodyContent]);
 
 
 
@@ -228,8 +253,11 @@ const CommunicationPage: React.FC<Props> = () => {
         if (data.questions && data.questions.length > 0) {
 
           //check if saved data is still valid with respect to typeform
+
+          var isLocalStorageValid = false;
+
           if (savedCurrQuestion && savedBodyContent) {
-            var isLocalStorageValid = savedCurrQuestion && data.questions.some(q => q.id === savedCurrQuestion.id);
+            isLocalStorageValid = savedCurrQuestion && data.questions.some(q => q.id === savedCurrQuestion.id);
             
             savedBodyContent.choiceList.forEach((choice) => {
               const prev = findPreviousQuestion(choice);
@@ -251,40 +279,66 @@ const CommunicationPage: React.FC<Props> = () => {
               });
             }
 
-            if (isLocalStorageValid) {
+          }
+
+          if (isLocalStorageValid) {
+            if (savedCurrQuestion) {
               setCurrQuestion(savedCurrQuestion);
-              if (savedChoices) {
-                setCurrChoices(savedChoices);
-              }
+            }
+            if (savedChoices) {
+              setCurrChoices(savedChoices);
+            }
+
+            if(savedBodyContent) {
               setBodyContent(savedBodyContent);
-
-              if (savedHasSolution != null) {
-                setHasSolution(savedHasSolution);
-                if (savedHasSolution && savedSolutionContent) {
-                  setSolutionContent(savedSolutionContent);
-                }
+            }
+            
+            if (savedHasSolution != null) {
+              setHasSolution(savedHasSolution);
+              if (savedHasSolution && savedSolutionContent) {
+                setSolutionContent(savedSolutionContent);
               }
-
             }
 
           }
+          else { //start from first question
+            const firstQuestion = data.questions[0];
+            setCurrQuestion(firstQuestion);
+            setCurrChoices(firstQuestion.choices || []);
 
-          const firstQuestion = data.questions[0];
-          setCurrQuestion(firstQuestion);
-          setCurrChoices(firstQuestion.choices || []);
-          const choice: IChoice = {
-            id: "0",
-            ref: "0",
-            label: "Communication",
-            link: firstQuestion.ref,
-          };
-          const updatedChoiceList = [...bodyContent.choiceList, choice];
-          setBodyContent({
-            ...bodyContent,
-            choiceList: updatedChoiceList,
-            prevChoice: choice,
-          });
-          console.log("updatedChoiceList", updatedChoiceList);
+            const initialChoice: IChoice = {
+              id: "0",
+              ref: "0",
+              label: "Communication",
+              link: firstQuestion.ref,
+            };
+            setBodyContent({
+              currentQuestion: firstQuestion,
+              prevChoice: initialChoice,
+              choiceList: [initialChoice],
+              currentCategory: "",
+            });
+
+            const choice: IChoice = {
+              id: "0",
+              ref: "0",
+              label: "Communication",
+              link: firstQuestion.ref,
+            };
+
+            const updatedChoiceList = [...bodyContent.choiceList, choice];
+            setBodyContent({
+              ...bodyContent,
+              choiceList: updatedChoiceList,
+              prevChoice: choice,
+            });
+            console.log("updatedChoiceList", updatedChoiceList);
+          }
+
+          
+          
+          
+          
         }
 
         setIsLoading(false);
