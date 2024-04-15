@@ -65,7 +65,7 @@ const Bookmarks = () => {
             refsFromUrl.includes(question.ref)
           );
 
-          if(questionsToAdd.length > 0) { //wipe local storage of bookmarks if url encoded
+          if (questionsToAdd.length > 0) { //wipe local storage of bookmarks if url encoded
             localStorage.setItem("bookmarks", JSON.stringify([]));
           }
 

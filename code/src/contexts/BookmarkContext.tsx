@@ -52,12 +52,12 @@ export const BookmarkProvider: React.FC<BookmarkProviderProps> = ({
   }, []);
 
   useEffect(() => {
-    if(bookmarksLoaded.current) {
+    if (bookmarksLoaded.current) {
       bookmarksLoaded.current = false;
       return;
     }
-      localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-    }, [bookmarks]);
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+  }, [bookmarks]);
 
   const addBookmark = (newBookmark: ResourceLink) => {
     setBookmarks((prevBookmarks) => {
