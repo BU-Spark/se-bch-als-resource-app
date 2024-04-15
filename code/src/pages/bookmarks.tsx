@@ -16,6 +16,7 @@ const Bookmarks = () => {
   const { classes } = bodyContentUseStyles();
   const { bookmarks, addBookmark } = useBookmarks();
   const image = useRef("/titleimghome.PNG");
+
   const [bookmarkURL, setBookmarkURL] = useState("");
   const router = useRouter();
 
@@ -79,6 +80,7 @@ const Bookmarks = () => {
 
     fetchAndAddBookmarks();
   }, [router.query.refs, addBookmark]);
+
 
   const sortedBookmarks = [...bookmarks].sort((a, b) =>
     a.title.localeCompare(b.title)
@@ -150,7 +152,7 @@ const Bookmarks = () => {
         </div>
       ) : (
         <div className={classes.outer}>
-          <Text>You don't have any bookmarks.</Text>
+          <Text>You dont have any bookmarks.</Text>
         </div>
       )}
     </div>

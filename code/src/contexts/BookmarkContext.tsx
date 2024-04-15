@@ -1,6 +1,7 @@
 import React, {
   createContext,
   useState,
+  useRef,
   useContext,
   useEffect,
   ReactNode,
@@ -17,6 +18,8 @@ type BookmarkContextType = {
 const BookmarkContext = createContext<BookmarkContextType | undefined>(
   undefined
 );
+
+
 
 export const useBookmarks = () => {
   const context = useContext(BookmarkContext);
@@ -36,17 +39,25 @@ export const BookmarkProvider: React.FC<BookmarkProviderProps> = ({
   const [bookmarks, setBookmarks] = useState<ResourceLink[]>(() => {
     return [];
   });
+  const bookmarksLoaded = useRef(true);
+
 
   useEffect(() => {
     const saved = localStorage.getItem("bookmarks");
+    console.log(saved);
     if (saved) {
       setBookmarks(JSON.parse(saved));
     }
+    //bookmarksLoaded.current = true;
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-  }, [bookmarks]);
+    if(bookmarksLoaded.current) {
+      bookmarksLoaded.current = false;
+      return;
+    }
+      localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+    }, [bookmarks]);
 
   const addBookmark = (newBookmark: ResourceLink) => {
     setBookmarks((prevBookmarks) => {
