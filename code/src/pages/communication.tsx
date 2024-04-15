@@ -22,6 +22,11 @@ interface Props {}
 function saveToLocalStorage<T>(key: string, value: T): void {
   if (typeof window !== "undefined") {
     localStorage.setItem(key, JSON.stringify(value));
+    console.log("Saved value of " + key + ":");
+    console.log(value);
+  }
+  else{
+    console.log("could not save " + key + " : " + value);
   }
 }
 
@@ -57,7 +62,7 @@ const CommunicationPage: React.FC<Props> = () => {
   // });
   
   // so that we don't rewrite the save on first render with the initial data
-  const isFirstRender = useRef(true);
+  const isRendering = useRef(true);
 
   const [hasSolution, setHasSolution] = useState(false);
   const [solutionContent, setSolutionContent] = useState<IQuestion>({
@@ -153,17 +158,39 @@ const CommunicationPage: React.FC<Props> = () => {
 
 
     // Update local storage
-  const saveProgress = useCallback(() => {
-    saveToLocalStorage<boolean>('hasSolution', hasSolution);
-    saveToLocalStorage<IQuestion>('solutionContent', solutionContent);
-    saveToLocalStorage<IQuestion>('currQuestion', currQuestion);
-    saveToLocalStorage<IChoice[]>('currChoices', currChoices);
-    saveToLocalStorage<IBodyContent>('bodyContent',bodyContent);
+  useEffect(() => {
+    if (!isRendering.current) {
+      saveToLocalStorage<boolean>('hasSolution', hasSolution);
+    }
+  }, [hasSolution]);
 
-  }, [hasSolution, solutionContent]);
+  useEffect(() => {
+    if (!isRendering.current) {
+      saveToLocalStorage<IQuestion>('solutionContent', solutionContent);
+    }
+  }, [solutionContent]);
+
+  useEffect(() => {
+    if (!isRendering.current) {
+      saveToLocalStorage<IQuestion>('currQuestion', currQuestion);
+    }
+  }, [currQuestion]);
+
+  useEffect(() => {
+    if (!isRendering.current) {
+      saveToLocalStorage<IChoice[]>('currChoices', currChoices);
+    }
+  }, [currChoices]);
+
+  useEffect(() => {
+    if (!isRendering.current) {
+      saveToLocalStorage<IBodyContent>('bodyContent', bodyContent);
+    }
+  }, [bodyContent]);
+
 
   //Save progress whenever these state variables change.
-  useEffect(() => {
+  /*useEffect(() => {
 
 
     if (isFirstRender.current) {
@@ -172,7 +199,7 @@ const CommunicationPage: React.FC<Props> = () => {
     }
     
     saveProgress();
-  }, [saveProgress, currQuestion, currChoices, bodyContent]);
+  }, [saveProgress, currQuestion, currChoices, bodyContent]);*/
   
   // useEffect(() => {
   //   saveToLocalStorage<boolean>('hasSolution', hasSolution);
@@ -342,9 +369,11 @@ const CommunicationPage: React.FC<Props> = () => {
         }
 
         setIsLoading(false);
+        isRendering.current = false; 
       } catch (error) {
         console.error("Failed to fetch questions:", error);
         setIsLoading(false);
+        isRendering.current = false; 
       }
     };
 
