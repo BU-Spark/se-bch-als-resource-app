@@ -53,6 +53,7 @@ const CommunicationPage: React.FC<Props> = () => {
   const isRendering = useRef(true);
 
   const [hasSolution, setHasSolution] = useState(false);
+  const [fromSolutionPage, setFromSolutionPage] = useState(false);
   const [solutionContent, setSolutionContent] = useState<IQuestion>({
     id: "",
     title: "",
@@ -277,6 +278,12 @@ const CommunicationPage: React.FC<Props> = () => {
 
   const goBackToPreviousQuestion = () => {
     console.log("goBackToPreviousQuestion Triggered");
+    //Check if came from bookmark
+    if (fromSolutionPage) {
+      setFromSolutionPage(false);
+      router.push("/bookmarks");
+      return;
+    }
     // Check if there are any previous choices
     if (bodyContent.choiceList.length > 1) {
       // Create a copy of the current choice list and remove the last choice
@@ -315,14 +322,46 @@ const CommunicationPage: React.FC<Props> = () => {
 
   useEffect(() => {
     if (focusedBookmark) {
-      // Clear the focused bookmark after loading the state
-      console.log(focusedBookmark);
+      const solutionRef = focusedBookmark.id;
+      setFromSolutionPage(true);
+
+      if (!questionList) {
+        setIsLoading(true);
+
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+              "/api/retrieveQuestions?flowName=communication"
+            );
+            const data = await response.json();
+            setQuestionList(data);
+          } catch (error) {
+            console.error("Failed to fetch questions:", error);
+            setIsLoading(false);
+          }
+        };
+
+        fetchData();
+      }
+
+      if (questionList) {
+        // Find the focused question based on solutionRef
+        const focusedQuestion =
+          questionList.questions.find(
+            (question) => question.ref === solutionRef
+          ) || null;
+
+        if (focusedQuestion) {
+          console.log("Focused question:", focusedQuestion);
+          setSolutionContent(focusedQuestion);
+          setHasSolution(true);
+          setFocusedBookmark(null);
+        }
+      }
 
       // Set solution state using the focusedBookmark ResourceLink
-
-      setFocusedBookmark(null);
     }
-  }, [focusedBookmark, setFocusedBookmark]);
+  }, [focusedBookmark, setFocusedBookmark, questionList]);
 
   return (
     <div>
