@@ -17,6 +17,22 @@ import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 
 interface Props {}
 
+
+//Utility functions to save and load from local storage without error
+function saveToLocalStorage<T>(key: string, value: T): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+}
+
+function loadFromLocalStorage<T>(key: string): T | null {
+  if (typeof window !== "undefined") {
+    const savedValue = localStorage.getItem(key);
+    return savedValue ? JSON.parse(savedValue) as T : null;
+  }
+  return null;
+}
+
 const CommunicationPage: React.FC<Props> = () => {
   const router = useRouter();
   const { focusedBookmark, setFocusedBookmark } = useFocusedBookmark();
@@ -40,30 +56,41 @@ const CommunicationPage: React.FC<Props> = () => {
   //   type: "multiple_choice",
   // });
 
-  const [hasSolution, setHasSolution] = useState(() => {
-    const savedHasSolution = localStorage.getItem('hasSolution');
-    return savedHasSolution ? JSON.parse(savedHasSolution) : false;
+  const [hasSolution, setHasSolution] = useState(false);
+  const [solutionContent, setSolutionContent] = useState<IQuestion>({
+    id: "",
+    title: "",
+    ref: "",
+    type: "",
   });
+  const [currQuestion, setCurrQuestion] = useState<IQuestion>({
+    id: "0",
+    title: "Which area do you want to look into?",
+    ref: "0",
+    type: "multiple_choice",
+  });
+  
 
-  const [solutionContent, setSolutionContent] = useState<IQuestion>(() => {
-    const savedSolutionContent = localStorage.getItem('solutionContent');
-    return savedSolutionContent ? JSON.parse(savedSolutionContent) : {
-      id: "",
-      title: "",
-      ref: "",
-      type: ""
-    };
-  });
 
-  const [currQuestion, setCurrQuestion] = useState<IQuestion>(() => {
-    const savedCurrQuestion = localStorage.getItem('currQuestion');
-    return savedCurrQuestion ? JSON.parse(savedCurrQuestion) : {
-      id: "0",
-      title: "Which area do you want to look into?",
-      ref: "0",
-      type: ""
-    };
-  });
+  // const [solutionContent, setSolutionContent] = useState<IQuestion>(() => {
+  //   const savedSolutionContent = loadFromLocalStorage<IQuestion>('solutionContent');
+  //   return savedSolutionContent ? savedSolutionContent : {
+  //     id: "",
+  //     title: "",
+  //     ref: "",
+  //     type: ""
+  //   };
+  // });
+
+  // const [currQuestion, setCurrQuestion] = useState<IQuestion>(() => {
+  //   const savedCurrQuestion = loadFromLocalStorage<IQuestion>('currQuestion');
+  //   return savedCurrQuestion ? savedCurrQuestion : {
+  //     id: "0",
+  //     title: "Which area do you want to look into?",
+  //     ref: "0",
+  //     type: ""
+  //   };
+  // });
 
   const initialChoices = [
     { id: "695", ref: "0", label: "Communication", link: "/communication" },
@@ -76,10 +103,18 @@ const CommunicationPage: React.FC<Props> = () => {
       link: "/smart-phone-access",
     },
   ];
-  const [currChoices, setCurrChoices] = useState<IChoice[]>(() => {
-    const savedChoices = localStorage.getItem('currChoices');
-    return savedChoices ? JSON.parse(savedChoices) : initialChoices;
+  
+  const [currChoices, setCurrChoices] = useState<IChoice[]>(initialChoices);
+  const [bodyContent, setBodyContent] = useState<IBodyContent>({
+    currentQuestion: currQuestion,
+    prevChoice: initialChoices[0],
+    choiceList: [],
+    currentCategory: "",
   });
+  // const [currChoices, setCurrChoices] = useState<IChoice[]>(() => {
+  //   const savedChoices = loadFromLocalStorage<IChoice[]>('currChoices');
+  //   return savedChoices ? savedChoices : initialChoices;
+  // });
   /*const [bodyContent, setBodyContent] = useState<IBodyContent>({
     currentQuestion: currQuestion,
     prevChoice: initialChoices[0],
@@ -87,18 +122,18 @@ const CommunicationPage: React.FC<Props> = () => {
     currentCategory: "",
   });*/
 
-  const [bodyContent, setBodyContent] = useState<IBodyContent>(() => {
-    const savedContent = localStorage.getItem('bodyContent');
-    return savedContent ? JSON.parse(savedContent) : {
-      currentQuestion: currQuestion, 
-      prevChoice: initialChoices[0], 
-      choiceList: [],
-      currentCategory: ""
-    };
-  });
+  // const [bodyContent, setBodyContent] = useState<IBodyContent>(() => {
+  //   const savedContent = loadFromLocalStorage<IBodyContent>('bodyContent');
+  //   return savedContent ? savedContent : {
+  //     currentQuestion: currQuestion, 
+  //     prevChoice: initialChoices[0], 
+  //     choiceList: [],
+  //     currentCategory: ""
+  //   };
+  // });
 
   //update bodyContent in local storage whenever it changes
-  useEffect(() => {
+ /* useEffect(() => {
     localStorage.setItem('bodyContent', JSON.stringify(bodyContent));
 
     if (bodyContent.choiceList.length > 0) {
@@ -111,146 +146,29 @@ const CommunicationPage: React.FC<Props> = () => {
           );
     }
 
-  }, [bodyContent]);
+  }, [bodyContent]);*/
 
   
   useEffect(() => {
-    localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
+    saveToLocalStorage<boolean>('hasSolution', hasSolution);
   }, [hasSolution]);
 
   useEffect(() => {
-    localStorage.setItem('solutionContent', JSON.stringify(solutionContent));
+    saveToLocalStorage<IQuestion>('solutionContent', solutionContent);
   }, [solutionContent]);
 
   useEffect(() => {
-    localStorage.setItem('currQuestion', JSON.stringify(currQuestion));
+    saveToLocalStorage<IQuestion>('currQuestion', currQuestion);
   }, [currQuestion]);
 
   useEffect(() => {
-    localStorage.setItem('currChoices', JSON.stringify(currChoices));
+    saveToLocalStorage<IChoice[]>('currChoices', currChoices);
   }, [currChoices]);
 
+  useEffect(() => {
+    saveToLocalStorage<IBodyContent>('bodyContent',bodyContent);
+  }, [bodyContent]);
 
-  // // Load progress save on component mount
-  // useEffect(() => {
-  //   console.log("Loading from save");
-  //   const serializedBodyContent = localStorage.getItem('prevSelectedContent');
-  //   const serializedHasSolution = localStorage.getItem('hasSolution');
-  //   console.log("Serialized" + serializedHasSolution);
-  //   console.log("Currently: " + hasSolution);
-  //   const serializedSolutionContent = localStorage.getItem('solution');
-  //   if (serializedBodyContent) {
-  //     setBodyContent(JSON.parse(serializedBodyContent) as IBodyContent);      
-  //   }
-  //   if (serializedHasSolution) {
-  //     setHasSolution(JSON.parse(serializedHasSolution) as boolean);
-  //   }
-  //   if (serializedSolutionContent) {
-  //     setSolutionContent(JSON.parse(serializedSolutionContent) as IQuestion);
-  //   }
-  //   console.log("After: " + hasSolution);
-
-  //   if (bodyContent.choiceList.length > 0) {
-  //     const lastPage = bodyContent.choiceList[bodyContent.choiceList.length - 1];
-  //     setCurrQuestion(
-  //       bodyContent.currentQuestion
-  //     );
-  //     setCurrChoices(
-  //       bodyContent.choiceList
-  //     );
-  //     }
-      
-  //   else { 
-  //     bodyContent.choiceList.push({
-  //       question: currQuestion,
-  //       prevChoice: clickedChoice,
-  //       choiceList: currChoices,
-  //     });
-  //   }
-  // }, []); 
-
-  // // Update local storage
-  // const saveProgress = useCallback(() => {
-  //   localStorage.setItem('prevSelectedContent', JSON.stringify(prevSelectedContent.current));
-  //   localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
-  //   localStorage.setItem('solution', JSON.stringify(solution));
-  // }, [hasSolution, solution]);
-
-  // //Save progress whenever these state variables change.
-  // useEffect(() => {
-
-
-  //   if (isFirstRender.current) {
-  //     isFirstRender.current = false; 
-  //     return; 
-  //   }
-    
-  //   saveProgress();
-  // }, [saveProgress, hasSolution, solution]);
-
-  // //New Code
-  // // Load progress save on component mount
-  // useEffect(() => {
-  //   console.log("Loading from save");
-  //   const serializedPrevContent = localStorage.getItem('prevSelectedContent');
-  //   const serializedHasSolution = localStorage.getItem('hasSolution');
-  //   console.log("Serialized" + serializedHasSolution);
-  //   console.log("Currently: " + hasSolution);
-  //   const serializedSolution = localStorage.getItem('solution');
-  //   if (serializedPrevContent) {
-  //     prevSelectedContent.current = JSON.parse(serializedPrevContent) as IBodyContent[];      
-  //   }
-  //   if (serializedHasSolution) {
-  //     setHasSolution(JSON.parse(serializedHasSolution) as boolean);
-  //   }
-  //   if (serializedSolution) {
-  //     setSolution(JSON.parse(serializedSolution) as ISolution);
-  //   }
-  //   console.log("After: " + hasSolution);
-
-  //   if (prevSelectedContent.current.length > 0) {
-  //     const lastPage = prevSelectedContent.current[prevSelectedContent.current.length - 1];
-  //     setCurrQuestion(
-  //       lastPage
-  //         .question
-  //     );
-  //     setClickedChoice(
-  //       lastPage
-  //         .prevChoice
-  //     );
-  //     setCurrChoices(
-  //       lastPage
-  //         .choiceList
-  //     );
-  //     }
-      
-  //   else { 
-  //     prevSelectedContent.current.push({
-  //       question: currQuestion,
-  //       prevChoice: clickedChoice,
-  //       choiceList: currChoices,
-  //     });
-  //   }
-  // }, []); 
-
-  // // Update local storage
-  // const saveProgress = useCallback(() => {
-  //   localStorage.setItem('prevSelectedContent', JSON.stringify(prevSelectedContent.current));
-  //   localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
-  //   localStorage.setItem('solution', JSON.stringify(solution));
-  // }, [hasSolution, solution]);
-
-  // //Save progress whenever these state variables change.
-  // useEffect(() => {
-
-
-  //   if (isFirstRender.current) {
-  //     isFirstRender.current = false; 
-  //     return; 
-  //   }
-    
-  //   saveProgress();
-  // }, [saveProgress, hasSolution, solution]);
 
 
   const handleChoiceClick = useCallback(
@@ -300,8 +218,57 @@ const CommunicationPage: React.FC<Props> = () => {
         const data: IQuestionList = await response.json();
         setQuestionList(data);
 
+        const savedCurrQuestion = loadFromLocalStorage<IQuestion>('currQuestion');
+        const savedChoices = loadFromLocalStorage<IChoice[]>('currChoices');
+        const savedHasSolution = loadFromLocalStorage<boolean>('hasSolution');
+        const savedSolutionContent = loadFromLocalStorage<IQuestion>('solutionContent');
+        const savedBodyContent = loadFromLocalStorage<IBodyContent>('bodyContent');
+
         // Check if the question list is not empty
         if (data.questions && data.questions.length > 0) {
+
+          //check if saved data is still valid with respect to typeform
+          if (savedCurrQuestion && savedBodyContent) {
+            var isLocalStorageValid = savedCurrQuestion && data.questions.some(q => q.id === savedCurrQuestion.id);
+            
+            savedBodyContent.choiceList.forEach((choice) => {
+              const prev = findPreviousQuestion(choice);
+              if ( prev && !data.questions.some(q => q.id === prev.id)) {
+                isLocalStorageValid = false;
+                console.log(prev.title + " not found");
+                console.log(prev.id);
+              }
+            });
+            
+            if (savedChoices) {
+              savedChoices.forEach((choice) => {
+                const next = findPreviousQuestion(choice);
+                if ( next && !data.questions.some(q => q.id === next.id)) {
+                  isLocalStorageValid = false;
+                  console.log(next.title + " not found");
+                  console.log(next.id);
+                }
+              });
+            }
+
+            if (isLocalStorageValid) {
+              setCurrQuestion(savedCurrQuestion);
+              if (savedChoices) {
+                setCurrChoices(savedChoices);
+              }
+              setBodyContent(savedBodyContent);
+
+              if (savedHasSolution != null) {
+                setHasSolution(savedHasSolution);
+                if (savedHasSolution && savedSolutionContent) {
+                  setSolutionContent(savedSolutionContent);
+                }
+              }
+
+            }
+
+          }
+
           const firstQuestion = data.questions[0];
           setCurrQuestion(firstQuestion);
           setCurrChoices(firstQuestion.choices || []);
@@ -495,3 +462,126 @@ const CommunicationPage: React.FC<Props> = () => {
 };
 
 export default CommunicationPage;
+
+
+
+  // // Load progress save on component mount
+  // useEffect(() => {
+  //   console.log("Loading from save");
+  //   const serializedBodyContent = localStorage.getItem('prevSelectedContent');
+  //   const serializedHasSolution = localStorage.getItem('hasSolution');
+  //   console.log("Serialized" + serializedHasSolution);
+  //   console.log("Currently: " + hasSolution);
+  //   const serializedSolutionContent = localStorage.getItem('solution');
+  //   if (serializedBodyContent) {
+  //     setBodyContent(JSON.parse(serializedBodyContent) as IBodyContent);      
+  //   }
+  //   if (serializedHasSolution) {
+  //     setHasSolution(JSON.parse(serializedHasSolution) as boolean);
+  //   }
+  //   if (serializedSolutionContent) {
+  //     setSolutionContent(JSON.parse(serializedSolutionContent) as IQuestion);
+  //   }
+  //   console.log("After: " + hasSolution);
+
+  //   if (bodyContent.choiceList.length > 0) {
+  //     const lastPage = bodyContent.choiceList[bodyContent.choiceList.length - 1];
+  //     setCurrQuestion(
+  //       bodyContent.currentQuestion
+  //     );
+  //     setCurrChoices(
+  //       bodyContent.choiceList
+  //     );
+  //     }
+      
+  //   else { 
+  //     bodyContent.choiceList.push({
+  //       question: currQuestion,
+  //       prevChoice: clickedChoice,
+  //       choiceList: currChoices,
+  //     });
+  //   }
+  // }, []); 
+
+  // // Update local storage
+  // const saveProgress = useCallback(() => {
+  //   localStorage.setItem('prevSelectedContent', JSON.stringify(prevSelectedContent.current));
+  //   localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
+  //   localStorage.setItem('solution', JSON.stringify(solution));
+  // }, [hasSolution, solution]);
+
+  // //Save progress whenever these state variables change.
+  // useEffect(() => {
+
+
+  //   if (isFirstRender.current) {
+  //     isFirstRender.current = false; 
+  //     return; 
+  //   }
+    
+  //   saveProgress();
+  // }, [saveProgress, hasSolution, solution]);
+
+  // //New Code
+  // // Load progress save on component mount
+  // useEffect(() => {
+  //   console.log("Loading from save");
+  //   const serializedPrevContent = localStorage.getItem('prevSelectedContent');
+  //   const serializedHasSolution = localStorage.getItem('hasSolution');
+  //   console.log("Serialized" + serializedHasSolution);
+  //   console.log("Currently: " + hasSolution);
+  //   const serializedSolution = localStorage.getItem('solution');
+  //   if (serializedPrevContent) {
+  //     prevSelectedContent.current = JSON.parse(serializedPrevContent) as IBodyContent[];      
+  //   }
+  //   if (serializedHasSolution) {
+  //     setHasSolution(JSON.parse(serializedHasSolution) as boolean);
+  //   }
+  //   if (serializedSolution) {
+  //     setSolution(JSON.parse(serializedSolution) as ISolution);
+  //   }
+  //   console.log("After: " + hasSolution);
+
+  //   if (prevSelectedContent.current.length > 0) {
+  //     const lastPage = prevSelectedContent.current[prevSelectedContent.current.length - 1];
+  //     setCurrQuestion(
+  //       lastPage
+  //         .question
+  //     );
+  //     setClickedChoice(
+  //       lastPage
+  //         .prevChoice
+  //     );
+  //     setCurrChoices(
+  //       lastPage
+  //         .choiceList
+  //     );
+  //     }
+      
+  //   else { 
+  //     prevSelectedContent.current.push({
+  //       question: currQuestion,
+  //       prevChoice: clickedChoice,
+  //       choiceList: currChoices,
+  //     });
+  //   }
+  // }, []); 
+
+  // // Update local storage
+  // const saveProgress = useCallback(() => {
+  //   localStorage.setItem('prevSelectedContent', JSON.stringify(prevSelectedContent.current));
+  //   localStorage.setItem('hasSolution', JSON.stringify(hasSolution));
+  //   localStorage.setItem('solution', JSON.stringify(solution));
+  // }, [hasSolution, solution]);
+
+  // //Save progress whenever these state variables change.
+  // useEffect(() => {
+
+
+  //   if (isFirstRender.current) {
+  //     isFirstRender.current = false; 
+  //     return; 
+  //   }
+    
+  //   saveProgress();
+  // }, [saveProgress, hasSolution, solution]);
