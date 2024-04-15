@@ -64,6 +64,11 @@ const Bookmarks = () => {
           const questionsToAdd = data.questions.filter((question: IQuestion) =>
             refsFromUrl.includes(question.ref)
           );
+
+          if(questionsToAdd.length > 0) { //wipe local storage of bookmarks if url encoded
+            localStorage.setItem("bookmarks", JSON.stringify([]));
+          }
+
           questionsToAdd.forEach((question: IQuestion) => {
             const newBookmark = {
               id: question.ref,
