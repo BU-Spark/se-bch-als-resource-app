@@ -86,12 +86,13 @@ const Resources = ({
     <div>
       <Stack spacing="xl">
         <Text className={classes.text}> {title} </Text>
-        {data.map((resource) => (
+        {data.map((resource, index) => (
           <div
             style={{
               display: "flex",
               alignItems: "flex-end",
             }}
+            key={index}
           >
             <div style={{ flexGrow: 1, marginBottom: "8px" }}>
               {" "}
