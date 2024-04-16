@@ -10,23 +10,28 @@ import { IconChevronLeft} from '@tabler/icons-react';
  * Titles component 
  */
 
-
+interface TitlesProps {
+  hasPrev: boolean;
+  titleImg: string;
+  title: string;
+  onPrevClick?: () => void; 
+}
 //displays the title passed as a prop and applies custom styles from useStyles
-const Titles = ({hasPrev, prevQuestion, titleImg, title}:{hasPrev: boolean, prevQuestion: () => any, titleImg: string, title: string}) => {
+const Titles = ({ hasPrev, titleImg, title, onPrevClick }: TitlesProps) => {
   const { classes} = useStyles();
   const ChevronIcon = IconChevronLeft;
 
   return (
     <div className={classes.wrapper} style={{ backgroundImage: `linear-gradient(0deg, rgba(0, 48, 135, 0.5), rgba(0, 48, 135, 0.5)), url(${titleImg})` }}>
-        {hasPrev ? (
-          <Link href="/">
+    {hasPrev ? (
+      <a onClick={onPrevClick}> 
         <ChevronIcon
-        // displays only if hasPrev is true, onClick triggers prevQuestion function
-        className={classes.chevron}
-        size="3.4rem"
-        stroke={2}
-        onClick={prevQuestion}
-      /></Link>) : null}
+          className={classes.chevron}
+          size="3.4rem"
+          stroke={2}
+        />
+      </a>
+    ) : null}
       
       {/* Return a <div> that contains the ChevronIcon and the Title component */}
       <div className={classes.inner}>

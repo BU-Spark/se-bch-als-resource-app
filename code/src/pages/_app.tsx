@@ -5,7 +5,8 @@ import React from "react";
 import Nav from "@/components/Navbar/Nav";
 import { Footer } from "@/components/Footer/Footer";
 import { BookmarkProvider } from "@/contexts/BookmarkContext";
-import styles from '../styles/Home.module.css'; // Assuming your styles are here
+import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
+import styles from "../styles/Home.module.css"; // Assuming your styles are here
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -21,27 +22,20 @@ export default function App(props: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.mainContainer}>
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <Nav />
 
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-
-        <Nav />
-      
-
-        <div className={styles.content}>
-
-          <BookmarkProvider>
-            <Component {...pageProps} />
-          </BookmarkProvider>
+          <div className={styles.content}>
+            <FocusedBookmarkProvider>
+              <BookmarkProvider>
+                <Component {...pageProps} />
+              </BookmarkProvider>
+            </FocusedBookmarkProvider>
           </div>
 
-
-    
           <Footer />
-       
-       
-      </MantineProvider>
+        </MantineProvider>
       </div>
-    
     </>
   );
 }

@@ -14,6 +14,13 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     alignItems: "center",
     alignContent: "center",
     cursor: "pointer",
+    '&:hover': {
+      backgroundColor: '#254885',
+      color: '#FFFFFF',
+      '& svg': { 
+        color: '#FFFFFF',
+      },
+    },
 
     [theme.fn.smallerThan("xs")]: {
       height: "57px",
@@ -98,5 +105,8 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     marginRight: "20px",
     width: "30px",
     height: "30px",
+  },
+  iconColor: {
+    color: '#254885',
   },
 }));

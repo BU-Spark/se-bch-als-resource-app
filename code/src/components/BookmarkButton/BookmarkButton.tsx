@@ -1,57 +1,86 @@
-import Image from "next/image";
 import { useBookmarks } from "../../contexts/BookmarkContext";
-import { createStyles } from "@mantine/core";
+import { Text, Button } from "@mantine/core";
+import { bodyContentUseStyles } from "../MainBody/HelperFunctions/BodyContentStyle";
+import { ResourceLink } from "@/types/dataTypes";
 
-const useStyles = createStyles((theme) => ({
-  button: {
-    height: "57px",
-    width: "130px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    border: "2px solid #254885",
-    borderRadius: theme.radius.md,
-    cursor: "pointer",
-    marginLeft: theme.spacing.md,
-    "&:hover": {
-      backgroundColor: "#f0f0f0",
-    },
-  },
-}));
+import { useRouter } from "next/router";
 
 type BookmarkButtonProps = {
   id: string;
   url: string;
   title: string;
+  solutionPage: boolean;
 };
 
-const BookmarkButton: React.FC<BookmarkButtonProps> = ({ id, title, url }) => {
-  const { classes } = useStyles();
+const BookmarkButton: React.FC<BookmarkButtonProps> = ({
+  id,
+  title,
+  url,
+  solutionPage,
+}) => {
+  const { classes } = bodyContentUseStyles();
+
   const { bookmarks, addBookmark, removeBookmark } = useBookmarks();
   const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id);
 
+  const router = useRouter();
+
   const handleBookmarkClick = () => {
+    console.log(`Triggered handle bookmark click: ${id}, ${title}, ${url}`);
     if (isBookmarked) {
       removeBookmark(id);
     } else {
-      const newBookmark = { id, title, url };
+      const newBookmark: ResourceLink = { id, title, url };
+      console.log(newBookmark);
       addBookmark(newBookmark);
     }
   };
 
-  const iconPath = isBookmarked ? "/unbookmarked.svg" : "/bookmarked.svg";
-
   return (
-    <button onClick={handleBookmarkClick} className={classes.button}>
-      <Image
-        src={iconPath}
-        alt={isBookmarked ? "Unbookmark" : "Bookmark this page"}
-        width={45}
-        height={45}
-        layout="fixed"
-      />
-    </button>
+    <div>
+      <Button
+        className={classes.inner}
+        variant="outline"
+        style={{ marginTop: "40px" }}
+        onClick={handleBookmarkClick}
+      >
+        <Text
+          fz="xl"
+          style={{
+            fontSize: "16px",
+            whiteSpace: "normal",
+            textAlign: "center",
+            textDecoration: "none",
+          }}
+        >
+          {isBookmarked ? "Unsave this resource" : "Save this resources"}
+        </Text>
+      </Button>
+      {solutionPage ? (
+        <Button
+          className={classes.inner}
+          variant="outline"
+          style={{ marginTop: "10px" }}
+          onClick={() => {
+            router.push("./bookmarks");
+          }}
+        >
+          <Text
+            fz="xl"
+            style={{
+              fontSize: "16px",
+              whiteSpace: "normal",
+              textAlign: "center",
+              textDecoration: "none",
+            }}
+          >
+            Go to your bookmarks
+          </Text>
+        </Button>
+      ) : (
+        <></>
+      )}
+    </div>
   );
 };
 

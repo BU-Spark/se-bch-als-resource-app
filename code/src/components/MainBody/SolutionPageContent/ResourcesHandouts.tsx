@@ -1,9 +1,11 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { Stack, createStyles, rem, Text, Button } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
 import { IconFileDescription } from "@tabler/icons-react";
 
 import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
+import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 
 /**
  * Resources component for the solution page
@@ -72,16 +74,25 @@ const Resources = ({
   // Button component has a leftIcon and is styled with the inner class from useStyles
   // Wrapped in a Stack component with spacing set to "xl"
 
+  const { setFocusedBookmark } = useFocusedBookmark();
+  const router = useRouter();
+
+  const handleBookmarkClick = (bookmark: ResourceLink) => {
+    setFocusedBookmark(bookmark);
+    router.push("/communication");
+  };
+
   return (
     <div>
       <Stack spacing="xl">
         <Text className={classes.text}> {title} </Text>
-        {data.map((resource) => (
+        {data.map((resource, index) => (
           <div
             style={{
               display: "flex",
               alignItems: "flex-end",
             }}
+            key={index}
           >
             <div style={{ flexGrow: 1, marginBottom: "8px" }}>
               {" "}
@@ -91,18 +102,19 @@ const Resources = ({
                 variant="outline"
                 leftIcon={<IconFileDescription color="#254885" />}
                 component="a"
-                href={resource.url}
                 target="_blank"
+                onClick={() => handleBookmarkClick(resource)}
               >
                 {resource.title}
               </Button>
             </div>
-            <div style={{ marginBottom: "8px" }}>
+            <div style={{ marginBottom: "8px", marginLeft: "8px" }}>
               {" "}
               <BookmarkButton
                 id={resource.id}
                 title={resource.title}
                 url={resource.url}
+                solutionPage={false}
               />
             </div>
           </div>
