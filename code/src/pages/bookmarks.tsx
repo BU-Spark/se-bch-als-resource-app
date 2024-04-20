@@ -21,7 +21,7 @@ const Bookmarks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const BASE_URL = "http://localhost:3000/";
+  const BASE_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
 
   type OriginalKeys =
     | "Communication"
