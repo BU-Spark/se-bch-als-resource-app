@@ -7,9 +7,9 @@ import {
   IChoice,
   IQuestion,
   IAttachment,
-  ISolution
+  ISolution,
 } from "../types/api_types";
-import { Loader, Stack, Text, Button, Tooltip, rem, Alert } from "@mantine/core";
+import { Loader, Stack, Text, Button, Tooltip, Alert } from "@mantine/core";
 import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
 import { useRouter } from "next/router";
 import { IconFileDescription } from "@tabler/icons-react";
@@ -17,10 +17,13 @@ import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 
-interface Props { }
+interface Props {}
 
 //function to see if typeform data has changed
-function isTypeformConsistent(oldData: IQuestionList, newData: IQuestionList): boolean {
+function isTypeformConsistent(
+  oldData: IQuestionList,
+  newData: IQuestionList
+): boolean {
   if (oldData.questions.length !== newData.questions.length) {
     return false;
   }
@@ -34,7 +37,10 @@ function isTypeformConsistent(oldData: IQuestionList, newData: IQuestionList): b
   return true;
 }
 
-function areQuestionsEqual(question1: IQuestion, question2: IQuestion): boolean {
+function areQuestionsEqual(
+  question1: IQuestion,
+  question2: IQuestion
+): boolean {
   return (
     question1.id === question2.id &&
     question1.title === question2.title &&
@@ -47,7 +53,10 @@ function areQuestionsEqual(question1: IQuestion, question2: IQuestion): boolean 
   );
 }
 
-function areChoicesEqual(choices1: IChoice[] | undefined, choices2: IChoice[] | undefined): boolean {
+function areChoicesEqual(
+  choices1: IChoice[] | undefined,
+  choices2: IChoice[] | undefined
+): boolean {
   if (!choices1 && !choices2) {
     return true;
   }
@@ -66,7 +75,10 @@ function areChoicesEqual(choices1: IChoice[] | undefined, choices2: IChoice[] | 
   return true;
 }
 
-function areSolutionsEqual(solutions1: ISolution[] | undefined, solutions2: ISolution[] | undefined): boolean {
+function areSolutionsEqual(
+  solutions1: ISolution[] | undefined,
+  solutions2: ISolution[] | undefined
+): boolean {
   if (!solutions1 && !solutions2) {
     return true;
   }
@@ -85,7 +97,10 @@ function areSolutionsEqual(solutions1: ISolution[] | undefined, solutions2: ISol
   return true;
 }
 
-function areAttachmentsEqual(attachment1: IAttachment | undefined, attachment2: IAttachment | undefined): boolean {
+function areAttachmentsEqual(
+  attachment1: IAttachment | undefined,
+  attachment2: IAttachment | undefined
+): boolean {
   if (!attachment1 && !attachment2) {
     return true;
   }
@@ -93,14 +108,15 @@ function areAttachmentsEqual(attachment1: IAttachment | undefined, attachment2: 
     return false;
   }
 
-  if (attachment1.type !== attachment2.type || attachment1.href !== attachment2.href) {
+  if (
+    attachment1.type !== attachment2.type ||
+    attachment1.href !== attachment2.href
+  ) {
     return false;
-  }
-  else {
+  } else {
     return true;
   }
 }
-
 
 //Utility functions to save and load from local storage without error
 function saveToLocalStorage<T>(key: string, value: T): void {
@@ -108,8 +124,7 @@ function saveToLocalStorage<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
     console.log("Saved value of " + key + ":");
     console.log(value);
-  }
-  else {
+  } else {
     console.log("could not save " + key + " : " + value);
   }
 }
@@ -117,27 +132,25 @@ function saveToLocalStorage<T>(key: string, value: T): void {
 function loadFromLocalStorage<T>(key: string): T | null {
   if (typeof window !== "undefined") {
     const savedValue = localStorage.getItem(key);
-    return savedValue ? JSON.parse(savedValue) as T : null;
+    return savedValue ? (JSON.parse(savedValue) as T) : null;
   }
   return null;
 }
 
-
-
 function hideResetNotification() {
-  const notificationBanner = document.getElementById('notification-banner');
-  if(notificationBanner) {
-    notificationBanner.classList.add('hidden');
+  const notificationBanner = document.getElementById("notification-banner");
+  if (notificationBanner) {
+    notificationBanner.classList.add("hidden");
   }
 }
 
 // Event listener for dismissing the notification
-if (typeof window !== 'undefined') {
-  const dismissButton = document.getElementById('dismiss-notification');
+if (typeof window !== "undefined") {
+  const dismissButton = document.getElementById("dismiss-notification");
   if (dismissButton) {
-      dismissButton.addEventListener('click', () => {
-          hideResetNotification();
-      });
+    dismissButton.addEventListener("click", () => {
+      hideResetNotification();
+    });
   }
 }
 
@@ -151,7 +164,6 @@ const CommunicationPage: React.FC<Props> = () => {
   const [questionList, setQuestionList] = useState<IQuestionList | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showResetBanner, setShowResetBanner] = useState(false);
-
 
   // so that we don't rewrite the save on first render with the initial data
   const isRendering = useRef(true);
@@ -170,7 +182,6 @@ const CommunicationPage: React.FC<Props> = () => {
     ref: "0",
     type: "multiple_choice",
   });
-
 
   const initialChoices = [
     { id: "695", ref: "0", label: "Communication", link: "/communication" },
@@ -194,34 +205,33 @@ const CommunicationPage: React.FC<Props> = () => {
   // Update local storage
   useEffect(() => {
     if (!isRendering.current) {
-      saveToLocalStorage<boolean>('hasSolution', hasSolution);
+      saveToLocalStorage<boolean>("hasSolution", hasSolution);
     }
   }, [hasSolution]);
 
   useEffect(() => {
     if (!isRendering.current) {
-      saveToLocalStorage<IQuestion>('solutionContent', solutionContent);
+      saveToLocalStorage<IQuestion>("solutionContent", solutionContent);
     }
   }, [solutionContent]);
 
   useEffect(() => {
     if (!isRendering.current) {
-      saveToLocalStorage<IQuestion>('currQuestion', currQuestion);
+      saveToLocalStorage<IQuestion>("currQuestion", currQuestion);
     }
   }, [currQuestion]);
 
   useEffect(() => {
     if (!isRendering.current) {
-      saveToLocalStorage<IChoice[]>('currChoices', currChoices);
+      saveToLocalStorage<IChoice[]>("currChoices", currChoices);
     }
   }, [currChoices]);
 
   useEffect(() => {
     if (!isRendering.current) {
-      saveToLocalStorage<IBodyContent>('bodyContent', bodyContent);
+      saveToLocalStorage<IBodyContent>("bodyContent", bodyContent);
     }
   }, [bodyContent]);
-
 
   const handleChoiceClick = useCallback(
     (choice: IChoice) => {
@@ -270,20 +280,28 @@ const CommunicationPage: React.FC<Props> = () => {
         const data: IQuestionList = await response.json();
         setQuestionList(data);
 
-        const savedCurrQuestion = loadFromLocalStorage<IQuestion | null>('currQuestion');
-        const savedChoices = loadFromLocalStorage<IChoice[]>('currChoices');
-        const savedHasSolution = loadFromLocalStorage<boolean>('hasSolution');
-        const savedSolutionContent = loadFromLocalStorage<IQuestion | null>('solutionContent');
-        const savedBodyContent = loadFromLocalStorage<IBodyContent | null>('bodyContent');
+        const savedCurrQuestion = loadFromLocalStorage<IQuestion | null>(
+          "currQuestion"
+        );
+        const savedChoices = loadFromLocalStorage<IChoice[]>("currChoices");
+        const savedHasSolution = loadFromLocalStorage<boolean>("hasSolution");
+        const savedSolutionContent = loadFromLocalStorage<IQuestion | null>(
+          "solutionContent"
+        );
+        const savedBodyContent = loadFromLocalStorage<IBodyContent | null>(
+          "bodyContent"
+        );
 
         // Check if the question list is not empty
         if (data.questions && data.questions.length > 0) {
-
-          
-          const savedTypeformData = loadFromLocalStorage<IQuestionList>('savedTypeformData');
+          const savedTypeformData =
+            loadFromLocalStorage<IQuestionList>("savedTypeformData");
           console.log(savedTypeformData);
           console.log(data);
-          if (savedTypeformData && isTypeformConsistent(savedTypeformData, data)) {
+          if (
+            savedTypeformData &&
+            isTypeformConsistent(savedTypeformData, data)
+          ) {
             if (savedCurrQuestion) {
               setCurrQuestion(savedCurrQuestion);
             }
@@ -301,22 +319,22 @@ const CommunicationPage: React.FC<Props> = () => {
                 setSolutionContent(savedSolutionContent);
               }
             }
-
-          }
-          else { //start from first question
-            if (savedTypeformData) { //typeform has changed
+          } else {
+            //start from first question
+            if (savedTypeformData) {
+              //typeform has changed
               setShowResetBanner(true);
               setTimeout(() => {
                 setShowResetBanner(false);
-              }, 5000); 
+              }, 5000);
             }
 
             //reset local storage
-            saveToLocalStorage<IQuestion | null>('currQuestion', null);
-            saveToLocalStorage<IChoice[]>('currChoices', []);
-            saveToLocalStorage<boolean>('hasSolution', false);
-            saveToLocalStorage<IQuestion | null>('solutionContent', null);
-            saveToLocalStorage<IBodyContent | null>('bodyContent', null);
+            saveToLocalStorage<IQuestion | null>("currQuestion", null);
+            saveToLocalStorage<IChoice[]>("currChoices", []);
+            saveToLocalStorage<boolean>("hasSolution", false);
+            saveToLocalStorage<IQuestion | null>("solutionContent", null);
+            saveToLocalStorage<IBodyContent | null>("bodyContent", null);
 
             const firstQuestion = data.questions[0];
             setCurrQuestion(firstQuestion);
@@ -351,10 +369,7 @@ const CommunicationPage: React.FC<Props> = () => {
             console.log("updatedChoiceList", updatedChoiceList);
           }
 
-
-          saveToLocalStorage<IQuestionList>('savedTypeformData', data);
-
-
+          saveToLocalStorage<IQuestionList>("savedTypeformData", data);
         }
 
         setIsLoading(false);
@@ -480,21 +495,23 @@ const CommunicationPage: React.FC<Props> = () => {
         </div>
       ) : !hasSolution ? (
         <Stack spacing="xl" className={classes.outer}>
-          {showResetBanner && (<Alert
-            style={{
-              position: 'absolute', // or 'fixed' depending on your layout
-              top: 20, // adjust based on your header/navbar height
-              left: '50%',
-              transform: 'translateX(-50%)',
-              zIndex: 999,
-            }}
-            color="blue" // you can choose the color that matches your design
-            title="Questionanaire Updated"
-            onClose={() => setShowResetBanner(false)} 
-            withCloseButton
-          >
-            This form has been updated by the administrator. Please re-complete it.
-          </Alert>
+          {showResetBanner && (
+            <Alert
+              style={{
+                position: "absolute",
+                top: 20,
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 999,
+              }}
+              color="blue"
+              title="Questionanaire Updated"
+              onClose={() => setShowResetBanner(false)}
+              withCloseButton
+            >
+              This form has been updated by the administrator. Please
+              re-complete it.
+            </Alert>
           )}
           <Text className={classes.text}> {currQuestion.title} </Text>
           <Text className={classes.descriptionText}>
