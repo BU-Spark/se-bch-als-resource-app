@@ -5,11 +5,9 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     height: "57px",
     display: "flex",
     width: "100%",
-    // backgroundColor: 'transparent',
     color: "#254885",
     border: "2px solid #254885",
     borderRadius: rem(10),
-    // width: rem(320),
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
@@ -25,7 +23,6 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     [theme.fn.smallerThan("xs")]: {
       height: "57px",
       display: "flex",
-      // textAlign: 'center',
       width: "100%",
       justifyContent: "center",
       alignItems: "center",
@@ -53,10 +50,8 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     fontStyle: "normal",
     letterSpacing: rem(-1),
     color: "#254885",
-    // marginBottom: theme.spacing.xs,
     textAlign: "left",
     fontFamily: `Montserrat, ${theme.fontFamily}`,
-    // lineHeight: rem(16),
 
     [theme.fn.smallerThan("xs")]: {
       fontSize: rem(20),

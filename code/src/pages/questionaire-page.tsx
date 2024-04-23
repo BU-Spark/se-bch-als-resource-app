@@ -1,4 +1,4 @@
-import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
+import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";

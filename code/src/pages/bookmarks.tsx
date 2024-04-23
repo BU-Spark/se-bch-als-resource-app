@@ -6,9 +6,9 @@ import { ResourceLink } from "@/types/dataTypes";
 import { IQuestion } from "@/types/api_types";
 
 import Title from "../components/Title/Titles";
-import ResourcesHandouts from "../components/MainBody/SolutionPageContent/ResourcesHandouts";
+import ResourcesHandouts from "../components/ResourcesHandouts/ResourcesHandouts";
 import CopyableLink from "../components/CopyURL/CopyUrl";
-import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
+import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import { useBookmarks } from "../contexts/BookmarkContext";
 import styles from "../styles/Bookmark.module.css";
 

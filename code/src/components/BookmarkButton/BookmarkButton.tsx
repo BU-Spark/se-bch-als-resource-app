@@ -1,6 +1,6 @@
 import { useBookmarks } from "../../contexts/BookmarkContext";
 import { Text, Button } from "@mantine/core";
-import { bodyContentUseStyles } from "../MainBody/HelperFunctions/BodyContentStyle";
+import { bodyContentUseStyles } from "../../utils/BodyContentStyle";
 import { ResourceLink } from "@/types/dataTypes";
 
 import { useRouter } from "next/router";
