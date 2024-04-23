@@ -6,8 +6,10 @@ import {
   IBodyContent,
   IChoice,
   IQuestion,
+  IAttachment,
+  ISolution
 } from "../types/api_types";
-import { Loader, Stack, Text, Button, Tooltip, rem } from "@mantine/core";
+import { Loader, Stack, Text, Button, Tooltip, rem, Alert } from "@mantine/core";
 import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
 import { useRouter } from "next/router";
 import { IconFileDescription } from "@tabler/icons-react";
@@ -16,6 +18,88 @@ import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 
 interface Props { }
+
+//function to see if typeform data has changed
+function isTypeformConsistent(oldData: IQuestionList, newData: IQuestionList): boolean {
+  if (oldData.questions.length !== newData.questions.length) {
+    return false;
+  }
+
+  for (let i = 0; i < oldData.questions.length; i++) {
+    if (!areQuestionsEqual(oldData.questions[i], newData.questions[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function areQuestionsEqual(question1: IQuestion, question2: IQuestion): boolean {
+  return (
+    question1.id === question2.id &&
+    question1.title === question2.title &&
+    question1.ref === question2.ref &&
+    question1.type === question2.type &&
+    areChoicesEqual(question1.choices, question2.choices) &&
+    areSolutionsEqual(question1.solutions, question2.solutions) &&
+    question1.description === question2.description && // updated
+    areAttachmentsEqual(question1.attachment, question2.attachment)
+  );
+}
+
+function areChoicesEqual(choices1: IChoice[] | undefined, choices2: IChoice[] | undefined): boolean {
+  if (!choices1 && !choices2) {
+    return true;
+  }
+  if (!choices1 || !choices2 || choices1.length !== choices2.length) {
+    return false;
+  }
+  for (let i = 0; i < choices1.length; i++) {
+    if (
+      choices1[i].id !== choices2[i].id ||
+      choices1[i].label !== choices2[i].label ||
+      choices1[i].ref !== choices2[i].ref
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function areSolutionsEqual(solutions1: ISolution[] | undefined, solutions2: ISolution[] | undefined): boolean {
+  if (!solutions1 && !solutions2) {
+    return true;
+  }
+  if (!solutions1 || !solutions2 || solutions1.length !== solutions2.length) {
+    return false;
+  }
+  for (let i = 0; i < solutions1.length; i++) {
+    if (
+      solutions1[i].id !== solutions2[i].id ||
+      solutions1[i].title !== solutions2[i].title ||
+      solutions1[i].url !== solutions2[i].url
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function areAttachmentsEqual(attachment1: IAttachment | undefined, attachment2: IAttachment | undefined): boolean {
+  if (!attachment1 && !attachment2) {
+    return true;
+  }
+  if (!attachment1 || !attachment2) {
+    return false;
+  }
+
+  if (attachment1.type !== attachment2.type || attachment1.href !== attachment2.href) {
+    return false;
+  }
+  else {
+    return true;
+  }
+}
 
 
 //Utility functions to save and load from local storage without error
@@ -38,6 +122,25 @@ function loadFromLocalStorage<T>(key: string): T | null {
   return null;
 }
 
+
+
+function hideResetNotification() {
+  const notificationBanner = document.getElementById('notification-banner');
+  if(notificationBanner) {
+    notificationBanner.classList.add('hidden');
+  }
+}
+
+// Event listener for dismissing the notification
+if (typeof window !== 'undefined') {
+  const dismissButton = document.getElementById('dismiss-notification');
+  if (dismissButton) {
+      dismissButton.addEventListener('click', () => {
+          hideResetNotification();
+      });
+  }
+}
+
 const CommunicationPage: React.FC<Props> = () => {
   const router = useRouter();
   const { focusedBookmark, setFocusedBookmark } = useFocusedBookmark();
@@ -47,6 +150,7 @@ const CommunicationPage: React.FC<Props> = () => {
   const pageTitle = useRef("Communication");
   const [questionList, setQuestionList] = useState<IQuestionList | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showResetBanner, setShowResetBanner] = useState(false);
 
 
   // so that we don't rewrite the save on first render with the initial data
@@ -166,45 +270,20 @@ const CommunicationPage: React.FC<Props> = () => {
         const data: IQuestionList = await response.json();
         setQuestionList(data);
 
-        const savedCurrQuestion = loadFromLocalStorage<IQuestion>('currQuestion');
+        const savedCurrQuestion = loadFromLocalStorage<IQuestion | null>('currQuestion');
         const savedChoices = loadFromLocalStorage<IChoice[]>('currChoices');
         const savedHasSolution = loadFromLocalStorage<boolean>('hasSolution');
-        const savedSolutionContent = loadFromLocalStorage<IQuestion>('solutionContent');
-        const savedBodyContent = loadFromLocalStorage<IBodyContent>('bodyContent');
+        const savedSolutionContent = loadFromLocalStorage<IQuestion | null>('solutionContent');
+        const savedBodyContent = loadFromLocalStorage<IBodyContent | null>('bodyContent');
 
         // Check if the question list is not empty
         if (data.questions && data.questions.length > 0) {
 
-          //check if saved data is still valid with respect to typeform
-
-          var isLocalStorageValid = false;
-
-          if (savedCurrQuestion && savedBodyContent) {
-            isLocalStorageValid = savedCurrQuestion && data.questions.some(q => q.id === savedCurrQuestion.id);
-
-            savedBodyContent.choiceList.forEach((choice) => {
-              const prev = findPreviousQuestion(choice);
-              if (prev && !data.questions.some(q => q.id === prev.id)) {
-                isLocalStorageValid = false;
-                console.log(prev.title + " not found");
-                console.log(prev.id);
-              }
-            });
-
-            if (savedChoices) {
-              savedChoices.forEach((choice) => {
-                const next = findPreviousQuestion(choice);
-                if (next && !data.questions.some(q => q.id === next.id)) {
-                  isLocalStorageValid = false;
-                  console.log(next.title + " not found");
-                  console.log(next.id);
-                }
-              });
-            }
-
-          }
-
-          if (isLocalStorageValid) {
+          
+          const savedTypeformData = loadFromLocalStorage<IQuestionList>('savedTypeformData');
+          console.log(savedTypeformData);
+          console.log(data);
+          if (savedTypeformData && isTypeformConsistent(savedTypeformData, data)) {
             if (savedCurrQuestion) {
               setCurrQuestion(savedCurrQuestion);
             }
@@ -225,6 +304,20 @@ const CommunicationPage: React.FC<Props> = () => {
 
           }
           else { //start from first question
+            if (savedTypeformData) { //typeform has changed
+              setShowResetBanner(true);
+              setTimeout(() => {
+                setShowResetBanner(false);
+              }, 5000); 
+            }
+
+            //reset local storage
+            saveToLocalStorage<IQuestion | null>('currQuestion', null);
+            saveToLocalStorage<IChoice[]>('currChoices', []);
+            saveToLocalStorage<boolean>('hasSolution', false);
+            saveToLocalStorage<IQuestion | null>('solutionContent', null);
+            saveToLocalStorage<IBodyContent | null>('bodyContent', null);
+
             const firstQuestion = data.questions[0];
             setCurrQuestion(firstQuestion);
             setCurrChoices(firstQuestion.choices || []);
@@ -259,7 +352,7 @@ const CommunicationPage: React.FC<Props> = () => {
           }
 
 
-
+          saveToLocalStorage<IQuestionList>('savedTypeformData', data);
 
 
         }
@@ -387,6 +480,22 @@ const CommunicationPage: React.FC<Props> = () => {
         </div>
       ) : !hasSolution ? (
         <Stack spacing="xl" className={classes.outer}>
+          {showResetBanner && (<Alert
+            style={{
+              position: 'absolute', // or 'fixed' depending on your layout
+              top: 20, // adjust based on your header/navbar height
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 999,
+            }}
+            color="blue" // you can choose the color that matches your design
+            title="Questionanaire Updated"
+            onClose={() => setShowResetBanner(false)} 
+            withCloseButton
+          >
+            This form has been updated by the administrator. Please re-complete it.
+          </Alert>
+          )}
           <Text className={classes.text}> {currQuestion.title} </Text>
           <Text className={classes.descriptionText}>
             {" "}
