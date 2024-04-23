@@ -14,11 +14,11 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     alignItems: "center",
     alignContent: "center",
     cursor: "pointer",
-    '&:hover': {
-      backgroundColor: '#254885',
-      color: '#FFFFFF',
-      '& svg': { 
-        color: '#FFFFFF',
+    "&:hover": {
+      backgroundColor: "#254885",
+      color: "#FFFFFF",
+      "& svg": {
+        color: "#FFFFFF",
       },
     },
 
@@ -80,6 +80,13 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     },
   },
 
+  choiceText: {
+    fontSize: "16px",
+    whiteSpace: "normal",
+    textAlign: "center",
+    textDecoration: "none",
+  },
+
   outer: {
     paddingTop: rem(26),
     pddingBottom: "10%",
@@ -107,6 +114,6 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     height: "30px",
   },
   iconColor: {
-    color: '#254885',
+    color: "#254885",
   },
 }));
