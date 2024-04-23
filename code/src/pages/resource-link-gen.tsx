@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import { Button, TextInput, Box, Group } from "@mantine/core";
+
 import CopyableLink from "../components/CopyURL/CopyUrl";
 import styles from "../styles/ResourceLinkGen.module.css";
 
@@ -8,6 +10,11 @@ type InputField = {
   url: string;
 };
 
+/**
+ * Enables automatic generation of
+ * JSON objects to use on Typeform
+ * portal for solution pages
+ */
 export default function ResourceLinkGenerator() {
   const [generatedJson, setGeneratedJson] = useState("");
   const [inputFields, setInputFields] = useState<InputField[]>([
@@ -45,18 +52,18 @@ export default function ResourceLinkGenerator() {
   };
 
   return (
-    <div className={styles.resourceLinkGeneratorContainer}>
-      <Box sx={{ maxWidth: 800, margin: "auto" }}>
+    <div className={styles.generatorContainer}>
+      <Box className={styles.boxStyle}>
         {inputFields.map((field, index) => (
-          <Group key={index} position="apart" className={styles.inputGroup}>
-            <div style={{ width: "80%" }}>
+          <Group key={index} position="apart" className={styles.groupStyle}>
+            <div className={styles.inputContainer}>
               <TextInput
                 placeholder="Title"
                 value={field.title}
                 onChange={(event) =>
                   handleInputChange(index, "title", event.currentTarget.value)
                 }
-                className={styles.inputField}
+                className={styles.textInput}
               />
               <TextInput
                 placeholder="URL"
@@ -64,7 +71,7 @@ export default function ResourceLinkGenerator() {
                 onChange={(event) =>
                   handleInputChange(index, "url", event.currentTarget.value)
                 }
-                style={{ width: "100%", paddingTop: "10px", fontSize: "18px" }}
+                className={styles.textInput}
               />
             </div>
             <Button color="red" onClick={() => handleRemoveField(index)}>
@@ -72,22 +79,17 @@ export default function ResourceLinkGenerator() {
             </Button>
           </Group>
         ))}
-        <div style={{ gap: "20px" }}>
+        <div className={styles.buttonContainer}>
           <Button
             variant="outline"
             onClick={handleAddField}
-            style={{
-              fontSize: "18px",
-              marginTop: "10px",
-              marginRight: "20px",
-              marginLeft: "auto",
-            }}
+            className={styles.addButton}
           >
             Add Element
           </Button>
 
           <Button
-            style={{ fontSize: "18px", marginTop: "10px", marginLeft: "auto" }}
+            className={styles.generateButton}
             variant="outline"
             onClick={handleGenerateJSON}
           >
@@ -96,7 +98,7 @@ export default function ResourceLinkGenerator() {
         </div>
 
         {generatedJson && (
-          <div style={{ marginTop: "50px" }}>
+          <div className={styles.copyLinkContainer}>
             <CopyableLink url={generatedJson} />
           </div>
         )}

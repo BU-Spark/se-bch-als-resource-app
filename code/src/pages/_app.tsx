@@ -1,12 +1,14 @@
-import { AppProps } from "next/app";
-import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
 import React from "react";
+import Head from "next/head";
+
+import { AppProps } from "next/app";
+import { MantineProvider } from "@mantine/core";
+
 import Nav from "@/components/Navbar/Nav";
 import { Footer } from "@/components/Footer/Footer";
 import { BookmarkProvider } from "@/contexts/BookmarkContext";
 import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
-import styles from "../styles/Home.module.css"; // Assuming your styles are here
+import styles from "../styles/Home.module.css";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
