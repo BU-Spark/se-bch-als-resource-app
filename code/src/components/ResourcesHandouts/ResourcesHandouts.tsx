@@ -114,7 +114,7 @@ const Resources = ({
                 id={resource.id}
                 title={resource.title}
                 url={resource.url}
-                solutionPage={false}
+                isSolutionPage={false}
               />
             </div>
           </div>

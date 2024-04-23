@@ -61,7 +61,7 @@ const SolutionPage: React.FC<SolutionPageProps> = ({
         id={solutionContent.ref}
         title={solutionContent.title}
         url={"Communication"}
-        solutionPage={true}
+        isSolutionPage={true}
       />
     </Stack>
   );
