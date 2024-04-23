@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Loader, Stack, Text, Button, Tooltip, Alert } from "@mantine/core";
-import { IconFileDescription } from "@tabler/icons-react";
 
 import {
   IQuestionList,
@@ -14,9 +13,9 @@ import {
 import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import Title from "../components/Title/Titles";
 import SolutionPage from "@/components/SolutionPage/SolutionPage";
-import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { isTypeformConsistent } from "../utils/QuestionUtils";
+import styles from "../styles/Communication.module.css";
 
 interface Props {}
 
@@ -50,6 +49,7 @@ function loadFromLocalStorage<T>(key: string): T | null {
   }
   return null;
 }
+
 // Hides notification banner
 function hideResetNotification() {
   const notificationBanner = document.getElementById("notification-banner");
@@ -68,6 +68,7 @@ if (typeof window !== "undefined") {
   }
 }
 
+// Base choices on communication page
 const initialChoices = [
   { id: "695", ref: "0", label: "Communication", link: "/communication" },
   { id: "696", ref: "0", label: "Computer Access", link: "/computer-access" },
@@ -115,36 +116,48 @@ const CommunicationPage: React.FC<Props> = () => {
     currentCategory: "",
   });
 
-  // Update local storage
-  useEffect(() => {
-    if (!isRendering.current) {
-      saveToLocalStorage<boolean>("hasSolution", hasSolution);
+  const goBackToPreviousQuestion = () => {
+    console.log("goBackToPreviousQuestion Triggered");
+    // Check if came from bookmark
+    if (fromSolutionPage) {
+      setFromSolutionPage(false);
+      router.push("/bookmarks");
+      return;
     }
-  }, [hasSolution]);
+    // Check if there are any previous choices
+    if (bodyContent.choiceList.length > 1) {
+      // Create a copy of the current choice list and remove the last choice
+      const prevChoices = [...bodyContent.choiceList];
+      const lastChoice = prevChoices[prevChoices.length - 2];
+      prevChoices.pop();
+      bodyContent.choiceList = prevChoices;
+      setBodyContent({ ...bodyContent });
 
-  useEffect(() => {
-    if (!isRendering.current) {
-      saveToLocalStorage<IQuestion>("solutionContent", solutionContent);
+      if (lastChoice) {
+        const previousQuestion = findPreviousQuestion(lastChoice);
+        if (previousQuestion) {
+          setCurrQuestion(previousQuestion);
+          setCurrChoices(previousQuestion.choices || []);
+          if (previousQuestion.type === "statement") {
+            setHasSolution(true);
+          } else {
+            setHasSolution(false);
+          }
+        }
+      }
+    } else {
+      router.push("/");
     }
-  }, [solutionContent]);
+  };
 
-  useEffect(() => {
-    if (!isRendering.current) {
-      saveToLocalStorage<IQuestion>("currQuestion", currQuestion);
-    }
-  }, [currQuestion]);
-
-  useEffect(() => {
-    if (!isRendering.current) {
-      saveToLocalStorage<IChoice[]>("currChoices", currChoices);
-    }
-  }, [currChoices]);
-
-  useEffect(() => {
-    if (!isRendering.current) {
-      saveToLocalStorage<IBodyContent>("bodyContent", bodyContent);
-    }
-  }, [bodyContent]);
+  const findPreviousQuestion = (lastChoice: IChoice): IQuestion | null => {
+    const previousQuestionRef = lastChoice.link; // Logic to determine the previous question ref
+    return (
+      questionList?.questions.find(
+        (question) => question.ref === previousQuestionRef
+      ) || null
+    );
+  };
 
   const handleChoiceClick = useCallback(
     (choice: IChoice) => {
@@ -182,6 +195,18 @@ const CommunicationPage: React.FC<Props> = () => {
     [bodyContent, questionList]
   );
 
+  // Update local storage
+  useEffect(() => {
+    if (!isRendering.current) {
+      saveToLocalStorage("hasSolution", hasSolution);
+      saveToLocalStorage("solutionContent", solutionContent);
+      saveToLocalStorage("currQuestion", currQuestion);
+      saveToLocalStorage("currChoices", currChoices);
+      saveToLocalStorage("bodyContent", bodyContent);
+    }
+  }, [hasSolution, solutionContent, currQuestion, currChoices, bodyContent]);
+
+  // Retrieve and set questions for communication branch
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -296,49 +321,7 @@ const CommunicationPage: React.FC<Props> = () => {
     fetchData();
   }, []);
 
-  const goBackToPreviousQuestion = () => {
-    console.log("goBackToPreviousQuestion Triggered");
-    // Check if came from bookmark
-    if (fromSolutionPage) {
-      setFromSolutionPage(false);
-      router.push("/bookmarks");
-      return;
-    }
-    // Check if there are any previous choices
-    if (bodyContent.choiceList.length > 1) {
-      // Create a copy of the current choice list and remove the last choice
-      const prevChoices = [...bodyContent.choiceList];
-      const lastChoice = prevChoices[prevChoices.length - 2];
-      prevChoices.pop();
-      bodyContent.choiceList = prevChoices;
-      setBodyContent({ ...bodyContent });
-
-      if (lastChoice) {
-        const previousQuestion = findPreviousQuestion(lastChoice);
-        if (previousQuestion) {
-          setCurrQuestion(previousQuestion);
-          setCurrChoices(previousQuestion.choices || []);
-          if (previousQuestion.type === "statement") {
-            setHasSolution(true);
-          } else {
-            setHasSolution(false);
-          }
-        }
-      }
-    } else {
-      router.push("/");
-    }
-  };
-
-  const findPreviousQuestion = (lastChoice: IChoice): IQuestion | null => {
-    const previousQuestionRef = lastChoice.link; // Logic to determine the previous question ref
-    return (
-      questionList?.questions.find(
-        (question) => question.ref === previousQuestionRef
-      ) || null
-    );
-  };
-
+  // Checks if the user navigated here from a bookmark
   useEffect(() => {
     if (focusedBookmark) {
       const solutionRef = focusedBookmark.id;
@@ -394,27 +377,14 @@ const CommunicationPage: React.FC<Props> = () => {
         onPrevClick={goBackToPreviousQuestion}
       />
       {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            marginTop: "15vh",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <div className={styles.loader}>
           <Loader color="blue" size={110} />
         </div>
       ) : !hasSolution ? (
         <Stack spacing="xl" className={classes.outer}>
           {showResetBanner && (
             <Alert
-              style={{
-                position: "absolute",
-                top: 20,
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 999,
-              }}
+              className={styles.alertBanner}
               color="blue"
               title="Questionanaire Updated"
               onClose={() => setShowResetBanner(false)}
@@ -442,17 +412,7 @@ const CommunicationPage: React.FC<Props> = () => {
                 className={classes.inner}
                 onClick={() => handleChoiceClick(choice)}
               >
-                <Text
-                  fz="xl"
-                  style={{
-                    fontSize: "16px",
-                    whiteSpace: "normal",
-                    textAlign: "center",
-                    textDecoration: "none",
-                  }}
-                >
-                  {choice.label}
-                </Text>
+                <Text className={classes.choiceText}>{choice.label}</Text>
               </Button>
             </Tooltip>
           ))}
