@@ -4,43 +4,66 @@ DOCUMENTATION:
 Below is the file structure of the components. Most components rely on global styles, which are available in the utils folder. Most components also require additional static styling, which is including in the .css files in the same sub-directory. Some components, like Title requires dynamic styling, which is instead created using mantine in a .tsx file.
 
 File Structure:
-    --> code
-        -> components
-            -> BookmarkButton
-                -> BookmarkButton.tsx
-                -> BookmarkButton.module.css
-            -> CopyURL
-                -> CopyUrl.tsx
-                -> CopyUrl.module.css
-            -> Footer
-                -> Footer.tsx
-                -> FooterStyle.tsx
-            -> Navbar
-                -> Nav.tsx 
-                -> Nav.module.css
-            -> NavList
-                -> NavList.tsx
-                -> NavList.module.css 
-            -> ResourcesHandouts
-                -> ResourcesHandouts.tsx
-                -> ResourcesHandoutsStyle.tsx
-            -> SolutionPage
-                -> SolutionPage.tsx
-                -> SolutionPage.module.css
-            -> Title
-                -> Titles.tsx
-                -> TitleStyle.tsx
-
-###
+- code/
+  - components/
+    - BookmarkButton/
+      - BookmarkButton.tsx
+      - BookmarkButton.module.css
+    - CopyURL/
+      - CopyUrl.tsx
+      - CopyUrl.module.css
+    - Footer/
+      - Footer.tsx
+      - FooterStyle.tsx
+    - Navbar/
+      - Nav.tsx 
+      - Nav.module.css
+    - NavList/
+      - NavList.tsx
+      - NavList.module.css
+    - ResourcesHandouts/
+      - ResourcesHandouts.tsx
+      - ResourcesHandoutsStyle.tsx
+    - SolutionPage/
+      - SolutionPage.tsx
+      - SolutionPage.module.css
+    - Title/
+      - Titles.tsx
+      - TitleStyle.tsx
+    - Fall2023ComponentDocs.md
+    - Spring2024ComponentDocs.md
 
 ### Header
 
-### Body
-
-### Fotter
-
-### Footer 
-    * Titles.tsx
+     * Nav.tsx
+        * Styles
+            - custom styles for the header
+            - wrapper for the logo
+            - styles for props inside the title
+        * Links
+            - list of links appearing in the drop-down menu
+            - maps each link to a title with a link
+            - currently statically included in file
+        * Burger
+            - uses mantine Burger component
+            - Click to display drop-down menu
+            - Drop-down items inherent toggle function to closer Burger
+        * Returns a <div> with the logo and Burger
+     * NavList.tsx
+        * Styles
+            - styles for list container
+            - styles for each list items
+            - individual styling for last link item
+        * Links
+            - object with title, link, and onClick function
+            - currently only maps to home and bookmarks
+            - passed in as params
+            - currently statically encoded in Nav.tsx
+        * onClick function
+            - receives an onClick function from Nav.tsx
+            - all current links use the toggleMenu function from Nav.tsx
+            - allows for more dynamic behavior in future iterations
+     * Titles.tsx
         * useStyles
             - custom styles for titles (position, size, color)
             - chevron icon (transition, position, color)
@@ -55,7 +78,90 @@ File Structure:
             - displays only if hasPrev is true
             - onClick triggers prevQuestion function
         * Return a <div> that contains the ChevronIcon and the Title component
-    * Footer.tsx
+
+### Body
+
+     * CopyURL
+        * Styles
+            - coloring for the button
+            - styling for text input
+        * URL encoding
+            - the link encodes saved bookmarks by id
+            - on load, a useEffect will parse and add the bookmarks to a global context
+            - enables link sharing across devices
+            - displayed link uses base URL, make sure you change it when deploying
+        * Overrides local storage
+            - a useEffect also reads saved bookmarks from local storage
+            - locally stored bookmarks will automatically be encoded in the displayed URL
+            - if there are local bookmarks when an encoded url is used, they will be wiped
+            - may be worth discussing with client if URL encoding should take precedent
+        * Copy button
+            - clicking the button automatically loads URL to clipboard
+            - changes color to indicate when clicked
+            - also highlights the url in the form
+        * Return a <div> that contains the copyable link and copy button
+     * ResourcesHandouts
+        * handleBookmarkClick
+            - sends user back to the communication branch
+            - currently is statically encoded, next teams will need to send back to respective source branch
+            - sets the value of a global context to a clicked solution, see context documentation for more info
+        * useStyles
+            - follows global styling conventions for inner and outer, see utils for more details
+            - styling for container for link portion
+            - styling to wrap the BookmarkButton
+            - assumes BookmarkButton isSolutionPage is false when rendered on /bookmark
+            - assumes BookmarkButton isSolutionPage is true when rendered on /communication
+            - only gets rendered to display solutions or bookmarks
+        * Solution button
+            - routes the user back to /communication with the solution state loaded
+            - dependent on the focused bookmark context, see context documentation for more info
+            - used to hold a link to the external solution itself, see old component documentation
+        * BookmarkButton with conditional rendering
+            - always renders the save/unsave button, conditionally renders the 'Go to bookmarks' button
+            - renders 'Go to bookmarks' button on SolutionPage components, not on bookmark page
+            - clicking save adds the resource id to the global context holding bookmarks
+            - click unsave removes the the resource id from the global context
+        * Return a <div> containing a list of resources with a corresponding link
+     * BookmarkButton
+        * useStyles
+            - uses the inner style for both buttons
+            - all other styles come from CSS file
+        * Styles  
+            - styles for text contained within buttons
+            - container for bookmark navigation button
+            - container for save/unsave button
+        * handleBookmarkClick
+            - creates a new bookmark with id, title, and url
+            - adds newly created bookmark to global bookmark context
+            - if bookmark is already in context, removes it instead
+            - see context docs for more information
+        * Conditional button rendering
+            - button is used on SolutionPage and bookmark page
+            - only render navigate to bookmark page on the SolutionPage instances
+            - button containers subject to page styles
+            - may be better to split into two components in the future, SaveButton and BookmarkNavButton
+        * Returns a <div> containing a save button and conditionally a bookmark nav button
+     * SolutionPage
+        * Video display
+            - renders a video if it exists
+            - solution content is passed in as a prop
+            - solution content is originally retrieved from Typeform
+            - uses global styling, see utils for more info
+        * Resource map
+            - Maps out a list of resource links
+            - Links map to external video or article
+            - Uses global styles and additional custom styles
+            - May be replaceable with a ResourcesHandout
+        * BookmarkButton
+            - Renders a save/unsave button using global styling
+            - Renders the 'Go to bookmarks' button, also fitted with global styling
+            - Bookmarks can also be removed from the SolutionPage
+            - See context docs for how bookmarks are added and removed from global context
+        * Returns a <div> containing the corresponding solution and a BookmarkButton
+
+### Footer
+
+     * Footer.tsx
         * useStyles
             - custom styles for footer (flex, center, padded)
             - logo
@@ -63,104 +169,5 @@ File Structure:
             - links are colored #FFFFFF, inter font, style normal
             - on hover underline
         * Loop through groups, make a <Text> component for mantine.Link
+        * Dynaically expands and shrinks to fit the size of the page no matter how many resources or bookmarks
         * return <div> with all the links
-
-### MainBody
-    * HelperFunctions
-        * BodyContentStyle.tsx
-            * inner
-                - height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                - hover effect: backgroundColor, color
-                - media query for smaller than 'xs' screen sizes (height, display, width, justifyContent, alignItems, alignContent)
-            * chevron
-                - transition, position, left, top, color
-            * text
-                - fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-            * outer
-                - paddingLeft, paddingRight
-        * Selection.tsx
-            - return selection div
-    
-    * SolutionPageContent
-        * PageContentHelpers
-            * Paragraph.tsx
-                * useStyles
-                    - bodyText: fontFamily, fontStyle, fontWeight, fontSize, lineHeight, color, textAlign
-                * Paragraph component
-                    - accepts a paragraph prop (string) for the content
-                    - renders a Text component with the content and applies bodyText style from useStyles
-                    - wrapped in a Stack component with a backgroundColor based on the colorScheme
-            * Video.tsx
-                * useStyles
-                    - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                    - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                    - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                    - video: align
-                    - outer: paddingTop, paddingBottom
-                * Video component
-                    - accepts a url prop (string) for the video source
-                    - renders an AspectRatio component with the video element
-                    - video element uses the provided url as the source
-                    - wrapped in a Stack component with a backgroundColor based on the colorScheme
-            * PageContent.tsx
-                * PageContent component
-                    - Accepts a data prop of type PageContentType[]
-                    - Iterates through the data array and conditionally renders - Video or Paragraph components based on the presence of   videoURL and paragraph properties
-                    - Wrapped in a Stack component with spacing set to "xl"
-            * Resources
-                * Resources.tsx
-                    * useStyles
-                        - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                        - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                        - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                        - outer: paddingTop, paddingBottom, paddingLeft
-                    * Resources component
-                       - Accepts a data prop of type ResourceLink[]
-                       - Iterates through the data array and renders a Button component for each resource
-                       - Button component has a leftIcon and is styled with the inner class from useStyles
-                       - Wrapped in a Stack component with spacing set to "xl"
-                * TestimonialsOrHandouts
-                    * TestimonialsOrHandouts.tsx
-                        * useStyles
-                        - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                        - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                        - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                        - outer: paddingTop, paddingBottom, paddingLeft
-                        - TestimonialsOrHandouts component
-                        * Accepts a data prop of type HandoutOrTestimonialLink[]
-                        - Iterates through the data array and renders a Button component for each handout or testimonial
-                        - Button component has a leftIcon and is styled with the inner class from useStyles
-                        - Wrapped in a Stack component with spacing set to "xl"
-                * VideoImageParaphsContent
-                    * VideoImageParaphsContent.tsx
-                        * useStyles
-                            - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                            - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                            - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                            - outer: paddingTop, paddingBottom
-                        * VideoImageParaphsContent component
-                           - Accepts a data prop of type PageContentType[]
-                           - Iterates through the data array and conditionally renders Video or Paragraph components based on the presence of videoURL and paragraph properties
-                           - Wrapped in a Stack component with spacing set to "xl"
-
-        * ToggleButton.tsx
-            * ToggleButtonProps
-                * updateContent: 
-                    -  A function to update the content based on the selected choice
-                    - choice: An object of type IChoice representing a choice
-                    - className: A string representing the CSS class name to apply to the Button component
-                * ToggleButton component (React.FC<ToggleButtonProps>)
-                   - Renders a Button component with key set to choice.id, className set to the provided className, and variant set to "outline"
-                   - Contains an onClick event handler that triggers the updateContent function with the choice as an argument
-                   - Inside the Button, a Text component is rendered with fz set to "xl", fontSize set to rem(16), whiteSpace set to "normal", and textAlign set to 'center'. The text displayed is choice.title.
-        * Navbar
-            * Nav.tsx
-                * HEADER_HEIGHT
-                     A constant for the height of the header component, set to rem(73.94)
-                * useStyles
-                    - inner: height, display, justifyContent, alignItems, backgroundColor
-                    - Nav component
-                        Renders a Header component with a height of HEADER_HEIGHT, borderBottom set to 0, borderTop set to 4, and withBorder enabled Wrapped in a Container component with the inner class from useStyles and fluid property
-                    - Contains a Group component with an Image component    inside, which has properties like maw, mah, ml, mx, radius, src, and alt
-                    - Also contains a Burger component with properties like size and color, and opened set to false
