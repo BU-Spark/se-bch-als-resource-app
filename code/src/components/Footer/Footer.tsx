@@ -5,7 +5,7 @@ import { Container } from "@mantine/core";
 
 import best_childrens_hospital_us_news from "public/best_childrens_hospital_us_news.png";
 import { footerLinkData } from "@/constants/footerLinkData";
-import { useStyles } from "@/utils/FooterStyle";
+import { useStyles } from "@/components/Footer/FooterStyle";
 
 /**
  * Footer component that displays a list of links and a logo.

@@ -7,7 +7,7 @@ import { Stack, Text, Button } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
 import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
-import { useStyles } from "@/utils/ResourcesHandoutsStyle";
+import { useStyles } from "@/components/ResourcesHandouts/ResourcesHandoutsStyle";
 
 /**
  * Component to display a list of resources with an option to bookmark them.
