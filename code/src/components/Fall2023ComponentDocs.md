@@ -1,9 +1,14 @@
 Docs Written by @ArkashJ, contact for assistance
 DOCUMENTATION:
 
+Note from @jacob-stein1
+As of Spring 2024, this structure is outdated. We kept some of the components, removed some, and refactored others. Please see the Spring 2024 component README for the most up-to-date component documentation.
+
 File Structure:
     --> code
         -> components
+            -> Bookmark
+                -> BookmarkButton.tsx
             -> Footer
                 -> Footer.tsx
                 -> Titles.tsx
@@ -20,9 +25,10 @@ File Structure:
                     -> TestimonialOrHandouts.tsx
                     -> VideoImageParagraphsContent.tsx
                 -> ToggleButton.tsx
-                -> Navbar
-                    -> Nav.tsx      
+            -> Navbar
+                -> Nav.tsx      
             -> Docs.md
+
 
 
 ### Footer 
