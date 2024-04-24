@@ -1,7 +1,7 @@
 Docs Written by @jacob-stein1, contact for assistance
 DOCUMENTATION:
 
-Below is the file structure of the components. Most components rely on global styles, which are available in the utils folder. Most components also require additional static styling, which is including in the .css files in the same sub-directory. Some components, like Title requires dynamic styling, which is instead created using mantine in a .tsx file.
+Below is the file structure of the components. Most components rely on global styles, which are available in the utils folder. Most components also require additional static styling, which is including in the .css files in the same sub-directory. Some components, like Title require dynamic styling, which is instead created using mantine in a .tsx file.
 
 File Structure:
 - code/

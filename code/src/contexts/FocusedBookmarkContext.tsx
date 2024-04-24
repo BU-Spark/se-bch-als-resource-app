@@ -10,6 +10,11 @@ const FocusedBookmarkContext = createContext<FocusedBookmarkType | undefined>(
   undefined
 );
 
+/**
+ * Custom hook for accessing the FocusedBookmarkContext.
+ * Must be used within a FocusedBookmarkProvider.
+ * @returns {FocusedBookmarkType} The focused bookmark and set function.
+ */
 export const useFocusedBookmark = () => {
   const context = useContext(FocusedBookmarkContext);
   if (!context) {
@@ -20,6 +25,9 @@ export const useFocusedBookmark = () => {
   return context;
 };
 
+/**
+ * Provides the FocusedBookmarkContext to child components
+ */
 export const FocusedBookmarkProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
