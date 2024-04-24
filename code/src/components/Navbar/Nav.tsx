@@ -3,14 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-  createStyles,
-  Header,
-  Container,
-  Group,
-  Burger,
-  rem,
-} from "@mantine/core";
+import { Header, Container, Group, Burger, rem } from "@mantine/core";
 
 import NavList from "../NavList/NavList";
 import styles from "./Nav.module.css";
