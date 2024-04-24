@@ -1,27 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { useRouter } from "next/router";
-import { Text, Loader } from "@mantine/core";
+
+import { Loader, Text } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
-import { IQuestion, IQuestionList } from "@/types/api_types";
+import { IQuestion } from "@/types/api_types";
 
-import ResourcesHandouts from "../components/MainBody/SolutionPageContent/ResourcesHandouts";
 import Title from "../components/Title/Titles";
+import ResourcesHandouts from "../components/ResourcesHandouts/ResourcesHandouts";
 import CopyableLink from "../components/CopyURL/CopyUrl";
-import { bodyContentUseStyles } from "../components/MainBody/HelperFunctions/BodyContentStyle";
+import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import { useBookmarks } from "../contexts/BookmarkContext";
+import styles from "../styles/Bookmark.module.css";
 
+/**
+ * Displays a list of categorized bookmarks and
+ * integrates URL encoding to share bookmarks
+ * across devices.
+ */
 const Bookmarks = () => {
   const { classes } = bodyContentUseStyles();
   const { bookmarks, addBookmark } = useBookmarks();
   const image = useRef("/titleimghome.PNG");
 
-  const [bookmarkURL, setBookmarkURL] = useState("");
+  const [bookmarkUrl, setBookmarkUrl] = useState("");
   const [initialUrlLoaded, setInitialUrlLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const BASE_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
+  const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
 
   type OriginalKeys =
     | "Communication"
@@ -61,16 +67,18 @@ const Bookmarks = () => {
       try {
         setIsLoading(true);
         const response = await fetch(
-          "/api/retrieveQuestions?flowName=communication"
+          "/api/retrieveQuestions?flowName=communication" // Change this when new branches are made
         );
         const data = await response.json();
+        // Parsing the URL
         if (typeof router.query.ids === "string") {
           const refsFromUrl = router.query.ids.split(",");
           const questionsToAdd = data.questions.filter((question: IQuestion) =>
             refsFromUrl.includes(question.ref)
           );
 
-          if (questionsToAdd.length > 0) { //wipe local storage of bookmarks if url encoded
+          if (questionsToAdd.length > 0) {
+            // Wipe local storage of bookmarks if url encoded
             localStorage.setItem("bookmarks", JSON.stringify([]));
           }
 
@@ -78,7 +86,7 @@ const Bookmarks = () => {
             const newBookmark = {
               id: question.ref,
               title: question.title,
-              url: "Communication",
+              url: "Communication", // Change this when new branches are made
             };
             addBookmark(newBookmark);
           });
@@ -93,21 +101,17 @@ const Bookmarks = () => {
     fetchAndAddBookmarks();
   }, [router.query.refs, addBookmark]);
 
-
-  const sortedBookmarks = [...bookmarks].sort((a, b) =>
-    a.title.localeCompare(b.title)
-  );
-
   // Handles construction of URL
   useEffect(() => {
+    const sortedBookmarks = [...bookmarks].sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
     const bookmarkIds = sortedBookmarks
       .map((bookmark) => bookmark.id)
       .join(",");
-    const newUrl = `${BASE_URL}bookmarks?ids=${encodeURIComponent(
-      bookmarkIds
-    )}`;
-    setBookmarkURL(newUrl);
-  }, [sortedBookmarks, router]);
+    const newUrl = `${APP_URL}bookmarks?ids=${encodeURIComponent(bookmarkIds)}`;
+    setBookmarkUrl(newUrl);
+  }, [bookmarks]);
 
   return (
     <div>
@@ -120,46 +124,14 @@ const Bookmarks = () => {
         }}
       />
       {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            marginTop: "15vh",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <div className={styles.loaderContainer}>
           <Loader color="blue" size={110} />
         </div>
       ) : (
         <div>
-          {sortedBookmarks.length > 0 ? (
+          {bookmarks.length > 0 ? (
             <div>
-              <div className={classes.outer}>
-                <Text
-                  style={{
-                    color: "#254885",
-                    marginBottom: "0px",
-                    fontWeight: "bold",
-                    fontSize: "1.7em",
-                  }}
-                >
-                  Save Your Resources
-                </Text>
-                <Text
-                  style={{
-                    color: "#68759C",
-                    fontWeight: "normal",
-                    marginBottom: "10px",
-                    fontSize: "0.8em",
-                  }}
-                >
-                  Use the link below to automatically load and access your
-                  bookmarks in the future, from any device.
-                </Text>
-                <div>
-                  <CopyableLink url={bookmarkURL} />
-                </div>
-              </div>
+              <EncodedUrlDisplay bookmarkUrl={bookmarkUrl} classes={classes} />
               <div className={classes.outer}>
                 {originals.map((original: OriginalKeys) =>
                   categorizedBookmarks[original].length > 0 ? (
@@ -176,11 +148,42 @@ const Bookmarks = () => {
             </div>
           ) : (
             <div className={classes.outer}>
-              <Text>You don&#39;t have any bookmarks.</Text>
+              <Text className={styles.titleStyle}>
+                You don&#39;t have any bookmarks.
+              </Text>
             </div>
           )}
         </div>
       )}
+    </div>
+  );
+};
+
+type EncodedUrlDisplayProps = {
+  bookmarkUrl: string;
+  classes: {
+    outer: string;
+  };
+};
+
+/**
+ * Displays the section containing the encoded URL
+ * @param {EncodedUrlDisplayProps} props - contains url and styles
+ */
+const EncodedUrlDisplay = ({
+  bookmarkUrl,
+  classes,
+}: EncodedUrlDisplayProps) => {
+  return (
+    <div className={classes.outer}>
+      <Text className={styles.titleStyle}>Save Your Resources</Text>
+      <Text className={styles.subtitleStyle}>
+        Use the link below to automatically load and access your bookmarks in
+        the future, from any device.
+      </Text>
+      <div>
+        <CopyableLink url={bookmarkUrl} />
+      </div>
     </div>
   );
 };

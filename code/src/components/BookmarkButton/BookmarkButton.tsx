@@ -1,22 +1,33 @@
-import { useBookmarks } from "../../contexts/BookmarkContext";
-import { Text, Button } from "@mantine/core";
-import { bodyContentUseStyles } from "../MainBody/HelperFunctions/BodyContentStyle";
-import { ResourceLink } from "@/types/dataTypes";
-
+import React from "react";
 import { useRouter } from "next/router";
+
+import { Text, Button } from "@mantine/core";
+
+import { useBookmarks } from "../../contexts/BookmarkContext";
+import { ResourceLink } from "@/types/dataTypes";
+import { bodyContentUseStyles } from "../../utils/BodyContentStyle";
+import styles from "./BookmarkButton.module.css";
 
 type BookmarkButtonProps = {
   id: string;
   url: string;
   title: string;
-  solutionPage: boolean;
+  isSolutionPage: boolean;
 };
 
+/**
+ * Displays a button to bookmark or unbookmark a resource and optionally navigate to the bookmark page.
+ *
+ * @param {string} id - The unique identifier for the resource.
+ * @param {string} url - The URL of the resource.
+ * @param {string} title - The title of the resource.
+ * @param {boolean} isSolutionPage - used for conditional rendering of nav button
+ */
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   id,
   title,
   url,
-  solutionPage,
+  isSolutionPage,
 }) => {
   const { classes } = bodyContentUseStyles();
 
@@ -39,24 +50,16 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   return (
     <div>
       <Button
-        className={classes.inner}
+        className={`${classes.inner} ${styles.button}`}
         variant="outline"
         style={{ marginTop: "40px" }}
         onClick={handleBookmarkClick}
       >
-        <Text
-          fz="xl"
-          style={{
-            fontSize: "16px",
-            whiteSpace: "normal",
-            textAlign: "center",
-            textDecoration: "none",
-          }}
-        >
+        <Text fz="xl" className={styles.text}>
           {isBookmarked ? "Unsave this resource" : "Save this resources"}
         </Text>
       </Button>
-      {solutionPage ? (
+      {isSolutionPage ? (
         <Button
           className={classes.inner}
           variant="outline"
@@ -65,15 +68,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
             router.push("./bookmarks");
           }}
         >
-          <Text
-            fz="xl"
-            style={{
-              fontSize: "16px",
-              whiteSpace: "normal",
-              textAlign: "center",
-              textDecoration: "none",
-            }}
-          >
+          <Text fz="xl" className={styles.text}>
             Go to your bookmarks
           </Text>
         </Button>
