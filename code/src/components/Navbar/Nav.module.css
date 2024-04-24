@@ -1,0 +1,16 @@
+.header {
+  height: 64px;
+  border-bottom: 0;
+}
+
+.inner {
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+
+.logoContainer {
+  padding-left: 10px;
+}
