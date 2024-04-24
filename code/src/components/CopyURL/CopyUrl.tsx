@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 
 import { TextInput, Button, Group, Tooltip } from "@mantine/core";
 
-import styles from "./CopyUrl.module.css";
+import styles from "./CopyURL.module.css";
 
 interface CopyableUrlProps {
   url: string;
