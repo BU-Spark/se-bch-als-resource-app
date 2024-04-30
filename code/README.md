@@ -4,6 +4,7 @@
 npm install
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. Please see the README in the pages directory for more information.
@@ -16,19 +17,26 @@ We will be using mantine.dev (https://mantine.dev/pages/basics/) for our fronten
 The good thing for NextJS is that we can route pages easily. Example:
 
 ```
-import Link from 'next/link'
+import Link from "next/link";
 
-<ul className='flex flex-col  p-4 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
-                    <li className='text-white'>
-                        <Link  href='/' className='text-lg'>Home</Link>
-                    </li>
-                    <li className='text-white'>
-                        <Link href='/Volunteering' className='text-lg'>Volunteering</Link>
-                    </li>
-                    <li className='text-white'>
-                        <Link href='/VC' className='text-lg'>Experience</Link>
-                    </li>
-</ul>
+<ul className="flex flex-col  p-4 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+  <li className="text-white">
+    <Link href="/" className="text-lg">
+      Home
+    </Link>
+  </li>
+  <li className="text-white">
+    <Link href="/Volunteering" className="text-lg">
+      Volunteering
+    </Link>
+  </li>
+  <li className="text-white">
+    <Link href="/VC" className="text-lg">
+      Experience
+    </Link>
+  </li>
+</ul>;
+
 
 ```
 
