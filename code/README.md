@@ -40,4 +40,4 @@ import Link from "next/link";
 
 ```
 
-The component directory contains a lot of our work. Please see the documentation in the components for more information on them. Add code for reusability there and import it to the pages in /src/pages/CommunicationPage, /src/pages/FinalPage, /src/pages/HomePage.
+The component directory contains a lot of our work. Please see the documentation in the components for more information on them.

@@ -6,6 +6,7 @@ Below is the file structure of the pages and utils. Most pages rely on global st
 File Structure:
 
 - public/
+
   - best_childrens_hospital_us_news.png
   - Boston_Children's_Hospital_logo.png
   - communications.png
@@ -23,7 +24,7 @@ File Structure:
   - pages/
     - api/
       - retrieveQuestions.tsx
-    - _app.tsx
+    - \_app.tsx
     - bookmarks.tsx
     - communication.tsx
     - index.tsx
@@ -130,7 +131,7 @@ File Structure:
             - A handleGenerateJSON function creates a JSON string of the input, pre- and post-fixed with identifiers for use in Typeform
             - Filters out any input fields that are empty before generating the JSON
             - See documentation on using videos in Typeform for more information on using the JSON construct
-        * CopyableLink component 
+        * CopyableLink component
             - Renders the CopyableLink component with the generated JSON for easy copying
             - Conditionally displays the CopyableLink component only when generatedJson has content
         * Temporary resolution
@@ -138,7 +139,6 @@ File Structure:
             - Putting in a title and URL correctly formats the object needed in Typeform to render a video
             - This is a temporary solution in lieu of a custom backend that can handle this more cleanly
             - Typeform is also limited to one video per page, which is another reason a custom backend is needed
-
 
 ### Utils
 
@@ -182,5 +182,3 @@ File Structure:
         * Attachments equality
             - Defines `areAttachmentsEqual` for comparing two attachments based on their type and href properties
             - Ensures attachments linked to questions are maintained across updates
-
-

@@ -18,9 +18,9 @@ type BookmarkButtonProps = {
 /**
  * Displays a button to bookmark or unbookmark a resource and optionally navigate to the bookmark page.
  *
- * @param {string} id - The unique identifier for the resource.
- * @param {string} url - The URL of the resource.
- * @param {string} title - The title of the resource.
+ * @param {string} id - The unique identifier for the resource
+ * @param {string} url - The URL of the resource
+ * @param {string} title - The title of the resource
  * @param {boolean} isSolutionPage - used for conditional rendering of nav button
  */
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({

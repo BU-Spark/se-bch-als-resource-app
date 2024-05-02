@@ -9,7 +9,7 @@ interface CopyableUrlProps {
 }
 
 /**
- * Component to display a URL in a text input and provides a button to copy it to the clipboard.
+ * Component to display a URL in a text input and provides a button to copy it to the clipboard
  * @param {string} url - The URL
  */
 

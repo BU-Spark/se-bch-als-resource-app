@@ -16,8 +16,8 @@ interface SolutionPageProps {
  * Diaplsy the title, description, any related video attachments,
  * and a list of clickable resources.
  *
- * @param {IQuestion} solutionContent - Contains the solution data.
- * @param {any} classes - Global styling.
+ * @param {IQuestion} solutionContent - Contains the solution data
+ * @param {any} classes - Global styling
  */
 const SolutionPage: React.FC<SolutionPageProps> = ({
   solutionContent,
