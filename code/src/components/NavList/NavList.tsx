@@ -15,7 +15,7 @@ interface NavListProps {
 
 /**
  * Displays navigation links.
- * @param {NavListProps} props - List of links
+ * @param {NavListProps}
  */
 const NavList: React.FC<NavListProps> = ({ links }) => {
   return (

@@ -14,10 +14,10 @@ interface TitlesProps {
 /**
  * Displays a title banner with an optional back button.
  *
- * @param {boolean} hasPrev - Indicates if the back button should render.
- * @param {string} titleImg - The background image URL.
- * @param {string} title - The title to display.
- * @param {() => void} onPrevClick - Optional click handler for the previous button.
+ * @param {boolean} hasPrev - Indicates if the back button should render
+ * @param {string} titleImg - The background image URL
+ * @param {string} title - The title to display
+ * @param {() => void} onPrevClick - Optional click handler for the previous button
  */
 const Titles = ({ hasPrev, titleImg, title, onPrevClick }: TitlesProps) => {
   const { classes } = useStyles({ backgroundImageUrl: titleImg });
