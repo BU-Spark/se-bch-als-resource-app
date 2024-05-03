@@ -19,7 +19,7 @@ jest.mock("next/router", () => ({
 }));
 
 /**
- * Mocks the BookmarkContext.
+ * Mocks the BookmarkContext
  */
 jest.mock("@/contexts/BookmarkContext", () => {
   const originalModule = jest.requireActual("@/contexts/BookmarkContext");
@@ -34,6 +34,15 @@ jest.mock("@/contexts/BookmarkContext", () => {
   };
 });
 
+beforeEach(() => {
+  jest.spyOn(console, "error").mockImplementation(() => {});
+  jest.spyOn(console, "warn").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 describe("Bookmarks Page", () => {
   beforeEach(() => {
     fetchMock.resetMocks();
@@ -43,7 +52,7 @@ describe("Bookmarks Page", () => {
   });
 
   /**
-   * Tests rendering with no bookmarks.
+   * Tests rendering with no bookmarks
    */
   it("Renders with no bookmarks", async () => {
     await act(async () => {
@@ -58,7 +67,7 @@ describe("Bookmarks Page", () => {
   });
 
   /**
-   * Tests rendering a bookmark when added.
+   * Tests rendering a bookmark when added
    */
   it("Renders a bookmark when added", async () => {
     useBookmarks.mockReturnValue({
@@ -67,13 +76,15 @@ describe("Bookmarks Page", () => {
       removeBookmark: jest.fn(),
     });
 
-    const { rerender } = render(
-      <FocusedBookmarkProvider>
-        <BookmarkProvider>
-          <Bookmarks />
-        </BookmarkProvider>
-      </FocusedBookmarkProvider>
-    );
+    await act(async () => {
+      render(
+        <FocusedBookmarkProvider>
+          <BookmarkProvider>
+            <Bookmarks />
+          </BookmarkProvider>
+        </FocusedBookmarkProvider>
+      );
+    });
 
     await waitFor(
       () =>
@@ -89,7 +100,7 @@ describe("Bookmarks Page", () => {
   });
 
   /**
-   * Tests rendering bookmark categories.
+   * Tests rendering bookmark categories
    */
   it("Renders bookmark categories", async () => {
     useBookmarks.mockReturnValue({
@@ -118,7 +129,7 @@ describe("Bookmarks Page", () => {
   });
 
   /**
-   * Tests if URL encoding component is rendered correctly.
+   * Tests if URL encoding component is rendered correctly
    */
   it("URL encoding component rendered", async () => {
     useBookmarks.mockReturnValue({
@@ -148,7 +159,7 @@ describe("Bookmarks Page", () => {
   });
 
   /**
-   * Tests if unexpected original URLs are handled.
+   * Tests if unexpected original URLs are handled
    */
   it("Handles unexpected original URLs", async () => {
     console.warn = jest.fn();
