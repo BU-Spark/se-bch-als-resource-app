@@ -54,7 +54,7 @@ describe("Bookmarks Page", () => {
   /**
    * Tests rendering with no bookmarks
    */
-  it("Renders with no bookmarks", async () => {
+  it("Should render with no bookmarks", async () => {
     await act(async () => {
       render(
         <BookmarkProvider>
@@ -69,7 +69,7 @@ describe("Bookmarks Page", () => {
   /**
    * Tests rendering a bookmark when added
    */
-  it("Renders a bookmark when added", async () => {
+  it("Should render a bookmark when added", async () => {
     useBookmarks.mockReturnValue({
       bookmarks: [{ id: "1", title: "Bookmark 1", url: "Communication" }],
       addBookmark: jest.fn(),
@@ -102,7 +102,7 @@ describe("Bookmarks Page", () => {
   /**
    * Tests rendering bookmark categories
    */
-  it("Renders bookmark categories", async () => {
+  it("Should render bookmark categories", async () => {
     useBookmarks.mockReturnValue({
       bookmarks: [
         { id: "1", title: "Bookmark 1", url: "Communication" },
@@ -131,7 +131,7 @@ describe("Bookmarks Page", () => {
   /**
    * Tests if URL encoding component is rendered correctly
    */
-  it("URL encoding component rendered", async () => {
+  it("Should render the URL component", async () => {
     useBookmarks.mockReturnValue({
       bookmarks: [
         { id: "1", title: "Bookmark 1", url: "Communication" },
@@ -161,7 +161,7 @@ describe("Bookmarks Page", () => {
   /**
    * Tests if unexpected original URLs are handled
    */
-  it("Handles unexpected original URLs", async () => {
+  it("Should handle unexpected original URLs", async () => {
     console.warn = jest.fn();
 
     useBookmarks.mockReturnValue({

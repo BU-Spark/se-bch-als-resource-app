@@ -14,7 +14,7 @@ describe("BookmarkContext", () => {
   /**
    * Tests that the bookmarks context initializes with an empty list
    */
-  it("Initializes empty", () => {
+  it("Should initialize empty", () => {
     const { result } = renderHook(() => useBookmarks(), {
       wrapper: BookmarkProvider,
     });
@@ -24,7 +24,7 @@ describe("BookmarkContext", () => {
   /**
    * Tests the ability to add a single bookmark
    */
-  it("Can add a bookmark", () => {
+  it("Should add a bookmark", () => {
     const { result } = renderHook(() => useBookmarks(), {
       wrapper: BookmarkProvider,
     });
@@ -45,7 +45,7 @@ describe("BookmarkContext", () => {
   /**
    * Tests the ability to remove a bookmark
    */
-  it("Can remove a bookmark", () => {
+  it("Should remove a bookmark", () => {
     const { result } = renderHook(() => useBookmarks(), {
       wrapper: BookmarkProvider,
     });
@@ -68,7 +68,7 @@ describe("BookmarkContext", () => {
   /**
    * Tests that adding the same bookmark twice doesn't create duplicates
    */
-  it("Bookmarks treated as a set", () => {
+  it("Should treat bookmarks as a set", () => {
     const { result } = renderHook(() => useBookmarks(), {
       wrapper: BookmarkProvider,
     });
