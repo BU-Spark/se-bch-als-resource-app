@@ -7,10 +7,10 @@ import QuestionaireBodyContent from "../questionaire-page";
 
 const initialChoices = [
   { id: "0", ref: "0", label: "Communication", link: "/communication" },
-  { id: "0", ref: "0", label: "Computer Access", link: "/computer-access" },
-  { id: "0", ref: "0", label: "Home Access", link: "/home-access" },
+  { id: "1", ref: "0", label: "Computer Access", link: "/computer-access" },
+  { id: "2", ref: "0", label: "Home Access", link: "/home-access" },
   {
-    id: "0",
+    id: "3",
     ref: "0",
     label: "Smart Phone Access",
     link: "/smart-phone-access",
