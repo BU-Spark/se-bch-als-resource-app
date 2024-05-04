@@ -425,24 +425,15 @@ File Structure:
 
 ### Tests
 
-Docs Written by @ArkashJ, contact for assistance
+Docs Written by @jacob-stein1, contact for assistance
 DOCUMENTATION
 
----> Nextjs-Tests
--> index.tests.tsx
--> QuestionnareBodyContent.tests.tsx
--> Questionnare.tests.tsx
--> SolutionPages.tests.tsx
+We have written test cases to check the rendering of components, the function of contexts, and more. Testing is written using the Jest JavaScript testing framework. See their [documentation](https://jestjs.io/docs/getting-started) for more info.
 
-All these tests check whether the components have been rendered or not
+Tests are contained within a '**tests**' directory within each sub-directory of the project. For example /pages/**tests**/'page'.test.js contains the test cases for each page in the pages directory.
 
-cd to the Nextjs-Tests file, install the jest dependency and run tests. Detailed explantion in the TestDocs.md file
+To run all tests:
 
-<img width="285" alt="Screenshot 2023-05-02 at 5 41 41 PM" src="https://user-images.githubusercontent.com/86805856/235793030-dfd1807f-3157-4a73-a605-c2cae6f6e88e.png">
-
-Move the tests to "** test **" folder in pages folder. Then run 'npm run test'. Make sure you have jest installed. For more instructions, navigate to docs in tests folder.
-
-Commands to Run:
 $ npm run test
 
 ### Recommended Next Steps
