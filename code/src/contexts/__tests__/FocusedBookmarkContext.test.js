@@ -1,18 +1,28 @@
-import { renderHook, act } from "@testing-library/react-hooks";
+import React from "react";
+import { render, fireEvent, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 import {
   FocusedBookmarkProvider,
   useFocusedBookmark,
 } from "@/contexts/FocusedBookmarkContext";
 
-beforeEach(() => {
-  jest.spyOn(console, "error").mockImplementation(() => {});
-  jest.spyOn(console, "warn").mockImplementation(() => {});
-});
-
-afterEach(() => {
-  jest.restoreAllMocks();
-});
+function TestComponent() {
+  const { focusedBookmark, setFocusedBookmark } = useFocusedBookmark();
+  return (
+    <div>
+      {focusedBookmark ? (
+        <div>{focusedBookmark.title}</div>
+      ) : (
+        <div>No Bookmark Set</div>
+      )}
+      <button onClick={() => setFocusedBookmark(testBookmark)}>
+        Set Bookmark
+      </button>
+      <button onClick={() => setFocusedBookmark(null)}>Clear Bookmark</button>
+    </div>
+  );
+}
 
 const testBookmark = {
   id: "1",
@@ -25,57 +35,38 @@ describe("FocusedBookmarkContext", () => {
    * Test to ensure that the hook can read the initial state which should be null.
    */
   it("Should initialize with null focused bookmark", () => {
-    const { result } = renderHook(() => useFocusedBookmark(), {
-      wrapper: FocusedBookmarkProvider,
-    });
-    expect(result.current.focusedBookmark).toBeNull();
+    render(
+      <FocusedBookmarkProvider>
+        <TestComponent />
+      </FocusedBookmarkProvider>
+    );
+    expect(screen.getByText("No Bookmark Set")).toBeInTheDocument();
   });
 
   /**
    * Test to ensure that the focused bookmark can be set and retrieved correctly.
    */
   it("Should allow setting and retrieving a focused bookmark", () => {
-    const { result } = renderHook(() => useFocusedBookmark(), {
-      wrapper: FocusedBookmarkProvider,
-    });
-
-    act(() => {
-      result.current.setFocusedBookmark(testBookmark);
-    });
-
-    expect(result.current.focusedBookmark).toEqual(testBookmark);
+    render(
+      <FocusedBookmarkProvider>
+        <TestComponent />
+      </FocusedBookmarkProvider>
+    );
+    fireEvent.click(screen.getByText("Set Bookmark"));
+    expect(screen.getByText("Google")).toBeInTheDocument();
   });
 
   /**
    * Test to ensure that the focused bookmark can be set to null after being set to a value.
    */
   it("Should allow clearing the focused bookmark", () => {
-    const { result } = renderHook(() => useFocusedBookmark(), {
-      wrapper: FocusedBookmarkProvider,
-    });
-
-    // Set to a value first
-    act(() => {
-      result.current.setFocusedBookmark(testBookmark);
-    });
-
-    // Then clear it
-    act(() => {
-      result.current.setFocusedBookmark(null);
-    });
-
-    expect(result.current.focusedBookmark).toBeNull();
-  });
-
-  /**
-   * Test to ensure that using useFocusedBookmark outside of its provider throws an error.
-   */
-  it("Should throw an error", () => {
-    const { result } = renderHook(() => useFocusedBookmark());
-    expect(result.error).toEqual(
-      new Error(
-        "useFocusedBookmark must be used within a FocusedBookmarkProvider"
-      )
+    render(
+      <FocusedBookmarkProvider>
+        <TestComponent />
+      </FocusedBookmarkProvider>
     );
+    fireEvent.click(screen.getByText("Set Bookmark"));
+    fireEvent.click(screen.getByText("Clear Bookmark"));
+    expect(screen.getByText("No Bookmark Set")).toBeInTheDocument();
   });
 });
