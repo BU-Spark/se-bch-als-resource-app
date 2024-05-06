@@ -8,28 +8,15 @@ import ToggleButton from '../components/MainBody/TogglebButton';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 
-/**
- * HomePage
- * @returns 
- */
-
 const HomePage = () => {
   const { classes } = bodyContentUseStyles();
   const router = useRouter();
 
   const question = {id: "1", title:"How can I assist you?"}
-
-  // current choices state
   let [currChoices, setCurChoices] = useState<IChoice[]>([])
-
-  // nextQuestion of each currentChoice
   let [nextQuestions, setNextQuestions] = useState<IQuestion[]>([])
 
 
-  /**
-   * Get the data based on current questionId
-   * @param questionId: id of the question
-   */
   const getAllChoices = async (questionId: string) => {
     const choices = await getChoices(questionId)
     setCurChoices(choices)

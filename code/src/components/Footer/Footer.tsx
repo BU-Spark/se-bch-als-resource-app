@@ -4,14 +4,7 @@ import image12 from 'public/image12.png'
 import Link from 'next/link'
 import { footerLinkData } from '@/constants/footerLinkData';
 
-/**
- * Footer component which renders footer links and logo
- * @param data - array of objects with links to render
- */
-
-// useStyles is a hook that allows you to use Mantine's theming and styling system in any component
 const useStyles = createStyles((theme) => ({
-  //custom styles for footer (flex, center, padded)
   footer: {
     // position: 'absolute',
     display:'flex',
@@ -54,7 +47,7 @@ const useStyles = createStyles((theme) => ({
       paddingBottom: rem(50),
     },
   },
-  // grouping links using flexbox and flexwrap
+
   groups: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -69,7 +62,7 @@ const useStyles = createStyles((theme) => ({
   wrapper: {
     width: rem(160),
   },
-  // links are colored #FFFFFF, inter font, style normal
+
   link: {
     display: 'block',
     color: '#FFFFFF',
@@ -90,14 +83,14 @@ const useStyles = createStyles((theme) => ({
 
 export function FooterLinks() {
   const { classes } = useStyles();
-    // loop through groups, make a <Text> component for mantine.Link for each link
+
     const links = footerLinkData.map((link, index) => (
       <Link href={link.link} className={classes.link} key={index} target='_blank'>
         {link.label}
       </Link>
     ));
 
-  // return footer with logo and links
+
   return (
     <footer className={classes.footer}>
       <Container className={classes.inner}>

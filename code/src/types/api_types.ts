@@ -6,7 +6,6 @@ export interface IChoice {
 export interface IQuestion {
   id: string;
   title: string;
-  description?: string    //updated with optional description field
 }
 
 export interface ISolution {

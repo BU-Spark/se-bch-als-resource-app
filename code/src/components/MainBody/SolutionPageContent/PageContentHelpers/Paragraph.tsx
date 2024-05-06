@@ -1,9 +1,6 @@
 import React from 'react'
-import { Stack, createStyles, Text} from '@mantine/core';
-/**
- * Paragraph component for the solution page
- * @param paragraph - the paragraph to be displayed
- */
+import { Stack, createStyles, rem , Text, AspectRatio } from '@mantine/core';
+
 
 const useStyles = createStyles((theme) => ({
   bodyText: {
@@ -20,11 +17,9 @@ const useStyles = createStyles((theme) => ({
 
 const paragraph = "This part is reserved for the brief description of the solution above. Placeholder texts are used for now.  Lorem ipsum dolor sit amet consectetur. Urna placerat a amet.Lorem ipsum dolor sit amet consectetur. Urna placerat a amet.Lorem ipsum dolor sit amet consectetur. Urna placerat a amet."
 
-// accepts a paragraph prop (string) for the content
+
 const Paragraph = ({paragraph}:{paragraph: string}) => {
   const { classes } = useStyles()
-  // renders a Text component with the content and applies bodyText style from useStyles, wrapped in a Stack component with a backgroundColor 
-  // based on the colorScheme
   return (
     <div>
       <Stack

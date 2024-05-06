@@ -1,7 +1,5 @@
 import { createStyles, rem } from '@mantine/core';
 
-
-
 export const bodyContentUseStyles = createStyles((theme) => ({
   inner: {
     height: '57px',
@@ -17,6 +15,9 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     alignContent: 'center',
     cursor: 'pointer',
 
+    '&:hover': {
+        backgroundColor: '#254885',  color: "#FFFFFF",
+    },
 
     [theme.fn.smallerThan('xs')]: {
       height: '57px',
@@ -26,9 +27,6 @@ export const bodyContentUseStyles = createStyles((theme) => ({
       justifyContent: 'center',
       alignItems: 'center',
       alignContent: 'center',
-      '&:hover': {
-        backgroundColor: '#254885',  color: "#FFFFFF",
-    },
     },
   },
 
@@ -60,25 +58,9 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     },
   },
 
-  descriptionText: {
-    fontSize: rem(16), // smaller font size than 'text'
-    fontWeight: 'normal', // less bold than 'text'
-    color: '#254885', // same color as 'text'
-    paddingTop: rem(1), // add some space above the description
-    fontStyle: 'normal',
-    letterSpacing: rem(-0.5),
-    textAlign: 'left',
-    fontFamily: `Montserrat, ${theme.fontFamily}`,
-    [theme.fn.smallerThan('xs')]: {
-      fontSize: rem(16),
-      textAlign: 'left'
-    },
-  },
-
-
   outer: {
-    paddingTop: rem(26),
-    pddingBottom: '10%',
+    // paddingTop: rem(24),
+    // pddingBottom: rem(24),
     
     paddingLeft: '10%',
     paddingRight: '10%',

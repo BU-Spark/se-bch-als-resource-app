@@ -1,7 +1,8 @@
 import React from 'react'
-import { Stack, createStyles, rem , Text, Button } from '@mantine/core';
-import { ResourceLink } from '@/types/dataTypes';
-import { IconFileDescription } from '@tabler/icons-react';
+import { Stack, createStyles, rem , Text} from '@mantine/core';
+import { PageContentType } from '@/types/dataTypes';
+import Video from './PageContentHelpers/Video';
+import Paragraph from './PageContentHelpers/Paragraph';
 
 
 const useStyles = createStyles((theme) => ({
@@ -45,36 +46,28 @@ const useStyles = createStyles((theme) => ({
   outer: {
     paddingTop: rem(24),
     pddingBottom: rem(24),
-    paddingLeft: '10%',
+    // paddingLeft: '10%',
   },
 }))
 
 
-const Resources = ({title, data}: {title: String,data: ResourceLink[]}) => {
+const VideoImageParaphsContent = ({data}: {data: PageContentType[]}) => {
   const { classes } = useStyles()
-
 
   return (
     <div>
       <Stack
       spacing="xl"
     >
-      <Text className={classes.text}> {title} </Text>
-      {data.map((resource) => (  
-        <Button key={resource.id}
-          className={classes.inner}
-          variant="outline"
-          leftIcon = {<IconFileDescription color='#254885'/>}
-          component = "a"
-          href = {resource.url} 
-          target="_blank"
-          >
-            {resource.title}
-        </Button>
+      {data.map((pagetypecontent) => ( 
+        <div>
+          {pagetypecontent.videoURL !="" ? <Video url={pagetypecontent.videoURL}/> : <></>}
+          {pagetypecontent.paragraph !="" ? <Paragraph paragraph={pagetypecontent.paragraph} /> : <></>}
+        </div>
       ))}
     </Stack>
     </div> 
   )
 }
 
-export default Resources
+export default VideoImageParaphsContent

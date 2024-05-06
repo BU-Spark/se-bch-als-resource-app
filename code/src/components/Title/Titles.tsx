@@ -1,80 +1,64 @@
-import { Title, createStyles, rem } from "@mantine/core";
-import { IconChevronLeft } from "@tabler/icons-react";
-// import { NextRouter } from "next/router"; -- uncomment for dynamic routing
+import {
+  Title,
+  createStyles,
+  rem
+} from '@mantine/core';
+import { IconChevronLeft} from '@tabler/icons-react';
+import { NextRouter } from 'next/router';
 
-/**
- * Titles component
- */
 
-/**
- * Titles component
- */
-let img = "";
-const Titles = ({
-  hasPrev,
-  prevQuestion, // Change back to router for dynamic routing
-  titleImg,
-  title,
-}: {
-  hasPrev: boolean;
-  prevQuestion: any; // Fix when implementing dynamic routing
-  titleImg: string;
-  title: string;
-}) => {
-  //displays the title passed as a prop and applies custom styles from useStyles
-  img = titleImg;
-  const { classes } = useStyles();
+let img = ""
+const Titles = ({hasPrev, router, titleImg, title}:{hasPrev: boolean, router: NextRouter, titleImg: string, title: string}) => {
+  img = titleImg
+  const { classes} = useStyles();
   const ChevronIcon = IconChevronLeft;
 
   return (
-    <div
-      className={classes.wrapper}
-      style={{
-        backgroundImage: `linear-gradient(0deg, rgba(0, 48, 135, 0.5), rgba(0, 48, 135, 0.5)), url(${titleImg})`,
-      }}
-    >
-      {hasPrev ? (
+    <div className={classes.wrapper}>
+        {hasPrev ? (
         <ChevronIcon
-          // displays only if hasPrev is true, onClick route to the previous page
-          className={classes.chevron}
-          size="3.4rem"
-          stroke={2}
-          onClick={prevQuestion}
-        />
-      ) : null}
-      {/* Return a <div> that contains the ChevronIcon and the Title component */}
+        className={classes.chevron}
+        size="2.5rem"
+        stroke={2.5}
+        onClick={() => router.back()}
+      />) : null}
+      
       <div className={classes.inner}>
-        <Title className={classes.title}>{title}</Title>
+        <Title className={classes.title}>
+          {title}
+        </Title>
       </div>
     </div>
   );
-};
+}
 
 export default Titles;
 
 const useStyles = createStyles((theme) => ({
+
   chevron: {
-    transition: "transform 200ms ease",
-    position: "absolute",
-    left: rem(14),
-    top: "15.36%",
-    color: "#FFFFFF",
+    transition: 'transform 200ms ease',
+    position: "absolute", 
+    left: "2.02%", 
+    top: "15.36%", 
+    color: "#FFFFFF"
   },
   wrapper: {
-    position: "relative",
-    // paddingTop: rem(10),
-    // paddingBottom: rem(100),
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    position: 'relative',
+    paddingTop: rem(10),
+    paddingBottom: rem(100),
+    backgroundImage: 'linear-gradient(0deg, rgba(0, 48, 135, 0.5), rgba(0, 48, 135, 0.5)), url('+img+')',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     height: rem(203),
 
-    [theme.fn.smallerThan("xs")]: {
-      // paddingTop: rem(10),
-      // paddingBottom: rem(100),
+    [theme.fn.smallerThan('xs')]: {
+      paddingTop: rem(80),
+      paddingBottom: rem(50),
     },
   },
   inner: {
-    position: "absolute",
+    position: 'absolute',
     width: rem(132),
     height: rem(41),
     left: rem(24),
@@ -86,21 +70,21 @@ const useStyles = createStyles((theme) => ({
   title: {
     fontWeight: 600,
     fontSize: rem(35),
-    fontStyle: "normal",
+    fontStyle: 'normal',
     letterSpacing: rem(-1),
     // paddingLeft: theme.spacing.xs,
     paddingRight: theme.spacing.xs,
     color: theme.white,
     marginBottom: theme.spacing.xs,
-    textAlign: "left",
+    textAlign: 'left',
     fontFamily: `Montserrat, ${theme.fontFamily}`,
     lineHeight: rem(51),
-    paddingLeft: rem(10),
 
-    [theme.fn.smallerThan("xs")]: {
+    [theme.fn.smallerThan('xs')]: {
       fontSize: rem(35),
-      textAlign: "left",
-      paddingLeft: rem(10),
+      textAlign: 'left',
     },
   },
+
+
 }));

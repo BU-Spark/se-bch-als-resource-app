@@ -1,14 +1,10 @@
-import QuestionaireBodyContent from './QuestionairePage'
+import HomePage from './HomePage';
+
+
 
 export default function Home() {
   return (
-    // UNCOMMENT FOR TESTING
-    // <div data-testid="questionaire-page">
-    //   <QuestionairePage />
-    // </div>
-    // <HomePage/>
-    <QuestionaireBodyContent />
+    <HomePage/>
   )
 }
-
 
