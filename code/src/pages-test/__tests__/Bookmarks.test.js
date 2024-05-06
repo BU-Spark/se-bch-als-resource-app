@@ -5,7 +5,7 @@ import { act } from "react-dom/test-utils";
 import fetchMock from "jest-fetch-mock";
 import "@testing-library/jest-dom";
 
-import Bookmarks from "../bookmarks";
+import Bookmarks from "../../pages/bookmarks";
 import { BookmarkProvider, useBookmarks } from "@/contexts/BookmarkContext";
 import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
 

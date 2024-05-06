@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 
-import QuestionaireBodyContent from "../questionaire-page";
+import QuestionaireBodyContent from "../../pages/questionaire-page";
 
 const initialChoices = [
   { id: "0", ref: "0", label: "Communication", link: "/communication" },
