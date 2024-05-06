@@ -7,11 +7,11 @@
  */
 export function getYouTubeEmbedUrl(url: string) {
     const regExp =
-        /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/;
     const match = url.match(regExp);
 
-    if (match && match[2].length === 11) {
-        return `https://www.youtube.com/embed/${match[2]}`;
+    if (match) {
+        return `https://www.youtube.com/embed/${match[4]}`;
     } else {
         return null;
     }
@@ -33,7 +33,8 @@ export function extractBetweenResources(text: string): string | null {
         return null; // One of the tags not found
     }
 
-    return text.substring(startIndex + startTag.length, endIndex).trim();
+    const extractedText = text.substring(startIndex + startTag.length, endIndex).trim();
+    return extractedText === "" ? null : extractedText;
 }
 
 /**
