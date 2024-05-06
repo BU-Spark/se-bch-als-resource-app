@@ -465,4 +465,6 @@ $ npm run test
 We deployed the frontend in [vercel](https://se-bch-als-resource-app-zeta.vercel.app/)
 Please note the deployed link does not work on the BU Network for some reason.
 
+The data is hosted on Typeform on the buspark@bu.edu account. The api calls to typeform are handled in /api/retrieveQuestions
+
 You can contact Jacob at jmstein@bu.edu for information if you need.
