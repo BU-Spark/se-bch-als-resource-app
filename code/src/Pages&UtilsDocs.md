@@ -37,6 +37,7 @@ File Structure:
     - Home.module.css
     - ResourceLinkGen.module.css
   - utils/
+    - apiUtils.tsx 
     - BodyContentStyle.tsx
     - GetSolutionPageForChoice.tsx
     - QuestionUtils.tsx
@@ -141,7 +142,13 @@ File Structure:
             - Typeform is also limited to one video per page, which is another reason a custom backend is needed
 
 ### Utils
-
+    * apiUtils.tsx
+        * getYouTubeEmbedUrl
+            - Returns the YouTube embed URL for a given YouTube video either in short form or long form.
+        * extractBetweenResources
+            - Returns the text value between [*resources*] tags that are passed in the description, typically pasted from /resource-link-gen
+        * removeResourcesSection
+            - Returns the text value without [*resources*] tags and the content inside the tags that are passed in the description, typically pasted from /resource-link-gen
     * BodyContentStyle.tsx
         * Common style traits
             - Establishes consistent color schemes and border styles
