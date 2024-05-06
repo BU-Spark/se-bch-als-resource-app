@@ -25,7 +25,6 @@ const BookmarkContext = createContext<BookmarkContextType | undefined>(
   undefined
 );
 
-
 /**
  * Custom hook to use the bookmark context.
  * @throws Will throw an error if used outside of BookmarkProvider context.
@@ -57,7 +56,6 @@ export const BookmarkProvider: React.FC<BookmarkProviderProps> = ({
   // Effect to load bookmarks from localStorage on component mount
   useEffect(() => {
     const saved = localStorage.getItem("bookmarks");
-    console.log(saved);
     if (saved) {
       setBookmarks(JSON.parse(saved));
     }

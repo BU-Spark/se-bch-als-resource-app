@@ -4,57 +4,17 @@ import {
   TYPEFORM_API_URL,
 } from "../../constants/globals";
 import {
-  IChoice,
-  ILogic,
   IQuestionList,
   IQuestion,
   IAttachment,
-  ISolution,
-  IBodyContent,
 } from "../../types/api_types";
 
-function getYouTubeEmbedUrl(url: string) {
-  const regExp =
-    /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
+import {
+  getYouTubeEmbedUrl,
+  extractBetweenResources,
+  removeResourcesSection,
+} from "../../utils/apiUtils";
 
-  if (match && match[2].length === 11) {
-    return `https://www.youtube.com/embed/${match[2]}`;
-  } else {
-    return null;
-  }
-}
-
-function extractBetweenResources(text: string): string | null {
-  const startTag = "[\\*resources\\*]";
-  const endTag = "[\\*resources\\*]";
-  const startIndex = text.indexOf(startTag);
-  const endIndex = text.indexOf(endTag, startIndex + startTag.length);
-
-  if (startIndex === -1 || endIndex === -1) {
-    return null; // One of the tags not found
-  }
-
-  return text.substring(startIndex + startTag.length, endIndex).trim();
-}
-
-function removeResourcesSection(text: string): string {
-  const startTag = "[\\*resources\\*]";
-  const endTag = "[\\*resources\\*]";
-  const startIndex = text.indexOf(startTag);
-  const endIndex = text.indexOf(endTag, startIndex + startTag.length);
-
-  if (startIndex === -1 || endIndex === -1) {
-    return text; // Tags not found, return original text
-  }
-
-  // Get the part of the string before the start tag and after the end tag
-  const beforeStartTag = text.substring(0, startIndex);
-  const afterEndTag = text.substring(endIndex + endTag.length);
-
-  // Combine these two parts to form the new string
-  return (beforeStartTag + afterEndTag).trim();
-}
 
 export default async function retrieveQuestions(
   req: NextApiRequest,
@@ -128,7 +88,7 @@ export default async function retrieveQuestions(
             /\[https?:\/\/[^\]]+\]\((https?:\/\/[^\)]+)\)/g,
             "$1"
           );
-          console.log("resourceMatch", cleanedResourceString);
+          //console.log("resourceMatch", cleanedResourceString);
           try {
             const resourceData: Array<{ title: string; url: string }> =
               JSON.parse(cleanedResourceString);
