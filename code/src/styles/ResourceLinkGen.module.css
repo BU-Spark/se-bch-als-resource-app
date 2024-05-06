@@ -1,0 +1,43 @@
+.generatorContainer {
+  margin-top: 75px;
+}
+
+.boxStyle {
+  max-width: 800px;
+  margin: auto;
+}
+
+.groupStyle {
+  margin-bottom: 10px;
+}
+
+.inputContainer {
+  width: 80%;
+}
+
+.textInput {
+  width: 100%;
+  padding-top: 10px;
+  font-size: 18px;
+}
+
+.buttonContainer {
+  gap: 20px;
+}
+
+.addButton {
+  font-size: 18px;
+  margin-top: 10px;
+  margin-right: 20px;
+  margin-left: auto;
+}
+
+.generateButton {
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: auto;
+}
+
+.copyLinkContainer {
+  margin-top: 50px;
+}
