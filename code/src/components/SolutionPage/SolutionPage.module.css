@@ -1,0 +1,16 @@
+.solutionContainer {
+  display: flex;
+  align-items: flex-end;
+}
+
+.buttonContainer {
+  flex-grow: 1;
+  margin-bottom: 10px;
+}
+
+.extraButtonStyles {
+  justify-content: flex-start;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 2px;
+}

@@ -1,0 +1,8 @@
+.textInput {
+  flex: 1;
+}
+
+.copyButton {
+  background-color: #003087;
+  font-weight: bold;
+}

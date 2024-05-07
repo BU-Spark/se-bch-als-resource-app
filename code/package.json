@@ -24,15 +24,20 @@
     "@mantine/prism": "^6.0.2",
     "@tabler/icons-react": "^2.14.0",
     "@testing-library/dom": "^9.2.0",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.6",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "dotenv": "^16.3.1",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-fetch-mock": "^3.0.3",
     "next": "^13.2.4",
     "react": "18.2.0",
     "react-aria": "^3.23.1",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
     "react-focus-lock": "^2.9.4",
     "react-router-dom": "^6.18.0",
@@ -44,12 +49,24 @@
       "<rootDir>/node_modules/"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/setupTests.js"
-    ]
+      "<rootDir>/jest.setup.js"
+    ],
+    "moduleNameMapper": {
+      "^@/components/(.*)$": "<rootDir>/src/components/$1",
+      "^@/contexts/(.*)$": "<rootDir>/src/contexts/$1",
+      "^@/types/(.*)$": "<rootDir>/src/types/$1",
+      "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
+      "^@/styles/(.*)$": "<rootDir>/src/styles/$1",
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    },
+    "testEnvironment": "jsdom"
   },
   "devDependencies": {
-    "@jest/globals": "^29.5.0",
-    "@testing-library/react": "^14.0.0",
-    "jest": "^29.5.0"
+    "@types/react-copy-to-clipboard": "^5.0.7",
+    "babel-jest": "^29.7.0",
+    "identity-obj-proxy": "^3.0.0",
+    "ignore-loader": "^0.1.2",
+    "jest": "^29.7.0",
+    "next-router-mock": "^0.9.13"
   }
 }

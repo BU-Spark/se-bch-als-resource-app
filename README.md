@@ -8,6 +8,16 @@ People with ALS around the world are not offered a variety of clinical options. 
 
 The two primary users of this application (mobile or web app) would be patients with ALS or clinicians who work with ALS patients on occasion (such as primary care physicians etc). The goal would be to provide them with a guided system that is constantly updated with the latest information. Each answer to a question or series of questions would lead the user down a different branch of questions and finally suggestions for the patient's current condition. The end goal would be creating a platform that helps distribute the information to patients and clinicians who might not have access to clinics with ALS experts.
 
+### User Stories
+
+As a patient, I want to have the most up-to-date solutions for questions I may have so that I can be sure I am receiving relevant and researched treatments.
+
+As a clinician, I want to have the most up-to-date solutions for questions so that I am giving the proper treatment for my clients' problems.
+
+As a patient, I want to be able to save the resources and articles I’m recommended in the application so that I can access them at a future date.
+
+As an admin, I want to be able to edit the ordering of questions along with the content in an intuitive and easy manner so that I can manage the application
+
 ### Run Project
 
 Frontend: <br>
@@ -18,86 +28,109 @@ npm install
 npm run dev
 ```
 
-Strapi: <br>
-nagivate to \backend_strapi to run strapi locally <br>
-create a .env for keys file. Contact me or spark for the file's details. <br>
+Backend: <br>
 
-```bash
-npm install
-npm run develop
-```
-
-<br> uncomment this line to use the local version of strapi on your computer https://github.com/BU-Spark/se-bch-als-resource-app/blob/8bbdc2c0b6e2e775b7928429743426246e97d274/code/src/constants/globals.tsx#L2
-<br> ask me on merna.alghannam@gmail.com for access as an admin to strapi
+Backend is hosted on Typeform.
 
 ## Getting Started
 
-```bash
-npm install
-npm run dev
-```
-
 ### Architecture
 
-A presentation explaning the project
+Here is the Spring 2024 Midterm [slides](https://docs.google.com/presentation/d/14D7LLQVyJqyRsZOZrKRtz57jpahWUS9vqxkEOyitveg/edit?usp=sharing) that go over the project.
 
-https://docs.google.com/presentation/d/11JwhtYG3_TAnesC0EPIhte9aymyAj1dD0EDDxbxzQCE/edit?usp=sharing
+Below is a screenshot of the OLD architecture using Strapi. Please see the README is old-backend-strapi for more details.
 
 <img width="875" alt="Screenshot 2023-05-02 at 5 49 11 PM" src="https://user-images.githubusercontent.com/86805856/235793618-32ef3573-40b2-4ad6-acb2-ac6d1a01c521.png">
+
+Below is a screenshot of the NEW architecture using Typeform.
+
+![New Architecture](./code/public/new-typeform-architecture.png)
 
 ### Files
 
 To modify components you can go to /src/components. Details for the components, constants,
-images and styles are in the ComponentDocs.md file.
+images and styles are in the ComponentDocs.md files.
 
-<img width="196" alt="Screenshot 2023-05-02 at 5 41 20 PM" src="https://user-images.githubusercontent.com/86805856/235792999-e6a4e35a-8127-45d3-b8c7-c9b593922b25.png">
+### Pages and Utils
 
-### API and Pages
-
-To understand the API and pages, naviagte to the the Pages&APIDocs.md file in src.
-<img width="489" alt="Screenshot 2023-05-02 at 5 41 05 PM" src="https://user-images.githubusercontent.com/86805856/235792972-93dc9152-dc3a-4bfa-89c6-942290798f1d.png">
+To understand the utils, Typeform API, and pages, naviagte to the the Pages&UtilsDocs.md file in src.
 
 ### Extendability
 
 1. Database: The code for storing the data in a database (for this code it is mongodb) has been provided. Since it was not required to do so for our project, we did not do so but for future teams, they can modify this code data storage.
 
-2. Deployment on cloud: The application can easily be deployed on a cloud provider. The tests help users see if the code breaks or not. Furthemore, they can view our CI/CI workflows for cloudflare/vercel to deploy this app.
+2. Deployment on cloud: The application can easily be deployed on a cloud provider. The tests help users see if the code breaks or not. During the semester, we hosted our test versions for the client on Vercel, which provides automatic CI/CD
 
 3. Code modification: We have written modular code written, dividing code into components and classes. Furthermore, detailed explanations for each class can be provided below and on the application.
 
-Detailed Explanations:
+Below is a detailed explanation of components and pages, which can also be found in their respective READMEs.
 
 ### Components
 
-Docs Written by @ArkashJ, contact for assistance
-DOCUMENTATION:
+Below is the file structure of the components. Most components rely on global styles, which are available in the utils folder. Most components also require additional static styling, which is including in the .css files in the same sub-directory. Some components, like Title require dynamic styling, which is instead created using mantine in a .tsx file.
 
 File Structure:
---> code
--> components
--> Footer
--> Footer.tsx
--> Titles.tsx
--> MainBody
--> HelperFunctions
--> BodyContentStyle.tsx
--> Selection.tsx
--> SolutionPageContent
--> PageContentHelpers
--> Paragraph.tsx
--> Video.tsx
--> PageContent.tsx
--> Resources.tsx
--> TestimonialOrHandouts.tsx
--> VideoImageParagraphsContent.tsx
--> ToggleButton.tsx
--> Navbar
--> Nav.tsx  
- -> Docs.md
 
-### Footer
+- code/
+  - components/
+    - BookmarkButton/
+      - BookmarkButton.tsx
+      - BookmarkButton.module.css
+    - CopyURL/
+      - CopyUrl.tsx
+      - CopyUrl.module.css
+    - Footer/
+      - Footer.tsx
+      - FooterStyle.tsx
+    - Navbar/
+      - Nav.tsx
+      - Nav.module.css
+    - NavList/
+      - NavList.tsx
+      - NavList.module.css
+    - ResourcesHandouts/
+      - ResourcesHandouts.tsx
+      - ResourcesHandoutsStyle.tsx
+    - SolutionPage/
+      - SolutionPage.tsx
+      - SolutionPage.module.css
+    - Title/
+      - Titles.tsx
+      - TitleStyle.tsx
+    - Fall2023ComponentDocs.md
+    - Spring2024ComponentDocs.md
 
-    * Titles.tsx
+### Header
+
+     * Nav.tsx
+        * Styles
+            - custom styles for the header
+            - wrapper for the logo
+            - styles for props inside the title
+        * Links
+            - list of links appearing in the drop-down menu
+            - maps each link to a title with a link
+            - currently statically included in file
+        * Burger
+            - uses mantine Burger component
+            - Click to display drop-down menu
+            - Drop-down items inherent toggle function to closer Burger
+        * Returns a <div> with the logo and Burger
+     * NavList.tsx
+        * Styles
+            - styles for list container
+            - styles for each list items
+            - individual styling for last link item
+        * Links
+            - object with title, link, and onClick function
+            - currently only maps to home and bookmarks
+            - passed in as params
+            - currently statically encoded in Nav.tsx
+        * onClick function
+            - receives an onClick function from Nav.tsx
+            - all current links use the toggleMenu function from Nav.tsx
+            - allows for more dynamic behavior in future iterations
+     * Titles.tsx
         * useStyles
             - custom styles for titles (position, size, color)
             - chevron icon (transition, position, color)
@@ -112,7 +145,90 @@ File Structure:
             - displays only if hasPrev is true
             - onClick triggers prevQuestion function
         * Return a <div> that contains the ChevronIcon and the Title component
-    * Footer.tsx
+
+### Body
+
+     * CopyURL
+        * Styles
+            - coloring for the button
+            - styling for text input
+        * URL encoding
+            - the link encodes saved bookmarks by id
+            - on load, a useEffect will parse and add the bookmarks to a global context
+            - enables link sharing across devices
+            - displayed link uses base URL, make sure you change it when deploying
+        * Overrides local storage
+            - a useEffect also reads saved bookmarks from local storage
+            - locally stored bookmarks will automatically be encoded in the displayed URL
+            - if there are local bookmarks when an encoded url is used, they will be wiped
+            - may be worth discussing with client if URL encoding should take precedent
+        * Copy button
+            - clicking the button automatically loads URL to clipboard
+            - changes color to indicate when clicked
+            - also highlights the url in the form
+        * Return a <div> that contains the copyable link and copy button
+     * ResourcesHandouts
+        * handleBookmarkClick
+            - sends user back to the communication branch
+            - currently is statically encoded, next teams will need to send back to respective source branch
+            - sets the value of a global context to a clicked solution, see context documentation for more info
+        * useStyles
+            - follows global styling conventions for inner and outer, see utils for more details
+            - styling for container for link portion
+            - styling to wrap the BookmarkButton
+            - assumes BookmarkButton isSolutionPage is false when rendered on /bookmark
+            - assumes BookmarkButton isSolutionPage is true when rendered on /communication
+            - only gets rendered to display solutions or bookmarks
+        * Solution button
+            - routes the user back to /communication with the solution state loaded
+            - dependent on the focused bookmark context, see context documentation for more info
+            - used to hold a link to the external solution itself, see old component documentation
+        * BookmarkButton with conditional rendering
+            - always renders the save/unsave button, conditionally renders the 'Go to bookmarks' button
+            - renders 'Go to bookmarks' button on SolutionPage components, not on bookmark page
+            - clicking save adds the resource id to the global context holding bookmarks
+            - click unsave removes the the resource id from the global context
+        * Return a <div> containing a list of resources with a corresponding link
+     * BookmarkButton
+        * useStyles
+            - uses the inner style for both buttons
+            - all other styles come from CSS file
+        * Styles
+            - styles for text contained within buttons
+            - container for bookmark navigation button
+            - container for save/unsave button
+        * handleBookmarkClick
+            - creates a new bookmark with id, title, and url
+            - adds newly created bookmark to global bookmark context
+            - if bookmark is already in context, removes it instead
+            - see context docs for more information
+        * Conditional button rendering
+            - button is used on SolutionPage and bookmark page
+            - only render navigate to bookmark page on the SolutionPage instances
+            - button containers subject to page styles
+            - may be better to split into two components in the future, SaveButton and BookmarkNavButton
+        * Returns a <div> containing a save button and conditionally a bookmark nav button
+     * SolutionPage
+        * Video display
+            - renders a video if it exists
+            - solution content is passed in as a prop
+            - solution content is originally retrieved from Typeform
+            - uses global styling, see utils for more info
+        * Resource map
+            - Maps out a list of resource links
+            - Links map to external video or article
+            - Uses global styles and additional custom styles
+            - May be replaceable with a ResourcesHandout
+        * BookmarkButton
+            - Renders a save/unsave button using global styling
+            - Renders the 'Go to bookmarks' button, also fitted with global styling
+            - Bookmarks can also be removed from the SolutionPage
+            - See context docs for how bookmarks are added and removed from global context
+        * Returns a <div> containing the corresponding solution and a BookmarkButton
+
+### Footer
+
+     * Footer.tsx
         * useStyles
             - custom styles for footer (flex, center, padded)
             - logo
@@ -120,282 +236,235 @@ File Structure:
             - links are colored #FFFFFF, inter font, style normal
             - on hover underline
         * Loop through groups, make a <Text> component for mantine.Link
+        * Dynaically expands and shrinks to fit the size of the page no matter how many resources or bookmarks
         * return <div> with all the links
 
-### MainBody
+### Pages and Utils
 
-    * HelperFunctions
-        * BodyContentStyle.tsx
-            * inner
-                - height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                - hover effect: backgroundColor, color
-                - media query for smaller than 'xs' screen sizes (height, display, width, justifyContent, alignItems, alignContent)
-            * chevron
-                - transition, position, left, top, color
-            * text
-                - fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-            * outer
-                - paddingLeft, paddingRight
-        * Selection.tsx
-            - return selection div
+Below is the file structure of the pages and utils. Most pages rely on global styles, which are available in the utils folder. Most components also require additional static styling, which is including in the .css files in the /styles directory.
 
-    * SolutionPageContent
-        * PageContentHelpers
-            * Paragraph.tsx
-                * useStyles
-                    - bodyText: fontFamily, fontStyle, fontWeight, fontSize, lineHeight, color, textAlign
-                * Paragraph component
-                    - accepts a paragraph prop (string) for the content
-                    - renders a Text component with the content and applies bodyText style from useStyles
-                    - wrapped in a Stack component with a backgroundColor based on the colorScheme
-            * Video.tsx
-                * useStyles
-                    - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                    - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                    - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                    - video: align
-                    - outer: paddingTop, paddingBottom
-                * Video component
-                    - accepts a url prop (string) for the video source
-                    - renders an AspectRatio component with the video element
-                    - video element uses the provided url as the source
-                    - wrapped in a Stack component with a backgroundColor based on the colorScheme
-            * PageContent.tsx
-                * PageContent component
-                    - Accepts a data prop of type PageContentType[]
-                    - Iterates through the data array and conditionally renders - Video or Paragraph components based on the presence of   videoURL and paragraph properties
-                    - Wrapped in a Stack component with spacing set to "xl"
-            * Resources
-                * Resources.tsx
-                    * useStyles
-                        - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                        - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                        - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                        - outer: paddingTop, paddingBottom, paddingLeft
-                    * Resources component
-                       - Accepts a data prop of type ResourceLink[]
-                       - Iterates through the data array and renders a Button component for each resource
-                       - Button component has a leftIcon and is styled with the inner class from useStyles
-                       - Wrapped in a Stack component with spacing set to "xl"
-                * TestimonialsOrHandouts
-                    * TestimonialsOrHandouts.tsx
-                        * useStyles
-                        - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                        - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                        - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                        - outer: paddingTop, paddingBottom, paddingLeft
-                        - TestimonialsOrHandouts component
-                        * Accepts a data prop of type HandoutOrTestimonialLink[]
-                        - Iterates through the data array and renders a Button component for each handout or testimonial
-                        - Button component has a leftIcon and is styled with the inner class from useStyles
-                        - Wrapped in a Stack component with spacing set to "xl"
-                * VideoImageParaphsContent
-                    * VideoImageParaphsContent.tsx
-                        * useStyles
-                            - inner: height, display, width, color, border, borderRadius, justifyContent, alignItems, alignContent, cursor
-                            - text: fontWeight, paddingTop, width, fontSize, fontStyle, letterSpacing, color, textAlign, fontFamily
-                            - media query for smaller than 'xs' screen sizes (fontSize, textAlign, width)
-                            - outer: paddingTop, paddingBottom
-                        * VideoImageParaphsContent component
-                           - Accepts a data prop of type PageContentType[]
-                           - Iterates through the data array and conditionally renders Video or Paragraph components based on the presence of videoURL and paragraph properties
-                           - Wrapped in a Stack component with spacing set to "xl"
+File Structure:
 
-        * ToggleButton.tsx
-            * ToggleButtonProps
-                * updateContent:
-                    -  A function to update the content based on the selected choice
-                    - choice: An object of type IChoice representing a choice
-                    - className: A string representing the CSS class name to apply to the Button component
-                * ToggleButton component (React.FC<ToggleButtonProps>)
-                   - Renders a Button component with key set to choice.id, className set to the provided className, and variant set to "outline"
-                   - Contains an onClick event handler that triggers the updateContent function with the choice as an argument
-                   - Inside the Button, a Text component is rendered with fz set to "xl", fontSize set to rem(16), whiteSpace set to "normal", and textAlign set to 'center'. The text displayed is choice.title.
-        * Navbar
-            * Nav.tsx
-                * HEADER_HEIGHT
-                     A constant for the height of the header component, set to rem(73.94)
-                * useStyles
-                    - inner: height, display, justifyContent, alignItems, backgroundColor
-                    - Nav component
-                        Renders a Header component with a height of HEADER_HEIGHT, borderBottom set to 0, borderTop set to 4, and withBorder enabled Wrapped in a Container component with the inner class from useStyles and fluid property
-                    - Contains a Group component with an Image component    inside, which has properties like maw, mah, ml, mx, radius, src, and alt
-                    - Also contains a Burger component with properties like size and color, and opened set to false
+- public/
 
+  - best_childrens_hospital_us_news.png
+  - Boston_Children's_Hospital_logo.png
+  - communications.png
+  - copy-icon.svg
+  - doctor.png
+  - favicon.ico
+  - favicon.png
+  - footerImg.png
+  - friends.png
+  - home.png
+  - titleImgCommunication.png
+  - titleImgHome.PNG
 
-### Pages and Api
-
-Docs Written by @ArkashJ, contact for assistance
-DOCUMENTATION:
-
----> public
--> Boston_Children's Hospital_logo.png
--> CommImg.png
--> communications.png
--> doctor.png
--> footerImg.png
--> friend.png
--> home.png
--> titleImgHome.png
-
----> src
--> constants
--> pages
--> api
--> GetSolutionPageForChoices.tsx
--> hello.ts
--> TempNextQuestionChoices.tsx
--> \_app.tsx
--> \_document.tsx
--> AccountPage.tsx
--> CommunicationPage.tsx
--> FinalPage.tsx
--> index.tsx
--> QuestionareBodyContentPages.tsx
--> QuestionarePage.tsx
--> SolutionPages.tsx
--> styles
--> global.css
--> Home.module.css
--> image12.png
--> types
--> api_types.tsx
--> dataTypes.tsx
--> Docs.md
+- src/
+  - pages/
+    - api/
+      - retrieveQuestions.tsx
+    - \_app.tsx
+    - bookmarks.tsx
+    - communication.tsx
+    - index.tsx
+    - questionnaire-page.tsx
+    - resource-link-gen.tsx
+  - styles/
+    - Bookmark.module.css
+    - Communication.module.css
+    - Globals.css
+    - Home.module.css
+    - ResourceLinkGen.module.css
+  - utils/
+    - BodyContentStyle.tsx
+    - GetSolutionPageForChoice.tsx
+    - QuestionUtils.tsx
+    - Pages&UtilsDocs.md
+  - Pages&UtilsDocs.md
 
 ### Pages
 
-    * api
-        * GetSolutionPageForChoices.tsx
-            * getSolutionContent.ts
-                * fetchAnyData(APIURL: string): Promise\<any>
-                    * Fetches data from the provided API URL using the "GET" method and returns the JSON response
+    * api/retrieveQuestions.tsx
+        * Utility functions
+            - getYouTubeEmbedUrl: Converts standard YouTube URLs to their embed form
+            - extractBetweenResources: Extracts the content between specific tags within a text string
+            - removeResourcesSection: Removes the section identified by specific tags from the text string
+        * API route handler retrieveQuestions
+            - Handles requests to the /api/retrieveQuestions endpoint.
+            - It expects a query parameter flowName to determine which form questions to retrieve
+            - Processes the communication flow name, returns "Invalid flowName" error until other branches are added
+        * Fetching data
+            - Performs an asynchronous fetch request to the Typeform API using form IDs defined in globals
+            - Transforms the response into a structure defined by IQuestionList and IQuestion
+            - Responds with newly constructed objects, see type definitions for more details
+    * _app.tsx
+        * MantineProvider
+            - Provides global styles and normalization of CSS across the application
+            - Encapsulates the whole application
+        * Nav component
+            - Displays the navigation bar consistently across all pages
+            - Contains hamburder to display the options on-click
+        * Context Providers
+            - Wraps the content with BookmarkProvider and FocusedBookmarkProvider
+            - Passes bookmark-related global states down to the bookmark page
+    * bookmarks.tsx
+        * URL encoding and loading
+            - On page load, bookmarks are fetched and added through URL encoding
+            - Fetches data using the fetchAndAddBookmarks function inside a useEffect
+            - Sets a loading state while bookmarks are being retrieved
+        * Bookmarks categorization
+            - Sorts and categorizes bookmarks into predefined groups such as Communication
+            - Uses a forEach loop to push bookmarks into their respective array and checks for correct key values
+        * Bookmark URL construction
+            - Constructs a shareable URL with encoded bookmark IDs.
+            - The URL reflects the current state of bookmarks allowing them to be shared across devices
+            - Updates the URL state whenever bookmarks change, and prevent infinite useEffect loop
+        * EncodedUrlDisplay subcomponent
+            - Renders a text prompt for saving resources
+            - Displays the encoded URL which users can copy to save their bookmark state
+            - Uses the CopyableLink component to display the URL
+    * communication.tsx
+        * Local storage utilities
+            - Provides saveToLocalStorage and loadFromLocalStorage functions to load states and bookmarks
+            - Ensures survey progress and bookmarks are saved on page reload, but is overridden by URL encoding
+        * Reset notification
+            - Notifies the user when a change has been made in Typeform that is not reflected on their website
+            - Asks that the user reload the page to maintain consistency with the backend
+            - Dismisses the notification after a few seconds to ensure it is not too distracting
+        * Initial choices state
+            - Defines a base state for choices using initialChoices
+            - These choices act as the starting point for the communication questionnaire
+            - If there are choices saved in local storage upon reload, loads them
+        * Question state management
+            - Manages the state of the current question, available choices, and the question timeline
+            - Includes logic to handle transitions between questions based on user interaction
+            - Loads question from local storage if it exists
+        * SolutionPage rendering
+            - Conditionally renders SolutionPage when a leaf in the question tree is reached
+            - Passes the content down to the component, see component for more details
+            - SolutionPage ids get preserved in the FocusedBookmark context for navigation to /communication
+        * Question fetching and state
+            - Fetches question list from an API and updates local storage accordingly
+            - Checks for typeform consistency and updates the UI if changes are detected
+        * Choice handling
+            - Handles user's choice clicks and determines the next question or solution to display
+            - Provides a notification if logic is not set on the backend for a given choice
+            - Loads choices from local storage if they exist
+    * index.tsx
+        * QuestionaireBodyContent component
+            - Contains logic to navigate to /communication or other base branches
+            - Should be eventually used in place of /communication
+            - Used to contain the functionality used by the old team
+    * questionaire-page.tsx
+        * State initialization
+            - Initializes state with useState for currQuestion representing the current question being displayed
+            - Sets currChoices state to hold an array of initial choices for the questionnaire
+            - Uses the default category questions, containing the respective ids from the previous Strapi backend
+            - Rather than updating the state, simply navigates to /[choice]
+    * resource-link-gen.tsx
+        * State management
+            - Manages an array of inputFields in state to dynamically handle multiple input pairs for titles and URLs
+            - Maintains a generatedJson string state that stores the resulting JSON for use in Typeform solutions
+            - The link can be used in the Typeform backend to render a video on a SolutionPage
+        * JSON generation
+            - A handleGenerateJSON function creates a JSON string of the input, pre- and post-fixed with identifiers for use in Typeform
+            - Filters out any input fields that are empty before generating the JSON
+            - See documentation on using videos in Typeform for more information on using the JSON construct
+        * CopyableLink component
+            - Renders the CopyableLink component with the generated JSON for easy copying
+            - Conditionally displays the CopyableLink component only when generatedJson has content
+        * Temporary resolution
+            - This is our temporary solution for allowing the client to add videos in Typeform
+            - Putting in a title and URL correctly formats the object needed in Typeform to render a video
+            - This is a temporary solution in lieu of a custom backend that can handle this more cleanly
+            - Typeform is also limited to one video per page, which is another reason a custom backend is needed
 
-                * getResourceContent(solution_json: any): ResourceLink[]
-                    * Processes the solution JSON to extract an array of `ResourceLink` objects containing the id, title, and URL of each resource
-
-                * getTestimonialOrHandoutContent(api_url: string, solution_json: any): HandoutOrTestimonialLink[]
-                    * Processes the solution JSON to extract an array of `HandoutOrTestimonialLink` objects containing the id, title, and URL of each testimonial or handout
-
-                * getPageContent(api_url: string, solution_json: any): PageContentType[]
-                    * Processes the solution JSON to extract an array of `PageContentType` objects containing the paragraphs, image URLs, and video URLs of each page content item
-
-                * getSolutionContent(solutionId: string): Promise\<[any[], any[], any[]]>
-                    * Given a solutionId, fetches the solution data and returns a tuple containing the lists of ResourceLink, HandoutOrTestimonialLink, and PageContentType objects
-        * hello.ts
-            * handler(req: NextApiRequest, res: NextApiResponse<Data>): void
-                * A Next.js API route handler function that takes a `NextApiRequest` object and a `NextApiResponse<Data>` object
-                * Responds with a status code of 200 and a JSON object containing the name 'John Doe'
-        * TempNextQuestionChoices.tsx
-            * tempNextChoiceSelectionFromJson(clickedChoice: IChoice): Promise<[IQuestion, IChoice[], boolean, ISolution]>
-                * Given a `clickedChoice` object of type `IChoice`, this function returns a Promise with an array containing:
-                    * An `IQuestion` object representing the next question
-                    * An array of `IChoice` objects representing the next set of choices
-                    * A boolean indicating if the current choice has a solution
-                    * An `ISolution` object representing the solution associated with the current choice
-
-                * This function fetches data from the API based on the input `clickedChoice` object and processes the data to return the required information about the next question, its choices, and any solution associated with the input choice.
-
-                * If the input choice does not have a next question or solution, the function returns an empty question, an empty array of choices, and a boolean value set to false.
-
-    * pages/_app.tsx
-        * App(props: AppProps)
-            * This is the main wrapper component for the Next.js application. It includes the Head component for metadata, MantineProvider for global styles and theme overrides, Nav component for navigation, and FooterLinks component for the footer.
-    * pages/_document.tsx
-        * _Document extends Document
-            * This custom Document component is used to augment the default Next.js HTML structure. It includes the Head, Main, and NextScript components.
-    * pages/account.tsx
-        * AccountPage()
-            * This is the AccountPage component that renders the "Save Page" text.
-    * pages/communication.tsx
-        * CommunicationPage()
-            * This is the CommunicationPage component that includes the Nav, Title, and FooterLinks components. The Title component renders the title "Communication" along with a related image.
-    * pages/final.tsx
-        * FinalPage()
-            * This is the FinalPage component that includes the Nav, Resources, and FooterLinks components. The Resources component renders a list of resource links based on the `dummyResourceLinks` data.
-    * pages/index.tsx
-        * Home()
-            * This is the Home component that renders the QuestionairePage.
-    * pages/QuestionaireBodyContentPages.tsx
-        * QuestionaireBodyContent()
-            * This component handles the questionnaire logic, rendering a series of questions and choices. It also handles navigation between questions and displaying the solution page when a solution is reached.
-    * pages/SolutionPages.tsx
-        * SolutionPages({solution, hasSolution}: SolutionContentProps)
-            * This component renders the content of a solution page, which includes the solution title, page content, resources, and handouts or testimonials. It fetches and displays content based on the solution ID.
-    * pages/QuestionairePage.tsx
-        * QuestionairePage()
-            * This is the QuestionairePage component that wraps and renders the QuestionaireBodyContent component.
+### Utils
+    * apiUtils.tsx
+        * getYouTubeEmbedUrl
+            - Returns the YouTube embed URL for a given YouTube video either in short form or long form.
+        * extractBetweenResources
+            - Returns the text value between [*resources*] tags that are passed in the description, typically pasted from /resource-link-gen
+        * removeResourcesSection
+            - Returns the text value without [*resources*] tags and the content inside the tags that are passed in the description, typically pasted from /resource-link-gen
+    * BodyContentStyle.tsx
+        * Common style traits
+            - Establishes consistent color schemes and border styles
+            - Implements responsive design traits that adapt to smaller screens
+        * Inner style
+            - Styles for button-like components, ensuring they are properly sized within their wrappers
+            - Defines hover effects that change background and text color
+        * Chevron style
+            - Provides a specific style for chevron icons used in the Title
+            - Includes a transition effect
+        * Text styles
+            - Defines the main text style used throughout the application
+            - Ensures text elements maintain their style on smaller devices
+        * Description text style
+            - Sets a slightly smaller and lighter style for description text to differentiate them from primary text
+            - Maintains consistent alignment and font traits with the main text style
+        * Outer container style
+            - Styles the outermost container of components to properly align content within the layout
+        * Bookmark container style
+            - Customizes the look for bookmark display
+            - Ensures that the container is large enough
+        * Copy icon style
+            - Defines styles for icons used in copy functionalities
+            - Ensures copy buttons are visually identifiable within the rest of the applicable
+    * QuestionUtils.tsx
+        * Typeform consistency check
+            - Defines isTypeformConsistent to compare two sets of typeform data, primarily by comparing the length and the individual questions for equality
+            - Useful for detecting changes in questionnaire content over time or between different sessions
+        * Question equality
+            - Defines areQuestionsEqual to determine if two questions are identical by comparing various properties including IDs, titles, references, types, descriptions, choices, solutions, and attachments
+            - Ensures perfect equality checks within question sets
+        * Choices equality
+            - Defines areChoicesEqual to check if two arrays of choices are equal by comparing their IDs, labels, and references
+            - Ensures validation of choice arrays within question comparison operations
+        * Solutions equality
+            - Defines areSolutionsEqual to verify if two arrays of solutions are the same, comparing each solution's ID, title, and URL
+            - Ensures consistency in solutions that may be attached to questionnaires
+        * Attachments equality
+            - Defines `areAttachmentsEqual` for comparing two attachments based on their type and href properties
+            - Ensures attachments linked to questions are maintained across updates
 
 ### Tests
 
-Docs Written by @ArkashJ, contact for assistance
+Docs Written by @jacob-stein1, contact for assistance
 DOCUMENTATION
 
----> Nextjs-Tests
--> index.tests.tsx
--> QuestionnareBodyContent.tests.tsx
--> Questionnare.tests.tsx
--> SolutionPages.tests.tsx
+We have written test cases to check the rendering of components, the function of contexts, and more. Testing is written using the Jest JavaScript testing framework. See their [documentation](https://jestjs.io/docs/getting-started) for more info.
 
-All these tests check whether the components have been rendered or not
+Tests are contained within a '**tests**' directory within each sub-directory of the project. For example /pages/**tests**/'page'.test.js contains the test cases for each page in the pages directory.
 
-cd to the Nextjs-Tests file, install the jest dependency and run tests. Detailed explantion in the TestDocs.md file
+To run all tests:
 
-<img width="285" alt="Screenshot 2023-05-02 at 5 41 41 PM" src="https://user-images.githubusercontent.com/86805856/235793030-dfd1807f-3157-4a73-a605-c2cae6f6e88e.png">
-
-Move the tests to "** test **" folder in pages folder. Then run 'npm run test'. Make sure you have jest installed. For more instructions, navigate to docs in tests folder.
-
-Commands to Run:
 $ npm run test
 
-### Files
+### Recommended Next Steps
 
-To modify components you can go to /src/components. Details for the components, constants,
-images and styles are in the ComponentDocs.md file.
-
-<img width="196" alt="Screenshot 2023-05-02 at 5 41 20 PM" src="https://user-images.githubusercontent.com/86805856/235792999-e6a4e35a-8127-45d3-b8c7-c9b593922b25.png">
-
-### API and Pages
-
-To understand the API and pages, naviagte to the the Pages&APIDocs.md file in src.
-<img width="489" alt="Screenshot 2023-05-02 at 5 41 05 PM" src="https://user-images.githubusercontent.com/86805856/235792972-93dc9152-dc3a-4bfa-89c6-942290798f1d.png">
-
-### Bugs and errors
-
-- UseEffect gets called twice during dev. Therefore, the back button may appear sooner, cause the page title not to render correctly. Useeffect is not a good option. Thus, we solved this in dev branch by using dynamic routes. It reroute to previous page when user clicks back button. <br><br>
-
-- In dev branch, we used dynamic routes because it makes our code cleaner and easier to follow. In addition, it creates a page for each question. However, it currently can only be deployed as a dynamic website. To make it a static site, next team would need to usegetstatic paths to generate all pages during build. (Note: our teammate believes we should keep it dynamic as generating all pages at once wastes resources)
-
-- Our page rendering performance can be improved by using possibly dynamic routes (working starter code in dev branch). In addition, the back button is difficult to press. Thus, usecallback can also be useful there.
-
-- When the page load is slow, it does not show a loading icon
-
-- The Bookmark site file is still under constructed. It has the most basic function for this feature, mainly because this feature is not developed yet by the client. Some of the bookmarking do not work because there exits bookmarks with duplicate indentifier ID's, that is something to looking into in the future.
-
-More details can be found in issues section.
+- Currently only data for the communication branch is contained in Typeform. Moving the rest of the data from the Figma drawing, or from the client, would be a good step before setting up the next branches.
+- QuestionnairePage is a placeholder for making dynamic routing for the four main routes. We recommend using Nextjs dynamic routing to make [id].tsx where id is the four main branches. You can see the dev branch, which is Fall 2023's branch, where they partially implemented dynamic routing.
+- Typeform is a temporary solution. We were advised to make a full custom backend using ReactFlow, but we did not have enough time to make it this semester. Implementing a custom backend using Typeform-esque logic will overcome problems like only being able to render one video at a time
 
 ### Summary of we did
 
-Branch: main: <br>
--used strapi to update questions, choices, and resource page content <br>
--resource page includes vidoes, paragraphs, pdf and website links all fetched from strapi <br>
--created a dynamic questionaire <br>
--created a new
-Branch: dev:<br>
--created dynamic routes for each question. Used routeback to navigate to previous page after clickling back button <br>
--starter code for saving content into mongodb after clickling on save button <br>
--new Local Website for Bookmarks: Developed a new local website feature that displays all user bookmarks. This addition enhances user experience by allowing users to easily access and view their saved bookmarks.
--strapi Update and Import/Export Feature: Upgraded to the latest version of Strapi, leveraging its new capabilities to facilitate the import and export of files. This update streamlines content management, making it more efficient and user-friendly.
+- Migrated questions, answers, and solutions from Strapi to Typeform
+- Created bookmark saving capacity using contexts
+- Created URL encoding to share resources across devices
+- Added localStorage saving for bookmarks and progress to avoid user accounts
+- Added navigation Burger
+- Added resource-gen-link for client to easily add bookmarks
+- Standardized styling, and fixed styling errors with the header and footer
+- Enabled client to add real-time questions, solutions, and choices in Typeform
+- Created client documentation for using Typeform
 
 ### Deployment
 
-We deployed the frontend in vercel. The link the test can be found in the side of the repo
-https://se-bch-als-resource-app.vercel.app/
+We deployed the frontend in [vercel](https://se-bch-als-resource-app-zeta.vercel.app/)
+Please note the deployed link does not work on the BU Network for some reason.
 
-In addition, we deployed strapi on railway
-Link: https://se-bch-als-resource-app-production.up.railway.app
+The data is hosted on Typeform on the buspark@bu.edu account. The api calls to typeform are handled in /api/retrieveQuestions
 
-You can contact me t merna.alghannam@gmail.com for access to strapi.
-
-In addition, we have provided a folder called strapi, which contains all content of strapi for reference.
+You can contact Jacob at jmstein@bu.edu for information if you need.
