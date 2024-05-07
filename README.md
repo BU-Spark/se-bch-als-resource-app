@@ -448,6 +448,8 @@ $ npm run test
 - QuestionnairePage is a placeholder for making dynamic routing for the four main routes. We recommend using Nextjs dynamic routing to make [id].tsx where id is the four main branches. You can see the dev branch, which is Fall 2023's branch, where they partially implemented dynamic routing.
 - Typeform is a temporary solution. We were advised to make a full custom backend using ReactFlow, but we did not have enough time to make it this semester. Implementing a custom backend using Typeform-esque logic will overcome problems like only being able to render one video at a time
 
+We have included each of these next steps and new features as an issue. Please seem them at this [link](https://github.com/BU-Spark/se-bch-als-resource-app/issues)
+
 ### Summary of we did
 
 - Migrated questions, answers, and solutions from Strapi to Typeform
