@@ -68,3 +68,5 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     </BookmarkContext.Provider>
   );
 };
+
+export default BookmarkProvider;

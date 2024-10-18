@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
-import { Loader, Text } from "@mantine/core";
+import { Loader, Text, Button } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
 import { IQuestion } from "@/types/api_types";
 
@@ -12,14 +12,9 @@ import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import { useBookmarks } from "../contexts/BookmarkContext";
 import styles from "../styles/Bookmark.module.css";
 
-/**
- * Displays a list of categorized bookmarks and
- * integrates URL encoding to share bookmarks
- * across devices.
- */
 const Bookmarks = () => {
   const { classes } = bodyContentUseStyles();
-  const { bookmarks, addBookmark } = useBookmarks();
+  const { bookmarks, addBookmark, clearBookmarks } = useBookmarks();
   const image = useRef("/titleimghome.PNG");
 
   const [bookmarkUrl, setBookmarkUrl] = useState("");
@@ -49,7 +44,6 @@ const Bookmarks = () => {
     "Smart Phone Access": [],
   };
 
-  // Handles bookmark categorization
   bookmarks.forEach((bookmark: ResourceLink) => {
     if (bookmark.url in categorizedBookmarks) {
       categorizedBookmarks[bookmark.url].push(bookmark);
@@ -58,7 +52,6 @@ const Bookmarks = () => {
     }
   });
 
-  // Handles URL encoding on load
   useEffect(() => {
     if (initialUrlLoaded) {
       return;
@@ -67,10 +60,9 @@ const Bookmarks = () => {
       try {
         setIsLoading(true);
         const response = await fetch(
-          "/api/retrieveQuestions?flowName=communication" // Change this when new branches are made
+          "/api/retrieveQuestions?flowName=communication"
         );
         const data = await response.json();
-        // Parsing the URL
         if (typeof router.query.ids === "string") {
           const refsFromUrl = router.query.ids.split(",");
           const questionsToAdd = data.questions.filter((question: IQuestion) =>
@@ -78,7 +70,6 @@ const Bookmarks = () => {
           );
 
           if (questionsToAdd.length > 0) {
-            // Wipe local storage of bookmarks if url encoded
             localStorage.setItem("bookmarks", JSON.stringify([]));
           }
 
@@ -86,7 +77,7 @@ const Bookmarks = () => {
             const newBookmark = {
               id: question.ref,
               title: question.title,
-              url: "Communication", // Change this when new branches are made
+              url: "Communication",
             };
             addBookmark(newBookmark);
           });
@@ -101,7 +92,6 @@ const Bookmarks = () => {
     fetchAndAddBookmarks();
   }, [router.query.refs, addBookmark]);
 
-  // Handles construction of URL
   useEffect(() => {
     const sortedBookmarks = [...bookmarks].sort((a, b) =>
       a.title.localeCompare(b.title)
@@ -112,6 +102,12 @@ const Bookmarks = () => {
     const newUrl = `${APP_URL}bookmarks?ids=${encodeURIComponent(bookmarkIds)}`;
     setBookmarkUrl(newUrl);
   }, [bookmarks]);
+
+  const ClearBookmarksButton = () => (
+    <Button onClick={clearBookmarks} className={styles.clearButton}>
+      Clear All Bookmarks
+    </Button>
+  );
 
   return (
     <div>
@@ -133,6 +129,7 @@ const Bookmarks = () => {
             <div>
               <EncodedUrlDisplay bookmarkUrl={bookmarkUrl} classes={classes} />
               <div className={classes.outer}>
+                <ClearBookmarksButton />
                 {originals.map((original: OriginalKeys) =>
                   categorizedBookmarks[original].length > 0 ? (
                     <ResourcesHandouts
@@ -166,10 +163,6 @@ type EncodedUrlDisplayProps = {
   };
 };
 
-/**
- * Displays the section containing the encoded URL
- * @param {EncodedUrlDisplayProps} props - contains url and styles
- */
 const EncodedUrlDisplay = ({
   bookmarkUrl,
   classes,
