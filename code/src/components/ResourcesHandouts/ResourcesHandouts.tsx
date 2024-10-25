@@ -9,17 +9,16 @@ import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { useStyles } from "@/components/ResourcesHandouts/ResourcesHandoutsStyle";
 
-/**
- * Component to display a list of resources with an option to bookmark them.
- * @param {string} title - Title for the resources section
- * @param {ResourceLink[]} data - Array of resource links to display
- */
-const Resources = ({
-  title,
-  data,
-}: {
+interface ResourcesProps {
   title: String;
   data: ResourceLink[];
+  onUnsave?: (bookmarkId: string) => void;
+}
+
+const Resources: React.FC<ResourcesProps> = ({
+  title,
+  data,
+  onUnsave
 }) => {
   const { classes } = useStyles();
   const { setFocusedBookmark } = useFocusedBookmark();
@@ -52,12 +51,22 @@ const Resources = ({
             </div>
             <div className={classes.bookmarkButtonContainer}>
               {" "}
-              <BookmarkButton
-                id={resource.id}
-                title={resource.title}
-                url={resource.url}
-                isSolutionPage={false}
-              />
+              {onUnsave ? (
+                <Button
+                  onClick={() => onUnsave(resource.id)}
+                  color="red"
+                  variant="outline"
+                >
+                  Unsave
+                </Button>
+              ) : (
+                <BookmarkButton
+                  id={resource.id}
+                  title={resource.title}
+                  url={resource.url}
+                  isSolutionPage={false}
+                />
+              )}
             </div>
           </div>
         ))}

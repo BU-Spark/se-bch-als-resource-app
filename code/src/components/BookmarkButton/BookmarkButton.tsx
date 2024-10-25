@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-
-import { Text, Button } from "@mantine/core";
-
+import { Text, Button, Modal, TextInput } from "@mantine/core";
 import { useBookmarks } from "../../contexts/BookmarkContext";
 import { ResourceLink } from "@/types/dataTypes";
 import { bodyContentUseStyles } from "../../utils/BodyContentStyle";
@@ -15,14 +13,6 @@ type BookmarkButtonProps = {
   isSolutionPage: boolean;
 };
 
-/**
- * Displays a button to bookmark or unbookmark a resource and optionally navigate to the bookmark page.
- *
- * @param {string} id - The unique identifier for the resource
- * @param {string} url - The URL of the resource
- * @param {string} title - The title of the resource
- * @param {boolean} isSolutionPage - used for conditional rendering of nav button
- */
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   id,
   title,
@@ -30,20 +20,32 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   isSolutionPage,
 }) => {
   const { classes } = bodyContentUseStyles();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
 
-  const { bookmarks, addBookmark, removeBookmark } = useBookmarks();
+  const { bookmarks, folders, addBookmark, removeBookmark, createFolder } = useBookmarks();
   const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id);
 
   const router = useRouter();
 
   const handleBookmarkClick = () => {
-    console.log(`Triggered handle bookmark click: ${id}, ${title}, ${url}`);
     if (isBookmarked) {
       removeBookmark(id);
     } else {
-      const newBookmark: ResourceLink = { id, title, url };
-      console.log(newBookmark);
-      addBookmark(newBookmark);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleSaveToFolder = (folderId?: string) => {
+    const newBookmark: ResourceLink = { id, title, url };
+    addBookmark(newBookmark, folderId);
+    setIsModalOpen(false);
+  };
+
+  const handleCreateFolder = () => {
+    if (newFolderName.trim()) {
+      createFolder(newFolderName);
+      setNewFolderName('');
     }
   };
 
@@ -59,6 +61,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
           {isBookmarked ? "Unsave this resource" : "Save this resources"}
         </Text>
       </Button>
+
       {isSolutionPage ? (
         <Button
           className={classes.inner}
@@ -75,6 +78,48 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
       ) : (
         <></>
       )}
+
+      <Modal
+        opened={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Save to Folder"
+        size="md"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <Button 
+            className={classes.inner}
+            onClick={() => handleSaveToFolder()}
+          >
+            <Text>Save to Default Folder</Text>
+          </Button>
+
+          {folders.map(folder => (
+            <Button
+              key={folder.id}
+              className={classes.inner}
+              variant="light"
+              onClick={() => handleSaveToFolder(folder.id)}
+            >
+              <Text>Save to "{folder.name}"</Text>
+            </Button>
+          ))}
+
+          <div style={{ marginTop: '1rem', padding: '1rem', border: '1px solid #eee', borderRadius: '4px' }}>
+            <Text size="sm" weight={500} mb={10}>Create New Folder</Text>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <TextInput
+                placeholder="Enter folder name"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                style={{ flex: 1 }}
+              />
+              <Button onClick={handleCreateFolder}>
+                Create
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
