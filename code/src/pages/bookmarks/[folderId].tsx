@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Loader, Text, Button } from "@mantine/core";
+import { Text, Button, Modal, TextInput } from "@mantine/core";
 import { useBookmarks } from "../../contexts/BookmarkContext";
 import Title from "../../components/Title/Titles";
 import ResourcesHandouts from "../../components/ResourcesHandouts/ResourcesHandouts";
@@ -11,12 +11,16 @@ import styles from "../../styles/Bookmark.module.css";
 const FolderDetail = () => {
   const { classes } = bodyContentUseStyles();
   const router = useRouter();
-  const { folderId } = router.query;
-  const { bookmarks, folders, removeBookmark, clearBookmarks } = useBookmarks();
+  const { bookmarks, folders, removeBookmark, clearBookmarks, clearFolder, renameFolder } = useBookmarks();
+  
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+
+  const folderIdParam = router.query.folderId;
+  const folderId = Array.isArray(folderIdParam) ? folderIdParam[0] : folderIdParam || 'default';
 
   const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
 
-  // 获取当前文件夹信息
   const getCurrentFolderContent = () => {
     if (folderId === 'default') {
       return {
@@ -24,12 +28,12 @@ const FolderDetail = () => {
         bookmarks: bookmarks
       };
     }
-    return folders.find(folder => folder.id === folderId) || { name: '', bookmarks: [] };
+    const folder = folders.find(folder => folder.id === folderId);
+    return folder || { name: '', bookmarks: [] };
   };
 
   const folderContent = getCurrentFolderContent();
 
-  // 生成分享链接
   const generateShareUrl = () => {
     const currentBookmarks = folderContent.bookmarks;
     const bookmarkIds = currentBookmarks
@@ -38,20 +42,34 @@ const FolderDetail = () => {
     return `${APP_URL}bookmarks/${folderId}?ids=${encodeURIComponent(bookmarkIds)}`;
   };
 
-  // Clear folder功能
   const handleClearFolder = () => {
     if (folderId === 'default') {
       clearBookmarks();
     } else {
-      // 清除特定文件夹的内容
-      // 这个功能需要在 BookmarkContext 中实现
+      clearFolder(folderId);
     }
   };
 
-  // Unsave bookmark功能
   const handleUnsaveBookmark = (bookmarkId: string) => {
-    removeBookmark(bookmarkId, folderId === 'default' ? undefined : folderId as string);
+    removeBookmark(bookmarkId);
   };
+
+  const handleRename = () => {
+    if (newFolderName.trim() && folderId !== 'default') {
+      renameFolder(folderId, newFolderName.trim());
+      setIsRenameModalOpen(false);
+      setNewFolderName("");
+    }
+  };
+
+  if (!folderContent.name) {
+    return (
+      <div>
+        <Text>Folder not found.</Text>
+        <Button onClick={() => router.push("/bookmarks")}>Back to Folders</Button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -62,10 +80,23 @@ const FolderDetail = () => {
         onPrevClick={() => router.push("/bookmarks")}
       />
 
+      {folderId !== 'default' && (
+        <div className={classes.outer} style={{ marginBottom: "20px" }}>
+          <Button
+            className={`${classes.inner} ${styles.button}`}
+            variant="outline"
+            onClick={() => setIsRenameModalOpen(true)}
+          >
+            <Text fz="xl" className={styles.text}>
+              Rename Folder
+            </Text>
+          </Button>
+        </div>
+      )}
+
       <div className={styles.folderContent}>
         {folderContent.bookmarks.length > 0 ? (
           <>
-            {/* 分享链接部分 */}
             <div className={classes.outer}>
               <Text className={styles.titleStyle}>Save Your Resources</Text>
               <Text className={styles.subtitleStyle}>
@@ -78,25 +109,55 @@ const FolderDetail = () => {
             </div>
 
             <ResourcesHandouts
-              title={folderContent.name}
+              title="Bookmarks"
               data={folderContent.bookmarks}
               onUnsave={handleUnsaveBookmark}
             />
+
             <Button
-              onClick={handleClearFolder}
-              color="red"
+              className={`${classes.inner} ${styles.button}`}
               variant="outline"
-              className={styles.clearButton}
+              style={{ marginTop: "40px" }}
+              onClick={handleClearFolder}
             >
-              Clear Folder
+              <Text fz="xl" className={styles.text}>
+                Clear Folder
+              </Text>
             </Button>
           </>
         ) : (
-          <Text className={styles.emptyMessage}>
-            No bookmarks in this folder.
-          </Text>
+          <div className={classes.outer}>
+            <Text className={styles.titleStyle}>
+              No bookmarks in this folder.
+            </Text>
+          </div>
         )}
       </div>
+
+      <Modal
+        opened={isRenameModalOpen}
+        onClose={() => {
+          setIsRenameModalOpen(false);
+          setNewFolderName("");
+        }}
+        title="Rename Folder"
+        size="md"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <TextInput
+            placeholder="Enter new folder name"
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+          />
+          <Button
+            className={classes.inner}
+            onClick={handleRename}
+            disabled={!newFolderName.trim()}
+          >
+            <Text>Rename</Text>
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

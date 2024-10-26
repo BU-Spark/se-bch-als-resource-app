@@ -47,23 +47,22 @@ const Bookmarks = () => {
 
   const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
 
-  // 添加一个状态来避免重复重定向
+
   const [hasRedirected, setHasRedirected] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
 
-    if (router.pathname === '/bookmarks' && !hasRedirected) {
+    if (router.pathname === "/bookmarks" && !hasRedirected) {
       if (router.query.ids) {
         router.replace(`/bookmarks/default?ids=${router.query.ids}`);
       } else {
-        // 如果没有 ids，可以考虑导航到一个默认页面，或者保持当前页面
         setHasRedirected(true);
       }
     }
   }, [router.isReady, router.pathname, router.query.ids, hasRedirected]);
 
-  // 处理书签的加载
+
   useEffect(() => {
     if (initialUrlLoaded) {
       return;
@@ -98,7 +97,7 @@ const Bookmarks = () => {
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching bookmark data:", error);
-        setIsLoading(false); // 确保在错误情况下也停止加载状态
+        setIsLoading(false);
       }
     };
 
@@ -116,42 +115,54 @@ const Bookmarks = () => {
     setBookmarkUrl(newUrl);
   }, [bookmarks]);
 
-  // 移除导致渲染阻塞的条件判断
-  // if (router.pathname === '/bookmarks' && typeof window !== 'undefined') {
-  //   return (
-  //     <div className={styles.loaderContainer}>
-  //       <Loader color="blue" size={110} />
-  //     </div>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <div className={styles.loaderContainer}>
+        <Loader color="blue" size={110} />
+      </div>
+    );
+  }
 
   return (
     <div>
       <Title
         hasPrev={true}
         titleImg={image.current}
-        title={"Bookmarks"}
-        onPrevClick={() => {
-          router.push("/communication");
-        }}
+        title="Bookmark Folders"
+        onPrevClick={() => router.push("/communication")}
       />
-      {isLoading ? (
-        <div className={styles.loaderContainer}>
-          <Loader color="blue" size={110} />
+
+      {/* Show Bookmark Folder List */}
+      <div className={styles.folderList}>
+        {/* Default folder */}
+        <div
+          className={styles.folderItem}
+          onClick={() => router.push("/bookmarks/default")}
+        >
+          <Text size="lg" weight={500}>
+            Default Folder
+          </Text>
+          <Text size="sm" color="dimmed">
+            {bookmarks.length} bookmark(s)
+          </Text>
         </div>
-      ) : (
-        // 在加载完成后渲染书签内容
-        <div>
-          <EncodedUrlDisplay bookmarkUrl={bookmarkUrl} classes={classes} />
-          <ResourcesHandouts
-            title="Your Bookmarked Resources"
-            data={bookmarks}
-            onUnsave={(id) => {
-              // 这里添加移除书签的逻辑
-            }}
-          />
-        </div>
-      )}
+
+        {/* Customize folder list */}
+        {folders.map((folder) => (
+          <div
+            key={folder.id}
+            className={styles.folderItem}
+            onClick={() => router.push(`/bookmarks/${folder.id}`)}
+          >
+            <Text size="lg" weight={500}>
+              {folder.name}
+            </Text>
+            <Text size="sm" color="dimmed">
+              {folder.bookmarks.length} bookmark(s)
+            </Text>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

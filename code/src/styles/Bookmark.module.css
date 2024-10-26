@@ -1,3 +1,4 @@
+/* 保持原有样式不变 */
 .loaderContainer {
   display: flex;
   margin-top: 15vh;
@@ -17,4 +18,103 @@
   font-weight: normal;
   margin-bottom: 10px;
   font-size: 0.8em;
+}
+
+/* 添加新的样式 */
+.folderList {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.folderItem {
+  background-color: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.folderItem:hover {
+  border-color: #254885;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 72, 133, 0.15);
+}
+
+.folderItem:active {
+  transform: translateY(0);
+}
+
+.folderTitle {
+  color: #254885;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.folderCount {
+  color: #68759c;
+  font-size: 0.9rem;
+}
+
+.emptyMessage {
+  text-align: center;
+  padding: 2rem;
+  color: #68759c;
+  font-size: 1.1rem;
+}
+
+/* 添加一个微妙的动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.folderItem {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 添加文件夹内容的样式 */
+.folderContent {
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/* 清除按钮样式 */
+.clearButton {
+  margin-top: 1rem;
+  background-color: transparent;
+  color: #dc3545;
+  border: 2px solid #dc3545;
+  transition: all 0.3s ease;
+}
+
+.clearButton:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+
+/* 可选：添加响应式设计 */
+@media (max-width: 768px) {
+  .folderList {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .folderItem {
+    padding: 1rem;
+  }
 }

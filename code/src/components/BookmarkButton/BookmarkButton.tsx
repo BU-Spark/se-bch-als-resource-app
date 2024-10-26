@@ -23,13 +23,13 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
 
-  const { bookmarks, folders, addBookmark, removeBookmark, createFolder } = useBookmarks();
-  const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id);
+  const { isBookmarked, bookmarks, folders, addBookmark, removeBookmark, createFolder } = useBookmarks();
+  const bookmarked = isBookmarked(id);
 
   const router = useRouter();
 
   const handleBookmarkClick = () => {
-    if (isBookmarked) {
+    if (bookmarked) {
       removeBookmark(id);
     } else {
       setIsModalOpen(true);
@@ -58,7 +58,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
         onClick={handleBookmarkClick}
       >
         <Text fz="xl" className={styles.text}>
-          {isBookmarked ? "Unsave this resource" : "Save this resources"}
+          {bookmarked ? "Unsave this resource" : "Save this resource"}
         </Text>
       </Button>
 
@@ -68,16 +68,14 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
           variant="outline"
           style={{ marginTop: "10px" }}
           onClick={() => {
-            router.push("./bookmarks");
+            router.push("/bookmarks");
           }}
         >
           <Text fz="xl" className={styles.text}>
             Go to your bookmarks
           </Text>
         </Button>
-      ) : (
-        <></>
-      )}
+      ) : null}
 
       <Modal
         opened={isModalOpen}

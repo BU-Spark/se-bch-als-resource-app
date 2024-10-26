@@ -1,12 +1,11 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { IconFileDescription } from "@tabler/icons-react";
-
 import { Stack, Text, Button } from "@mantine/core";
-
 import { ResourceLink } from "@/types/dataTypes";
 import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
+import { useBookmarks } from "@/contexts/BookmarkContext";
 import { useStyles } from "@/components/ResourcesHandouts/ResourcesHandoutsStyle";
 
 interface ResourcesProps {
@@ -22,6 +21,7 @@ const Resources: React.FC<ResourcesProps> = ({
 }) => {
   const { classes } = useStyles();
   const { setFocusedBookmark } = useFocusedBookmark();
+  const { removeBookmark } = useBookmarks();
   const router = useRouter();
 
   const handleBookmarkClick = (bookmark: ResourceLink) => {
@@ -36,7 +36,6 @@ const Resources: React.FC<ResourcesProps> = ({
         {data.map((resource, index) => (
           <div className={classes.linkContainer} key={index}>
             <div className={classes.resourceButtonContainer}>
-              {" "}
               <Button
                 key={resource.id}
                 className={classes.inner}
@@ -50,14 +49,16 @@ const Resources: React.FC<ResourcesProps> = ({
               </Button>
             </div>
             <div className={classes.bookmarkButtonContainer}>
-              {" "}
               {onUnsave ? (
                 <Button
-                  onClick={() => onUnsave(resource.id)}
-                  color="red"
+                  className={classes.inner}
                   variant="outline"
+                  style={{ marginTop: "40px" }}
+                  onClick={() => onUnsave(resource.id)}
                 >
-                  Unsave
+                  <Text fz="xl">
+                    Unsave
+                  </Text>
                 </Button>
               ) : (
                 <BookmarkButton

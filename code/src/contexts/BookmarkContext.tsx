@@ -1,19 +1,17 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { ResourceLink } from "@/types/dataTypes";
 
-// 定义文件夹类型
 interface BookmarkFolder {
   id: string;
   name: string;
   bookmarks: ResourceLink[];
 }
 
-// Context 类型定义
 type BookmarkContextType = {
   bookmarks: ResourceLink[];
   folders: BookmarkFolder[];
   addBookmark: (newBookmark: ResourceLink, folderId?: string) => void;
-  removeBookmark: (bookmarkId: string, folderId?: string) => void;
+  removeBookmark: (bookmarkId: string) => void;
   createFolder: (name: string) => void;
   deleteFolder: (folderId: string) => void;
   renameFolder: (folderId: string, newName: string) => void;
@@ -21,6 +19,7 @@ type BookmarkContextType = {
   clearBookmarks: () => void;
   clearFolder: (folderId: string) => void;
   getFolderBookmarks: (folderId: string) => ResourceLink[];
+  isBookmarked: (bookmarkId: string) => boolean;
 };
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined);
@@ -36,8 +35,6 @@ export const useBookmarks = () => {
 export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [folders, setFolders] = useState<BookmarkFolder[]>([]);
   const [bookmarks, setBookmarks] = useState<ResourceLink[]>([]);
-
-  // 加载 bookmarks
   useEffect(() => {
     const loadBookmarks = () => {
       try {
@@ -53,7 +50,6 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     loadBookmarks();
   }, []);
 
-  // 加载 folders
   useEffect(() => {
     const loadFolders = () => {
       try {
@@ -69,7 +65,6 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     loadFolders();
   }, []);
 
-  // 保存 bookmarks
   useEffect(() => {
     try {
       localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
@@ -78,7 +73,6 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   }, [bookmarks]);
 
-  // 保存 folders
   useEffect(() => {
     try {
       localStorage.setItem('bookmarkFolders', JSON.stringify(folders));
@@ -111,20 +105,12 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
-  const removeBookmark = (bookmarkId: string, folderId?: string) => {
-    if (folderId) {
-      setFolders(prev => prev.map(folder => {
-        if (folder.id === folderId) {
-          return {
-            ...folder,
-            bookmarks: folder.bookmarks.filter(b => b.id !== bookmarkId)
-          };
-        }
-        return folder;
-      }));
-    } else {
-      setBookmarks(prev => prev.filter(bookmark => bookmark.id !== bookmarkId));
-    }
+  const removeBookmark = (bookmarkId: string) => {
+    setBookmarks(prev => prev.filter(bookmark => bookmark.id !== bookmarkId));
+    setFolders(prev => prev.map(folder => ({
+      ...folder,
+      bookmarks: folder.bookmarks.filter(bookmark => bookmark.id !== bookmarkId)
+    })));
   };
 
   const clearBookmarks = () => {
@@ -171,6 +157,18 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     return folder ? folder.bookmarks : [];
   };
 
+  const isBookmarked = (bookmarkId: string): boolean => {
+    if (bookmarks.some((bookmark) => bookmark.id === bookmarkId)) {
+      return true;
+    }
+    for (const folder of folders) {
+      if (folder.bookmarks.some((bookmark) => bookmark.id === bookmarkId)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const value = {
     bookmarks,
     folders,
@@ -182,7 +180,8 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     clearAllFolders,
     clearBookmarks,
     clearFolder,
-    getFolderBookmarks
+    getFolderBookmarks,
+    isBookmarked
   };
 
   return (
