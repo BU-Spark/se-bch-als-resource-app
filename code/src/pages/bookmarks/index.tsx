@@ -18,7 +18,7 @@ const BookmarkFolders = () => {
       <Title
         hasPrev={true}
         titleImg="/titleimghome.PNG"
-        title="Bookmark Folders"
+        title="Folders"
         onPrevClick={() => router.push("/communication")}
       />
 
@@ -61,4 +61,3 @@ const BookmarkFolders = () => {
 };
 
 export default BookmarkFolders;
-
