@@ -1,9 +1,7 @@
 import React from "react";
 import Head from "next/head";
-
 import { AppProps } from "next/app";
 import { MantineProvider } from "@mantine/core";
-
 import Nav from "@/components/Navbar/Nav";
 import { Footer } from "@/components/Footer/Footer";
 import { BookmarkProvider } from "@/contexts/BookmarkContext";
@@ -23,21 +21,19 @@ export default function App(props: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.mainContainer}>
-        <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <div className={styles.pageWrapper}>
           <Nav />
-
-          <div className={styles.content}>
+          <main className={styles.mainContent}>
             <FocusedBookmarkProvider>
               <BookmarkProvider>
                 <Component {...pageProps} />
               </BookmarkProvider>
             </FocusedBookmarkProvider>
-          </div>
-
+          </main>
           <Footer />
-        </MantineProvider>
-      </div>
+        </div>
+      </MantineProvider>
     </>
   );
 }

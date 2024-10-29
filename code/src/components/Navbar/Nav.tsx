@@ -1,53 +1,52 @@
-import React from "react";
-import { useState } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import Link from "next/link";
-
-import { Header, Container, Group, Burger, rem } from "@mantine/core";
-
-import NavList from "../NavList/NavList";
+import { useRouter } from 'next/router';
 import styles from "./Nav.module.css";
 
-const HEADER_HEIGHT = rem(64);
-
-/**
- *  Nav component for the navigation bar
- */
 const Nav = () => {
-  const [opened, setOpened] = useState(false);
-
-  const toggleMenu = () => {
-    setOpened(!opened);
-  };
-
+  const router = useRouter();
+  const [isExpanded, setIsExpanded] = useState(true);
+  
   const links = [
-    { title: "Home", path: "/", onClick: toggleMenu },
-    { title: "Bookmarks", path: "/bookmarks", onClick: toggleMenu },
+    { title: "Home", path: "/" },
+    { title: "Bookmarks", path: "/bookmarks" },
+    { title: "Settings", path: "/settings" }
   ];
 
+  const toggleSidebar = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <Header height={HEADER_HEIGHT} className={styles.header}>
-      <Container className={styles.inner} fluid>
-        <Group>
-          <Link href="/">
-            <Image
-              src="/Boston_Children's_Hospital_logo.png"
-              alt="BCH Logo"
-              width={110}
-              height={50}
-              className={styles.logoContainer}
-            />
-          </Link>
-        </Group>
-        <Burger
-          size="lg"
-          color="#254885"
-          opened={opened}
-          onClick={toggleMenu}
-        />
-        {opened && <NavList links={links} />}
-      </Container>
-    </Header>
+    <nav className={`${styles.sidebar} ${isExpanded ? '' : styles.collapsed}`}>
+      <div className={styles.sidebarInner}>
+        <div className={styles.topSection}>
+          <button 
+            className={styles.toggleButton}
+            onClick={toggleSidebar}
+            aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
+          >
+            {isExpanded ? 'Collapse' : 'Expand'}
+          </button>
+        </div>
+        
+        <div className={styles.spacer} />
+        
+        <div className={styles.navLinks}>
+          {links.map((link) => (
+            <Link 
+              key={link.path}
+              href={link.path}
+              className={`${styles.navLink} ${
+                router.pathname === link.path ? styles.active : ''
+              }`}
+            >
+              {link.title}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </nav>
   );
 };
 
