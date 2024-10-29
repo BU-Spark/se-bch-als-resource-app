@@ -259,6 +259,7 @@
 .pageWrapper {
   display: flex;
   min-height: 100vh;
+  position: relative;
 }
 
 .mainContent {
@@ -266,11 +267,27 @@
   margin-left: 250px;
   transition: margin-left 0.3s ease;
   padding: 20px;
-  min-height: 100vh;
+  min-height: calc(100vh - 180px);
+  width: calc(100% - 250px);
+  padding-bottom: 140px;
+  overflow-y: auto; /* Enable scrolling */
+  position: relative;
 }
 
-.collapsed ~ .mainContent {
+/* When nav is collapsed */
+.collapsed .mainContent {
   margin-left: 60px;
+  width: calc(100% - 60px);
+  max-width: 100%;
+}
+
+.contentContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  min-height: 100%;
+  position: relative; 
 }
 
 @media (max-width: 768px) {

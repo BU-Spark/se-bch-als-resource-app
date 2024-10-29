@@ -40,8 +40,9 @@
 
 .topSection {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
 }
 
 .logoWrapper {
@@ -95,6 +96,11 @@
   border-radius: 2px;
 }
 
+.menuText {
+  color: white;
+  font-size: 16px;
+}
+
 .spacer {
   flex: 1;
 }
@@ -116,11 +122,24 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  color: white;
+  min-width: 20px;
+  flex-shrink: 0;
 }
 
 .collapsed .navLink {
   padding: 12px;
-  text-align: center;
+  justify-content: center;
+}
+
+.collapsed .navLink span:not(.icon) {
+  display: none;
 }
 
 .navLink:hover {
@@ -130,6 +149,10 @@
 .navLink.active {
   background-color: rgba(255, 255, 255, 0.2);
   font-weight: bold;
+}
+
+.easteregg {
+  color: #FF69B4;
 }
 
 @media (max-width: 768px) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { MantineProvider } from "@mantine/core";
@@ -10,6 +10,7 @@ import styles from "../styles/Home.module.css";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
+  const [isNavExpanded, setIsNavExpanded] = useState(true);
 
   return (
     <>
@@ -21,19 +22,26 @@ export default function App(props: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <div className={styles.pageWrapper}>
-          <Nav />
-          <main className={styles.mainContent}>
-            <FocusedBookmarkProvider>
-              <BookmarkProvider>
-                <Component {...pageProps} />
-              </BookmarkProvider>
-            </FocusedBookmarkProvider>
-          </main>
-          <Footer />
-        </div>
-      </MantineProvider>
+      <div className={styles.mainContainer}>
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <div className={`${styles.pageWrapper} ${!isNavExpanded ? styles.collapsed : ''}`}>
+            <Nav 
+              isExpanded={isNavExpanded} 
+              onToggle={() => setIsNavExpanded(!isNavExpanded)} 
+            />
+            <main className={styles.mainContent}>
+              <div className={styles.contentContainer}>
+                <FocusedBookmarkProvider>
+                  <BookmarkProvider>
+                    <Component {...pageProps} />
+                  </BookmarkProvider>
+                </FocusedBookmarkProvider>
+              </div>
+            </main>
+            <Footer isNavExpanded={isNavExpanded} />
+          </div>
+        </MantineProvider>
+      </div>
     </>
   );
 }
