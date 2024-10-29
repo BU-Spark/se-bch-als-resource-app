@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { Loader, Text, Button } from "@mantine/core";
+import { Loader, Text, Button, Modal, TextInput } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
 import { IQuestion } from "@/types/api_types";
 import Title from "../components/Title/Titles";
@@ -37,7 +37,7 @@ const EncodedUrlDisplay = ({
 
 const Bookmarks = () => {
   const { classes } = bodyContentUseStyles();
-  const { bookmarks, folders, addBookmark } = useBookmarks();
+  const { bookmarks, folders, addBookmark, createFolder } = useBookmarks();
   const image = useRef("/titleimghome.PNG");
 
   const [bookmarkUrl, setBookmarkUrl] = useState("");
@@ -45,10 +45,20 @@ const Bookmarks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+
   const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
 
-
   const [hasRedirected, setHasRedirected] = useState(false);
+
+  const handleCreateFolder = () => {
+    if (newFolderName.trim()) {
+      createFolder(newFolderName.trim());
+      setNewFolderName("");
+      setIsCreateModalOpen(false);
+    }
+  };
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -61,7 +71,6 @@ const Bookmarks = () => {
       }
     }
   }, [router.isReady, router.pathname, router.query.ids, hasRedirected]);
-
 
   useEffect(() => {
     if (initialUrlLoaded) {
@@ -128,9 +137,39 @@ const Bookmarks = () => {
       <Title
         hasPrev={true}
         titleImg={image.current}
-        title="Bookmark Folders"
+        title="Folders"
         onPrevClick={() => router.push("/communication")}
       />
+
+      <Button
+        onClick={() => setIsCreateModalOpen(true)}
+        style={{ margin: "20px" }}
+      >
+        + Add Folder
+      </Button>
+
+      <Modal
+        opened={isCreateModalOpen}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+          setNewFolderName("");
+        }}
+        title="Create New Folder"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <TextInput
+            placeholder="Enter folder name"
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+          />
+          <Button
+            onClick={handleCreateFolder}
+            disabled={!newFolderName.trim()}
+          >
+            Create
+          </Button>
+        </div>
+      </Modal>
 
       {/* Show Bookmark Folder List */}
       <div className={styles.folderList}>
