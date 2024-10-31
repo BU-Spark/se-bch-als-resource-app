@@ -25,6 +25,7 @@ export default async function retrieveQuestions(
 ) {
   
   const { flowName } = req.query;
+  let accessName;
   //flowName would be either communication, computer-access, home-access, or smart-phone-access. This is the name of the form that we want to retrieve the questions for.
   if (flowName === "communication") {
     accessName = COMMUNICATION_FORM_ID;
@@ -57,7 +58,7 @@ export default async function retrieveQuestions(
             }
           : undefined;
         const question: IQuestion = {
-          id: field.id,
+          id: field.id, 
           title: field.title,
           ref: field.ref,
           type: field.type,
@@ -131,6 +132,8 @@ export default async function retrieveQuestions(
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: "Internal Server Error" });
+
     }
-  }
+}
+ 
 
