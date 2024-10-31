@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import {
   COMMUNICATION_FORM_ID,
+  COMPUTER_ACCESS_FORM_ID,
+  SMART_PHONE_ACCESS_FORM_ID,
   TYPEFORM_API_URL,
 } from "../../constants/globals";
 import {
@@ -14,18 +16,28 @@ import {
   extractBetweenResources,
   removeResourcesSection,
 } from "../../utils/apiUtils";
-
+import { access } from "fs";
+let accessName="";
 
 export default async function retrieveQuestions(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  
   const { flowName } = req.query;
   //flowName would be either communication, computer-access, home-access, or smart-phone-access. This is the name of the form that we want to retrieve the questions for.
   if (flowName === "communication") {
+    accessName = COMMUNICATION_FORM_ID;
+  }else if(flowName === "computer-access"){
+    accessName = COMPUTER_ACCESS_FORM_ID;
+  }else if(flowName==="smart-phone-access"){
+    accessName =  SMART_PHONE_ACCESS_FORM_ID;
+  }else{
+    res.status(400).json({ error: "Invalid flowName" });
+  }
     try {
       const response = await fetch(
-        `${TYPEFORM_API_URL}/forms/${COMMUNICATION_FORM_ID}`
+        `${TYPEFORM_API_URL}/forms/${accessName}`
       );
       const data = await response.json();
 
@@ -120,7 +132,5 @@ export default async function retrieveQuestions(
       console.log(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
-  } else {
-    res.status(400).json({ error: "Invalid flowName" });
   }
-}
+
