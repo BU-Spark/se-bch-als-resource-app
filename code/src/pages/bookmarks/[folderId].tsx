@@ -66,7 +66,13 @@ const FolderDetail = () => {
     return (
       <div>
         <Text>Folder not found.</Text>
-        <Button onClick={() => router.push("/bookmarks")}>Back to Folders</Button>
+        <Button 
+          className={`${classes.inner} ${styles.button}`}
+          variant="outline"
+          onClick={() => router.push("/bookmarks")}
+        >
+          <Text fz="xl" className={styles.text}>Back to Folders</Text>
+        </Button>
       </div>
     );
   }
@@ -81,23 +87,22 @@ const FolderDetail = () => {
       />
 
       {folderId !== 'default' && (
-        <div className={classes.outer} style={{ marginBottom: "20px" }}>
-          <Button
-            className={`${classes.inner} ${styles.button}`}
-            variant="outline"
-            onClick={() => setIsRenameModalOpen(true)}
-          >
-            <Text fz="xl" className={styles.text}>
-              Rename Folder
-            </Text>
-          </Button>
-        </div>
+        <Button
+          className={`${classes.inner} ${styles.button}`}
+          variant="outline"
+          style={{ marginTop: "20px", marginBottom: "20px", width: "100%" }}
+          onClick={() => setIsRenameModalOpen(true)}
+        >
+          <Text fz="xl" className={styles.text}>
+            Rename Folder
+          </Text>
+        </Button>
       )}
 
       <div className={styles.folderContent}>
         {folderContent.bookmarks.length > 0 ? (
           <>
-            <div className={classes.outer}>
+            <div>
               <Text className={styles.titleStyle}>Save Your Resources</Text>
               <Text className={styles.subtitleStyle}>
                 Use the link below to automatically load and access your bookmarks in
@@ -112,12 +117,13 @@ const FolderDetail = () => {
               title="Bookmarks"
               data={folderContent.bookmarks}
               onUnsave={handleUnsaveBookmark}
+              currentFolderId={folderId} 
             />
 
             <Button
               className={`${classes.inner} ${styles.button}`}
               variant="outline"
-              style={{ marginTop: "40px" }}
+              style={{ width: "100%", marginTop: "20px", marginBottom: "20px"}}
               onClick={handleClearFolder}
             >
               <Text fz="xl" className={styles.text}>
@@ -126,7 +132,7 @@ const FolderDetail = () => {
             </Button>
           </>
         ) : (
-          <div className={classes.outer}>
+          <div>
             <Text className={styles.titleStyle}>
               No bookmarks in this folder.
             </Text>
@@ -150,11 +156,12 @@ const FolderDetail = () => {
             onChange={(e) => setNewFolderName(e.target.value)}
           />
           <Button
-            className={classes.inner}
+            className={`${classes.inner} ${styles.button}`}
+            variant="outline"
             onClick={handleRename}
             disabled={!newFolderName.trim()}
           >
-            <Text>Rename</Text>
+            <Text fz="xl" className={styles.text}>Rename</Text>
           </Button>
         </div>
       </Modal>

@@ -35,6 +35,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .folderItem:hover {
@@ -47,48 +48,27 @@
   transform: translateY(0);
 }
 
-.folderTitle {
-  color: #254885;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.folderCount {
-  color: #68759c;
-  font-size: 0.9rem;
-}
-
-.emptyMessage {
-  text-align: center;
-  padding: 2rem;
-  color: #68759c;
-  font-size: 1.1rem;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.folderItem {
-  animation: fadeIn 0.3s ease-out;
-}
-
 .folderContent {
-  padding: 1.5rem;
+  padding: 1.5rem 0;
   background-color: white;
   border-radius: 8px;
   margin-top: 1rem;
+  width: 100%;
+}
+
+.button {
+  width: 100% !important;
+  margin-bottom: 1rem;
+}
+
+.resourceContainer {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 1rem;
 }
 
 .clearButton {
+  width: 100%;
   margin-top: 1rem;
   background-color: transparent;
   color: #dc3545;
@@ -100,6 +80,7 @@
   background-color: #dc3545;
   color: white;
 }
+
 
 
 @media (max-width: 768px) {
