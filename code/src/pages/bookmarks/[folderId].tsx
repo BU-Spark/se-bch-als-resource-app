@@ -21,6 +21,8 @@ const FolderDetail = () => {
 
   const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
 
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+
   const getCurrentFolderContent = () => {
     if (folderId === 'default') {
       return {
@@ -77,6 +79,7 @@ const FolderDetail = () => {
     );
   }
 
+
   return (
     <div>
       <Title
@@ -84,6 +87,8 @@ const FolderDetail = () => {
         titleImg="/titleimghome.PNG"
         title={folderContent.name}
         onPrevClick={() => router.push("/bookmarks")}
+        showPrintButton={true}
+        onPrintClick={() => setIsPrintModalOpen(true)}
       />
 
       {folderId !== 'default' && (
