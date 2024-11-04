@@ -1,4 +1,3 @@
-// components/Title/Titles.tsx
 import React, { useState } from "react";
 import { IconChevronLeft, IconPrinter } from "@tabler/icons-react";
 import { Title as MantineTitle, Modal, Text } from "@mantine/core";
@@ -39,6 +38,7 @@ const Titles = ({
             aria-label="Share Resources"
           >
             <IconPrinter size={20} className={classes.printIcon} stroke={2} />
+            <span>Share</span>
           </button>
 
           <Modal

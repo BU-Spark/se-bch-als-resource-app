@@ -49,27 +49,30 @@ export const useStyles = createStyles(
 
     printButton: {
       position: "absolute",
-      right: rem(24),
-      top: rem(24),
+      right: rem(20),
+      top: rem(16),
       color: theme.white,
       background: "transparent",
       border: "none",
       cursor: "pointer",
-      transition: "background-color 0.2s",
-      padding: "12px 16px",
-      borderRadius: "4px",
+      transition: "background-color 0.2s, transform 0.2s",
+      padding: "16px 16px",
+      borderRadius: "8px",
       display: "flex",
       alignItems: "center",
+      gap: "8px",
       justifyContent: "center",
       
       "&:hover": {
         background: "rgba(255, 255, 255, 0.2)",
+        transform: "scale(1.05)",
       },
     },
 
     printIcon: {
       color: "white",
-      minWidth: "20px",
+      minWidth: "24px",
+      height: "24px",
       flexShrink: 0,
     },
 
