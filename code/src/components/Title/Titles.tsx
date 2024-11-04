@@ -1,8 +1,8 @@
-// Titles.tsx
 import React, { useState } from "react";
-import { IconChevronLeft, IconPrinter, IconX } from "@tabler/icons-react";  // 添加 IconX
-import { Title, Modal, Button } from "@mantine/core";  // 改用 Modal
-import { useStyles } from "@/components/Title/TitleStyle";
+import { IconChevronLeft, IconPrinter } from "@tabler/icons-react";
+import { Title as MantineTitle, Modal, Text } from "@mantine/core";
+import { useStyles } from "./TitleStyle";
+import CopyableLink from "../CopyURL/CopyUrl";
 
 interface TitlesProps {
   hasPrev: boolean;
@@ -10,6 +10,7 @@ interface TitlesProps {
   title: string;
   onPrevClick?: () => void;
   showPrintButton?: boolean;
+  shareUrl?: string;
 }
 
 const Titles = ({
@@ -18,21 +19,22 @@ const Titles = ({
   title,
   onPrevClick,
   showPrintButton,
+  shareUrl,
 }: TitlesProps) => {
   const { classes } = useStyles({ backgroundImageUrl: titleImg });
-  const ChevronIcon = IconChevronLeft;
   const [isPrintOpen, setIsPrintOpen] = useState(false);
+  const ChevronIcon = IconChevronLeft;
 
   return (
     <div className={classes.wrapper}>
-      {hasPrev ? (
+      {hasPrev && (
         <a onClick={onPrevClick}>
           <ChevronIcon className={classes.chevron} size="3.4rem" stroke={2} />
         </a>
-      ) : null}
+      )}
 
       <div className={classes.inner}>
-        <Title className={classes.title}>{title}</Title>
+        <MantineTitle className={classes.title}>{title}</MantineTitle>
       </div>
 
       {showPrintButton && (
@@ -40,7 +42,7 @@ const Titles = ({
           <button
             className={classes.printButton}
             onClick={() => setIsPrintOpen(true)}
-            aria-label="Print"
+            aria-label="Share Resources"
           >
             <IconPrinter size={20} className={classes.printIcon} stroke={2} />
           </button>
@@ -51,14 +53,16 @@ const Titles = ({
             title="Share Resources"
             size="md"
             centered
-            closeButtonProps={{
-              'aria-label': 'Close modal',
-              icon: <IconX size={18} />,
-            }}
           >
-            <div>
-              {/* Modal content will go here */}
-              <div>分享链接和二维码将放在这里</div>
+            <div className={classes.modalContent}>
+              <Text className={classes.modalTitle}>Save Your Resources</Text>
+              <Text className={classes.modalSubtitle}>
+                Use the link below to automatically load and access your bookmarks in
+                the future, from any device.
+              </Text>
+              <div className={classes.modalLinkContainer}>
+                <CopyableLink url={shareUrl || ''} />
+              </div>
             </div>
           </Modal>
         </>

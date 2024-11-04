@@ -11,18 +11,26 @@ import styles from "../../styles/Bookmark.module.css";
 const FolderDetail = () => {
   const { classes } = bodyContentUseStyles();
   const router = useRouter();
-  const { bookmarks, folders, removeBookmark, clearBookmarks, clearFolder, renameFolder } = useBookmarks();
+  const { 
+    bookmarks, 
+    folders, 
+    removeBookmark, 
+    clearBookmarks, 
+    clearFolder, 
+    renameFolder 
+  } = useBookmarks();
   
+  // Modal states
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
 
+  // Constants
+  const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
   const folderIdParam = router.query.folderId;
   const folderId = Array.isArray(folderIdParam) ? folderIdParam[0] : folderIdParam || 'default';
 
-  const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
-
-  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
-
+  // Folder content management
   const getCurrentFolderContent = () => {
     if (folderId === 'default') {
       return {
@@ -35,15 +43,17 @@ const FolderDetail = () => {
   };
 
   const folderContent = getCurrentFolderContent();
+  const hasBookmarks = folderContent.bookmarks.length > 0;
 
+  // URL generation
   const generateShareUrl = () => {
-    const currentBookmarks = folderContent.bookmarks;
-    const bookmarkIds = currentBookmarks
+    const bookmarkIds = folderContent.bookmarks
       .map((bookmark) => bookmark.id)
       .join(",");
     return `${APP_URL}bookmarks/${folderId}?ids=${encodeURIComponent(bookmarkIds)}`;
   };
 
+  // Event handlers
   const handleClearFolder = () => {
     if (folderId === 'default') {
       clearBookmarks();
@@ -64,6 +74,7 @@ const FolderDetail = () => {
     }
   };
 
+  // Folder not found handler
   if (!folderContent.name) {
     return (
       <div>
@@ -79,7 +90,6 @@ const FolderDetail = () => {
     );
   }
 
-
   return (
     <div>
       <Title
@@ -87,8 +97,8 @@ const FolderDetail = () => {
         titleImg="/titleimghome.PNG"
         title={folderContent.name}
         onPrevClick={() => router.push("/bookmarks")}
-        showPrintButton={true}
-        onPrintClick={() => setIsPrintModalOpen(true)}
+        showPrintButton={hasBookmarks}
+        shareUrl={generateShareUrl()}
       />
 
       {folderId !== 'default' && (
@@ -105,7 +115,7 @@ const FolderDetail = () => {
       )}
 
       <div className={styles.folderContent}>
-        {folderContent.bookmarks.length > 0 ? (
+        {hasBookmarks ? (
           <>
             <div>
               <Text className={styles.titleStyle}>Save Your Resources</Text>
