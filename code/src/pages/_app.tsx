@@ -26,7 +26,7 @@ export default function App(props: AppProps) {
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <div className={`${styles.pageWrapper} ${!isNavExpanded ? styles.collapsed : ''}`}>
             <Nav 
-              isExpanded={isNavExpanded} 
+              isExpanded={!isNavExpanded} 
               onToggle={() => setIsNavExpanded(!isNavExpanded)} 
             />
             <main className={styles.mainContent}>
