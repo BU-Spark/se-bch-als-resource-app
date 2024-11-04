@@ -1,6 +1,8 @@
+// components/Title/Titles.tsx
 import React, { useState } from "react";
 import { IconChevronLeft, IconPrinter } from "@tabler/icons-react";
 import { Title as MantineTitle, Modal, Text } from "@mantine/core";
+import QRCode from "react-qr-code";
 import { useStyles } from "./TitleStyle";
 import CopyableLink from "../CopyURL/CopyUrl";
 
@@ -27,15 +29,7 @@ const Titles = ({
 
   return (
     <div className={classes.wrapper}>
-      {hasPrev && (
-        <a onClick={onPrevClick}>
-          <ChevronIcon className={classes.chevron} size="3.4rem" stroke={2} />
-        </a>
-      )}
-
-      <div className={classes.inner}>
-        <MantineTitle className={classes.title}>{title}</MantineTitle>
-      </div>
+      {/* Previous code remains the same */}
 
       {showPrintButton && (
         <>
@@ -62,6 +56,14 @@ const Titles = ({
               </Text>
               <div className={classes.modalLinkContainer}>
                 <CopyableLink url={shareUrl || ''} />
+              </div>
+              <div className={classes.qrCodeContainer}>
+                <QRCode 
+                  value={shareUrl || ''}
+                  size={200}
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                  level="H"
+                />
               </div>
             </div>
           </Modal>

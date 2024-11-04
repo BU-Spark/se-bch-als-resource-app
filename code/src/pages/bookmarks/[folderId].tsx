@@ -117,17 +117,7 @@ const FolderDetail = () => {
       <div className={styles.folderContent}>
         {hasBookmarks ? (
           <>
-            <div>
-              <Text className={styles.titleStyle}>Save Your Resources</Text>
-              <Text className={styles.subtitleStyle}>
-                Use the link below to automatically load and access your bookmarks in
-                the future, from any device.
-              </Text>
-              <div>
-                <CopyableLink url={generateShareUrl()} />
-              </div>
-            </div>
-
+          
             <ResourcesHandouts
               title="Bookmarks"
               data={folderContent.bookmarks}

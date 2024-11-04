@@ -41,6 +41,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
     "react-focus-lock": "^2.9.4",
+    "react-qr-code": "^2.0.15",
     "react-router-dom": "^6.18.0",
     "typescript": "5.0.2"
   },

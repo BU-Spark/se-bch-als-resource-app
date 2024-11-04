@@ -75,6 +75,9 @@ export const useStyles = createStyles(
 
     modalContent: {
       padding: "20px",
+      display: "flex",
+      flexDirection: "column",
+      gap: rem(20),
     },
 
     modalTitle: {
@@ -92,7 +95,20 @@ export const useStyles = createStyles(
     },
 
     modalLinkContainer: {
-      marginTop: rem(20),
+      marginBottom: rem(20),
+    },
+
+    qrCodeContainer: {
+      display: "flex",
+      justifyContent: "center",
+      padding: rem(20),
+      backgroundColor: "white",
+      borderRadius: theme.radius.md,
+      
+      "& svg": {
+        maxWidth: "200px",
+        height: "auto",
+      },
     },
 
     [theme.fn.smallerThan("xs")]: {
