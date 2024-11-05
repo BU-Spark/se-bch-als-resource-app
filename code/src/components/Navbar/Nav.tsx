@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from 'next/router';
 import { Popover } from "@mantine/core";
 import { Globe, BookmarkIcon, Settings as SettingsIcon, Menu as MenuIcon } from 'lucide-react';
@@ -16,7 +17,19 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
 
   return (
     <nav className={`${styles.sidebar} ${isExpanded ? '' : styles.collapsed}`}>
-      <div className={styles.sidebarInner}>
+    <div className={styles.sidebarInner}>
+    {isExpanded && (
+      <div className={styles.logoWrapper}>
+        <Image
+          src="/Boston_Children's_Hospital_logo.png" 
+          alt="Logo"
+          width={250}
+          height={100}
+          className={styles.logo}
+        />
+      </div>
+    )}
+
         <div className={styles.topSection}>
           <button 
             className={styles.toggleButton}

@@ -1,3 +1,4 @@
+/* Header styles */
 .header {
   height: 64px;
   border-bottom: 0;
@@ -11,15 +12,18 @@
   background-color: white;
 }
 
+/* Logo container styles */
 .logoContainer {
-  padding-left: 10px;
+  padding-left: 0;
+  margin-left: 0;
 }
 
+/* Sidebar base styles */
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
-  width: 300px;
+  width: 250px;
   height: 100vh;
   background-color: #1E4279;
   color: white;
@@ -27,10 +31,12 @@
   transition: width 0.3s ease;
 }
 
+/* Collapsed sidebar styles */
 .sidebar.collapsed {
   width: 90px;
 }
 
+/* Inner sidebar container */
 .sidebarInner {
   display: flex;
   flex-direction: column;
@@ -38,6 +44,42 @@
   padding: 20px;
 }
 
+/* Logo wrapper styles */
+.logoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  background-color: white;
+  margin: -20px -20px 20px -20px;
+  padding: 10px;
+  width: calc(100% + 40px);
+  transition: all 0.3s ease; 
+}
+
+/* Logo wrapper styles for collapsed state */
+.sidebar.collapsed .logoWrapper {
+  width: 90px;
+  margin: -20px -20px 20px -20px;
+  padding: 10px;
+  justify-content: center;
+  transition: all 0.3s ease; 
+}
+
+/* Logo image styles */
+.logo {
+  width: 250px;
+  height: 100px;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+/* Logo styles for collapsed state */
+.sidebar.collapsed .logo {
+  width: 70px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Top section styles */
 .topSection {
   display: flex;
   flex-direction: row;
@@ -45,22 +87,7 @@
   gap: 15px;
 }
 
-.logoWrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.logo {
-  width: 110px;
-  height: 50px;
-  object-fit: contain;
-  transition: opacity 0.3s ease;
-}
-
-.collapsed .logo {
-  display: none;
-}
-
+/* Toggle button styles */
 .toggleButton {
   width: 40px;
   height: 40px;
@@ -79,6 +106,7 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Hamburger menu styles */
 .hamburger {
   width: 20px;
   height: 14px;
@@ -96,15 +124,18 @@
   border-radius: 2px;
 }
 
+/* Menu text styles */
 .menuText {
   color: white;
   font-size: 16px;
 }
 
+/* Spacer for layout */
 .spacer {
   flex: 1;
 }
 
+/* Navigation links container */
 .navLinks {
   display: flex;
   flex-direction: column;
@@ -113,6 +144,7 @@
   padding-bottom: 20px;
 }
 
+/* Individual navigation link styles */
 .navLink {
   color: white;
   text-decoration: none;
@@ -127,12 +159,14 @@
   gap: 10px;
 }
 
+/* Icon styles */
 .icon {
   color: white;
   min-width: 20px;
   flex-shrink: 0;
 }
 
+/* Navigation styles for collapsed state */
 .collapsed .navLink {
   padding: 12px;
   justify-content: center;
@@ -142,6 +176,7 @@
   display: none;
 }
 
+/* Hover and active states */
 .navLink:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
@@ -151,10 +186,12 @@
   font-weight: bold;
 }
 
+/* Easter egg style */
 .easteregg {
   color: #FF69B4;
 }
 
+/* Mobile responsiveness */
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
