@@ -24,7 +24,7 @@ export default function App(props: AppProps) {
       </Head>
       <div className={styles.mainContainer}>
         <MantineProvider withGlobalStyles withNormalizeCSS>
-          <div className={`${styles.pageWrapper} ${!isNavExpanded ? styles.collapsed : ''}`}>
+          <div className={`${styles.pageWrapper} ${isNavExpanded ? styles.collapsed : ''}`}>
             <Nav 
               isExpanded={!isNavExpanded} 
               onToggle={() => setIsNavExpanded(!isNavExpanded)} 
@@ -38,7 +38,7 @@ export default function App(props: AppProps) {
                 </FocusedBookmarkProvider>
               </div>
             </main>
-            <Footer isNavExpanded={isNavExpanded} />
+            <Footer isNavExpanded={!isNavExpanded} />
           </div>
         </MantineProvider>
       </div>

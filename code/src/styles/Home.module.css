@@ -256,6 +256,7 @@
   }
 }
 
+
 .pageWrapper {
   display: flex;
   min-height: 100vh;
@@ -264,13 +265,13 @@
 
 .mainContent {
   flex: 1;
-  margin-left: 250px;
+  margin-left: 300px;
   transition: margin-left 0.3s ease;
   padding: 20px;
   min-height: calc(100vh - 180px);
   width: calc(100% - 250px);
   padding-bottom: 140px;
-  overflow-y: auto; /* Enable scrolling */
+  overflow-y: auto;
   position: relative;
 }
 
