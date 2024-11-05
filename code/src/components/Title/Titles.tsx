@@ -28,7 +28,15 @@ const Titles = ({
 
   return (
     <div className={classes.wrapper}>
-      {/* Previous code remains the same */}
+    {hasPrev && (
+      <a onClick={onPrevClick}>
+        <ChevronIcon className={classes.chevron} size="3.4rem" stroke={2} />
+      </a>
+    )}
+
+    <div className={classes.inner}>
+      <MantineTitle className={classes.title}>{title}</MantineTitle>
+    </div>
 
       {showPrintButton && (
         <>
