@@ -39,16 +39,24 @@ export const useStyles = createStyles((theme) => ({
 
   linkContainer: {
     display: "flex",
-    alignItems: "flex-end",
+    alignItems: "center",
+    justifyContent: "space-between", 
+    width: "100%",
   },
 
   resourceButtonContainer: {
-    flexGrow: 1,
-    marginBottom: "8px",
+    flex: 1,
+    marginRight: "16px",
   },
 
   bookmarkButtonContainer: {
-    marginBottom: "8px",
-    marginLeft: "8px",
+    display: "flex",
+    gap: "10px",
+    alignItems: "center",
   },
+
+  actionButton: {
+    marginTop: "0 !important",
+    height: "57px",
+  }
 }));

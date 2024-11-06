@@ -1,3 +1,4 @@
+/* Header styles */
 .header {
   height: 64px;
   border-bottom: 0;
@@ -11,6 +12,193 @@
   background-color: white;
 }
 
+/* Logo container styles */
 .logoContainer {
-  padding-left: 10px;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+/* Sidebar base styles */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #1E4279;
+  color: white;
+  z-index: 1000;
+  transition: width 0.3s ease;
+}
+
+/* Collapsed sidebar styles */
+.sidebar.collapsed {
+  width: 90px;
+}
+
+/* Inner sidebar container */
+.sidebarInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+}
+
+/* Logo wrapper styles */
+.logoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  background-color: white;
+  margin: -20px -20px 20px -20px;
+  padding: 10px;
+  width: calc(100% + 40px);
+  transition: all 0.3s ease; 
+}
+
+/* Logo wrapper styles for collapsed state */
+.sidebar.collapsed .logoWrapper {
+  width: 90px;
+  margin: -20px -20px 20px -20px;
+  padding: 10px;
+  justify-content: center;
+  transition: all 0.3s ease; 
+}
+
+/* Logo image styles */
+.logo {
+  width: 250px;
+  height: 100px;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+/* Logo styles for collapsed state */
+.sidebar.collapsed .logo {
+  width: 70px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Top section styles */
+.topSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Toggle button styles */
+.toggleButton {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggleButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Hamburger menu styles */
+.hamburger {
+  width: 20px;
+  height: 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Menu text styles */
+.menuText {
+  color: white;
+  font-size: 16px;
+}
+
+/* Spacer for layout */
+.spacer {
+  flex: 1;
+}
+
+/* Navigation links container */
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+/* Individual navigation link styles */
+.navLink {
+  color: white;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Icon styles */
+.icon {
+  color: white;
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+/* Navigation styles for collapsed state */
+.collapsed .navLink {
+  padding: 12px;
+  justify-content: center;
+}
+
+.collapsed .navLink span:not(.icon) {
+  display: none;
+}
+
+/* Hover and active states */
+.navLink:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navLink.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+
+/* Easter egg style */
+.easteregg {
+  color: #FF69B4;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.opened {
+    transform: translateX(0);
+  }
 }

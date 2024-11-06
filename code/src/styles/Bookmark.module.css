@@ -18,3 +18,78 @@
   margin-bottom: 10px;
   font-size: 0.8em;
 }
+
+.folderList {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.folderItem {
+  background-color: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.folderItem:hover {
+  border-color: #254885;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 72, 133, 0.15);
+}
+
+.folderItem:active {
+  transform: translateY(0);
+}
+
+.folderContent {
+  padding: 1.5rem 0;
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.button {
+  width: 100% !important;
+  margin-bottom: 1rem;
+}
+
+.resourceContainer {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.clearButton {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: transparent;
+  color: #dc3545;
+  border: 2px solid #dc3545;
+  transition: all 0.3s ease;
+}
+
+.clearButton:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+
+
+@media (max-width: 768px) {
+  .folderList {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .folderItem {
+    padding: 1rem;
+  }
+}
