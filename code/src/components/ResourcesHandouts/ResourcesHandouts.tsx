@@ -118,7 +118,7 @@ const Resources: React.FC<ResourcesProps> = ({
                variant="light"
                onClick={() => handleMove(folder.id)}
              >
-               <Text>Move to "{folder.name}"</Text>
+               <Text>Move to &quot;{folder.name}&quot;</Text>
              </Button>
            ))}
        </div>

@@ -98,7 +98,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
               variant="light"
               onClick={() => handleSaveToFolder(folder.id)}
             >
-              <Text>Save to "{folder.name}"</Text>
+              <Text>Save to &quot;{folder.name}&quot;</Text>
             </Button>
           ))}
 
