@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from 'next/router';
-import { Popover } from "@mantine/core";
-import { Globe, BookmarkIcon, Settings as SettingsIcon, Menu as MenuIcon } from 'lucide-react';
+import { Popover, Slider, Switch, Group, Text } from "@mantine/core";
+import { Globe, BookmarkIcon, Settings as SettingsIcon, Type, Contrast, EyeOff, Bold } from 'lucide-react';
 import styles from "./Nav.module.css";
-import { Slider } from "@mantine/core";
-
 
 interface NavProps {
   isExpanded: boolean;
@@ -16,29 +14,34 @@ interface NavProps {
 const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
   const router = useRouter();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [fontSize, setFontSize] = useState(16);
+  const [boldText, setBoldText] = useState(false);
+  const [hideImages, setHideImages] = useState(false);
 
-  const [fontSize, setFontSize] = useState('16px');
-  const handleFontSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    
-    const newSize = event.target.value + 'px';
-    setFontSize(newSize);
-    document.documentElement.style.fontSize = newSize;
-};
+  const handleFontSizeChange = (value: number) => {
+    setFontSize(value);
+    document.documentElement.style.fontSize = `${value}px`;
+  };
+
+  const handleBoldTextChange = (checked: boolean) => {
+    setBoldText(checked);
+    document.body.style.fontWeight = checked ? "bold" : "normal";
+  };
 
   return (
     <nav className={`${styles.sidebar} ${isExpanded ? '' : styles.collapsed}`}>
-    <div className={styles.sidebarInner}>
-    {isExpanded && (
-      <div className={styles.logoWrapper}>
-        <Image
-          src="/Boston_Children's_Hospital_logo.png" 
-          alt="Logo"
-          width={250}
-          height={100}
-          className={styles.logo}
-        />
-      </div>
-    )}
+      <div className={styles.sidebarInner}>
+        {isExpanded && (
+          <div className={styles.logoWrapper}>
+            <Image
+              src="/Boston_Children's_Hospital_logo.png" 
+              alt="Logo"
+              width={250}
+              height={100}
+              className={styles.logo}
+            />
+          </div>
+        )}
 
         <div className={styles.topSection}>
           <button 
@@ -77,12 +80,16 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
               opened={isSettingsOpen}
               onChange={setIsSettingsOpen}
               position="right"
-              width="50vw" // 设置弹窗宽度为半屏宽
+              width="50vw"
               styles={{
                 dropdown: {
-                  width: '50vw', // 设置弹窗宽度
-                  minHeight: '100vh', // 让弹窗和 Nav 栏同高
-                  left: '250px', // 调整弹窗位置，使其与 Nav 栏对齐
+                  width: '50vw',
+                  minHeight: '100vh',
+                  left: '250px',
+                  padding: '0',
+                  backgroundColor: '#f1f3f5',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 },
               }}
             >
@@ -98,16 +105,78 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
               </Popover.Target>
 
               <Popover.Dropdown>
-                <div>
-                  <label>Font Size:</label>
-                  <input
-                    type="range"
-                    min="12"
-                    max="24"
-                    value={parseInt(fontSize)}
-                    onChange={handleFontSizeChange}
-                  />
-                  <span>{fontSize}</span>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '15px 20px',
+                  backgroundColor: '#1e3a8a',
+                  color: '#fff',
+                  borderTopLeftRadius: '8px',
+                  borderTopRightRadius: '8px',
+                }}>
+                  <SettingsIcon size={24} style={{ marginRight: '10px' }} />
+                  <h3 style={{ margin: 0, fontSize: '1.5em' }}>Accessibility Settings</h3>
+                </div>
+
+                <div style={{ padding: '20px', display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr' }}>
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                    <Group position="apart">
+                      <Type size={20} color="#333" />
+                      <Text size="sm" weight={500}>Adjust Font Size</Text>
+                    </Group>
+                    <Slider
+                      min={12}
+                      max={24}
+                      value={fontSize}
+                      onChange={handleFontSizeChange}
+                      label={`${fontSize}px`}
+                      styles={{
+                        root: { marginTop: '10px', width: '100%' },
+                        track: { height: 8, backgroundColor: '#ddd' },
+                        thumb: { width: 20, height: 20, backgroundColor: '#007bff' },
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                    <Group position="apart">
+                      <Bold size={20} color="#333" />
+                      <Text size="sm" weight={500}>Bold Text</Text>
+                      <Switch
+                        checked={boldText}
+                        onChange={(event) => handleBoldTextChange(event.currentTarget.checked)}
+                      />
+                    </Group>
+                  </div>
+
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                    <Group position="apart">
+                      <EyeOff size={20} color="#333" />
+                      <Text size="sm" weight={500}>Hide Images</Text>
+                      <Switch
+                        checked={hideImages}
+                        onChange={(event) => setHideImages(event.currentTarget.checked)}
+                      />
+                    </Group>
+                  </div>
+
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                    <Group position="apart">
+                      <Contrast size={20} color="#333" />
+                      <Text size="sm" weight={500}>Contrast</Text>
+                    </Group>
+                    <Slider
+                      min={0}
+                      max={100}
+                      value={50}
+                      onChange={() => {}}
+                      styles={{
+                        root: { marginTop: '10px', width: '100%' },
+                        track: { height: 8, backgroundColor: '#ddd' },
+                        thumb: { width: 20, height: 20, backgroundColor: '#007bff' },
+                      }}
+                    />
+                  </div>
                 </div>
               </Popover.Dropdown>
             </Popover>
