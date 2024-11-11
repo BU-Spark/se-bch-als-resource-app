@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Text, Button, Modal, TextInput } from "@mantine/core";
-import { useBookmarks } from "../../contexts/BookmarkContext";
+import { useBookmarks } from "@/contexts/BookmarkContext";
 import Title from "../../components/Title/Titles";
 import ResourcesHandouts from "../../components/ResourcesHandouts/ResourcesHandouts";
 import CopyableLink from "../../components/CopyURL/CopyUrl";
-import { bodyContentUseStyles } from "../../utils/BodyContentStyle";
+import { bodyContentUseStyles } from "@/utils/BodyContentStyle";
 import styles from "../../styles/Bookmark.module.css";
 
 const FolderDetail = () => {
@@ -99,6 +99,8 @@ const FolderDetail = () => {
         onPrevClick={() => router.push("/bookmarks")}
         showPrintButton={hasBookmarks}
         shareUrl={generateShareUrl()}
+        folderName={folderContent.name}
+        bookmarks={folderContent.bookmarks}
       />
 
       {folderId !== 'default' && (
