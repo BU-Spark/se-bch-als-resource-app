@@ -1,40 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Settings.module.css';
-import FontSizeSetting from "./FontSizeSetting";
+import './GlobalStyles.css'; // Assuming you have a global CSS file
 
 const Settings = () => {
-    const [fontSize, setFontSize] = useState('16px');
+    const [fontSize, setFontSize] = useState(() => {
+        const savedFontSize = localStorage.getItem('fontSize');
+        return savedFontSize ? parseInt(savedFontSize) : 16;
+    });
+
+    const [boldText, setBoldText] = useState(() => {
+        const savedBoldText = localStorage.getItem('boldText');
+        return savedBoldText === 'true';
+    });
 
     useEffect(() => {
-        const savedFontSize = localStorage.getItem('fontSize');
-        if (savedFontSize) {
-            setFontSize(savedFontSize);
-            document.documentElement.style.fontSize = savedFontSize;
-        }
-    }, []);
+        localStorage.setItem('fontSize', fontSize.toString());
+    }, [fontSize]);
+
+    useEffect(() => {
+        localStorage.setItem('boldText', boldText.toString());
+    }, [boldText]);
 
     const handleFontSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newSize = event.target.value + 'px';
-        setFontSize(newSize);
-        document.documentElement.style.fontSize = newSize;
-        localStorage.setItem('fontSize', newSize);
+        setFontSize(parseInt(event.target.value));
+    };
+
+    const handleBoldTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBoldText(event.target.checked);
     };
 
     return (
-        <div className={styles.container}>
+        <div
+            className={`${styles.container} ${boldText ? 'bold-text' : ''}`}
+            style={{ fontSize: `${fontSize}px` }}
+        >
             <h2>Settings</h2>
+
+            {/* Font Size Setting */}
             <div className={styles.option}>
                 <label>Font Size:</label>
                 <input
                     type="range"
                     min="12"
                     max="24"
-                    value={parseInt(fontSize)}
+                    value={fontSize}
                     onChange={handleFontSizeChange}
                 />
-                <span>{fontSize}</span>
+                <span>{fontSize}px</span>
             </div>
-            {/* 可以在这里添加更多功能按钮 */}
+
+            {/* Bold Text Setting */}
+            <div className={styles.option}>
+                <label>Bold Text:</label>
+                <input
+                    type="checkbox"
+                    checked={boldText}
+                    onChange={handleBoldTextChange}
+                />
+                <span>{boldText ? 'Enabled' : 'Disabled'}</span>
+            </div>
         </div>
     );
 };

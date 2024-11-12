@@ -16,7 +16,7 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [fontSize, setFontSize] = useState(16);
   const [boldText, setBoldText] = useState(false);
-  const [hideImages, setHideImages] = useState(false);
+  const [invertColors, setInvertColors] = useState(false); 
 
   const handleFontSizeChange = (value: number) => {
     setFontSize(value);
@@ -25,8 +25,22 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
 
   const handleBoldTextChange = (checked: boolean) => {
     setBoldText(checked);
-    document.body.style.fontWeight = checked ? "bold" : "normal";
+    if (checked) {
+      document.body.classList.add("bold-text");
+    } else {
+      document.body.classList.remove("bold-text");
+    }
   };
+
+    // Define the handleSetInvertColors function
+    const handleSetInvertColors = (checked: boolean) => {
+      setInvertColors(checked);
+      if (checked) {
+        document.body.classList.add("invert-colors"); // Add class to invert colors
+      } else {
+        document.body.classList.remove("invert-colors"); // Remove class
+      }
+    };
 
   return (
     <nav className={`${styles.sidebar} ${isExpanded ? '' : styles.collapsed}`}>
@@ -119,11 +133,14 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
                 </div>
 
                 <div style={{ padding: '20px', display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr' }}>
-                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-                    <Group position="apart">
-                      <Type size={20} color="#333" />
-                      <Text size="sm" weight={500}>Adjust Font Size</Text>
-                    </Group>
+                  
+                  {/* adjust text size */}
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', minHeight: '150px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                      <Type size={30} color="#333" style={{ marginRight: '8px' }} /> {/* Icon with space to the right */}
+                      <Text size="sm" weight={500} style={{ color: '#333' }}>Text Size</Text> {/* Text next to the icon */}
+                    </div>
+                    
                     <Slider
                       min={12}
                       max={24}
@@ -136,47 +153,77 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
                         thumb: { width: 20, height: 20, backgroundColor: '#007bff' },
                       }}
                     />
+                    
+                    <Text size="xs" style={{ marginTop: '10px', color: '#17202a' }}>
+                      Use this slider to set the preferred reading size for the app
+                    </Text>
                   </div>
 
-                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-                    <Group position="apart">
-                      <Bold size={20} color="#333" />
-                      <Text size="sm" weight={500}>Bold Text</Text>
-                      <Switch
-                        checked={boldText}
-                        onChange={(event) => handleBoldTextChange(event.currentTarget.checked)}
-                      />
-                    </Group>
-                  </div>
 
-                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-                    <Group position="apart">
-                      <EyeOff size={20} color="#333" />
-                      <Text size="sm" weight={500}>Hide Images</Text>
-                      <Switch
-                        checked={hideImages}
-                        onChange={(event) => setHideImages(event.currentTarget.checked)}
-                      />
-                    </Group>
-                  </div>
-
-                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-                    <Group position="apart">
-                      <Contrast size={20} color="#333" />
-                      <Text size="sm" weight={500}>Contrast</Text>
-                    </Group>
-                    <Slider
-                      min={0}
-                      max={100}
-                      value={50}
-                      onChange={() => {}}
-                      styles={{
-                        root: { marginTop: '10px', width: '100%' },
-                        track: { height: 8, backgroundColor: '#ddd' },
-                        thumb: { width: 20, height: 20, backgroundColor: '#007bff' },
-                      }}
+                  {/* Bold Text */}
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', minHeight: '150px' }}>
+                  {/* Icon and title in a single row */}
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <Bold size={30} color="#333" style={{ marginRight: '8px' }} /> {/* Icon with space to the right */}
+                    <Text size="sm" weight={500} style={{ color: '#333' }}>Bold Text</Text> {/* Text right next to the icon */}
+                    <Switch
+                      checked={boldText}
+                      onChange={(event) => handleBoldTextChange(event.currentTarget.checked)}
+                      style={{ marginLeft: 'auto' }}
                     />
                   </div>
+                  
+                  <Text size="xs" style={{ marginTop: '10px', color: '#666' }}>
+                    Toggle to make text bold for better visibility.
+                  </Text>
+                </div>
+
+
+
+                  {/* invert color */}
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', minHeight: '150px' }}>
+                  {/* Icon and title in a single row */}
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <Contrast size={30} color="#333" style={{ marginRight: '8px' }} /> {/* Icon */}
+                    <Text size="sm" weight={500} style={{ color: '#333' }}>Invert Colors</Text> {/* Title */}
+                    <Switch
+                      checked={invertColors}
+                      onChange={(event) => setInvertColors(event.currentTarget.checked)}
+                      style={{ marginLeft: 'auto' }} // Align switch to the far right
+                    />
+                  </div>
+
+                  <Text size="xs" style={{ marginTop: '10px', color: '#666' }}>
+                    Toggle to invert colors for a different visual experience.
+                  </Text>
+                </div>
+
+
+                  {/* Contrast */}
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', minHeight: '150px' }}>
+                  {/* Icon and title in a single row */}
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <Contrast size={30} color="#333" style={{ marginRight: '8px' }} /> {/* Icon */}
+                    <Text size="sm" weight={500} style={{ color: '#333' }}>Contrast</Text> {/* Title */}
+                  </div>
+
+                  <Slider
+                    min={0}
+                    max={100}
+                    value={50}
+                    onChange={() => {}}
+                    styles={{
+                      root: { marginTop: '10px', width: '100%' },
+                      track: { height: 8, backgroundColor: '#ddd' },
+                      thumb: { width: 20, height: 20, backgroundColor: '#007bff' },
+                    }}
+                  />
+
+                  <Text size="xs" style={{ marginTop: '10px', color: '#666' }}>
+                    Adjust contrast to improve readability in different lighting conditions.
+                  </Text>
+                </div>
+
                 </div>
               </Popover.Dropdown>
             </Popover>

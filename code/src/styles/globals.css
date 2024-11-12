@@ -123,3 +123,8 @@ a {
 .hidden {
     display: none;
 }
+
+
+.bold-text, .bold-text * {
+  font-weight: bold !important;
+}
