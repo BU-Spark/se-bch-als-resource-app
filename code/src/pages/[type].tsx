@@ -16,7 +16,7 @@ import SolutionPage from "@/components/SolutionPage/SolutionPage";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { isTypeformConsistent } from "../utils/QuestionUtils";
 import style from "../styles/choiceBoxes.module.css"
-import styles from "../styles/communication.module.css";
+import styles from "../styles/Communication.module.css";
 interface Props {}
 
 /**
