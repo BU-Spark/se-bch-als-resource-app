@@ -2,28 +2,24 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { AppProps } from "next/app";
-import { MantineProvider, Notification, Button } from "@mantine/core";
+import { MantineProvider, Modal, Button, Title, Text } from "@mantine/core";
+import { X } from 'lucide-react';
 import Nav from "@/components/Navbar/Nav";
 import { Footer } from "@/components/Footer/Footer";
 import { BookmarkProvider } from "@/contexts/BookmarkContext";
 import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
 import styles from "../styles/Home.module.css";
 import { Notifications } from '@mantine/notifications';
+import CookieConsent from '@/components/CookieConsent';
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
   const [isNavExpanded, setIsNavExpanded] = useState(true);
-  const [showCookieNotice, setShowCookieNotice] = useState(false);
+  const [showCookieNotice, setShowCookieNotice] = useState(true);
+  const [isWelcomeOpen, setIsWelcomeOpen] = useState(true);
 
-  useEffect(() => {
-    const hasAccepted = localStorage.getItem('cookieAccepted');
-    if (!hasAccepted) {
-      setShowCookieNotice(true);
-    }
-  }, []);
-
-  const handleAccept = () => {
-    localStorage.setItem('cookieAccepted', 'true');
+  const handleCookieAccept = () => {
+    localStorage.setItem('cookieConsent', 'accepted');
     setShowCookieNotice(false);
   };
 
@@ -40,6 +36,94 @@ export default function App(props: AppProps) {
       <div className={styles.mainContainer}>
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <Notifications position="bottom-right" />
+          <Modal
+            opened={isWelcomeOpen}
+            onClose={() => setIsWelcomeOpen(false)}
+            withCloseButton={false}
+            centered
+            size="lg"
+            padding={0}
+            radius="lg"
+            zIndex={1000}
+            styles={{
+              inner: { padding: '16px' },
+              body: {
+                padding: '48px 64px',
+                position: 'relative'
+              },
+              content: {
+                backgroundColor: 'white',
+                borderRadius: '24px',
+                boxShadow: '0 4px 24px rgba(0, 0, 0, 0.1)'
+              }
+            }}
+          >
+            <button
+              onClick={() => setIsWelcomeOpen(false)}
+              style={{
+                position: 'absolute',
+                top: '24px',
+                right: '24px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '4px'
+              }}
+            >
+              <X size={24} color="#1a1b1e" />
+            </button>
+
+            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+              <Title
+                order={1}
+                style={{
+                  fontSize: '32px',
+                  color: '#1a1b1e',
+                  marginBottom: '24px',
+                  textAlign: 'left'
+                }}
+              >
+                Hello!
+              </Title>
+
+              <Text
+                size="lg"
+                style={{
+                  color: '#666',
+                  lineHeight: 1.6,
+                  marginBottom: '32px',
+                  textAlign: 'left'
+                }}
+              >
+                Welcome to Boston Children's Hospital's ALS resource website. Please note that the information provided on this website is for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider for personalized medical guidance.
+              </Text>
+
+              <div style={{ textAlign: 'left' }}>
+                <Button
+                  onClick={() => setIsWelcomeOpen(false)}
+                  size="lg"
+                  styles={{
+                    root: {
+                      backgroundColor: '#0A1E3F',
+                      borderRadius: '25px',
+                      padding: '0 48px',
+                      height: '50px',
+                      '&:hover': {
+                        backgroundColor: '#162B4D'
+                      }
+                    },
+                    label: {
+                      fontSize: '16px',
+                      fontWeight: 600
+                    }
+                  }}
+                >
+                  I Understand
+                </Button>
+              </div>
+            </div>
+          </Modal>
+
           <div className={`${styles.pageWrapper} ${isNavExpanded ? styles.collapsed : ''}`}>
             <Nav
               isExpanded={!isNavExpanded}
@@ -69,49 +153,10 @@ export default function App(props: AppProps) {
             </div>
             <Footer isNavExpanded={!isNavExpanded} />
 
-            {/* Cookie Notice */}
-            {showCookieNotice && (
-              <div style={{
-                position: 'fixed',
-                bottom: 20,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: 1000,
-                width: '90%',
-                maxWidth: '600px',
-              }}>
-                <Notification
-                  color="blue"
-                  onClose={handleAccept}
-                  closeButtonProps={{ 'aria-label': 'Hide notification' }}
-                  style={{
-                    backgroundColor: 'white',
-                    border: '2px solid #254885',
-                  }}
-                >
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '1rem'
-                  }}>
-                    <div style={{ color: '#254885' }}>
-                      This website uses cookies to enhance the user experience.
-                    </div>
-                    <Button
-                      variant="outline"
-                      style={{
-                        color: '#254885',
-                        borderColor: '#254885'
-                      }}
-                      onClick={handleAccept}
-                    >
-                      I know
-                    </Button>
-                  </div>
-                </Notification>
-              </div>
-            )}
+            <CookieConsent
+              isOpen={showCookieNotice}
+              onClose={handleCookieAccept}
+            />
           </div>
         </MantineProvider>
       </div>
