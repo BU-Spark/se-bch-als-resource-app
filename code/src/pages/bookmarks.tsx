@@ -1,163 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-
-import { Loader, Text } from "@mantine/core";
+import { Loader, Text, Button, Modal, TextInput } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
 import { IQuestion } from "@/types/api_types";
-
 import Title from "../components/Title/Titles";
 import ResourcesHandouts from "../components/ResourcesHandouts/ResourcesHandouts";
 import CopyableLink from "../components/CopyURL/CopyUrl";
 import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import { useBookmarks } from "../contexts/BookmarkContext";
 import styles from "../styles/Bookmark.module.css";
-
-/**
- * Displays a list of categorized bookmarks and
- * integrates URL encoding to share bookmarks
- * across devices.
- */
-const Bookmarks = () => {
-  const { classes } = bodyContentUseStyles();
-  const { bookmarks, addBookmark } = useBookmarks();
-  const image = useRef("/titleimghome.PNG");
-
-  const [bookmarkUrl, setBookmarkUrl] = useState("");
-  const [initialUrlLoaded, setInitialUrlLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-
-  const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
-
-  type OriginalKeys =
-    | "Communication"
-    | "Computer Access"
-    | "Home Access"
-    | "Smart Phone Access";
-
-  const originals: OriginalKeys[] = [
-    "Communication",
-    "Computer Access",
-    "Home Access",
-    "Smart Phone Access",
-  ];
-
-  const categorizedBookmarks: Record<string, ResourceLink[]> = {
-    Communication: [],
-    "Computer Access": [],
-    "Home Access": [],
-    "Smart Phone Access": [],
-  };
-
-  // Handles bookmark categorization
-  bookmarks.forEach((bookmark: ResourceLink) => {
-    if (bookmark.url in categorizedBookmarks) {
-      categorizedBookmarks[bookmark.url].push(bookmark);
-    } else {
-      console.warn(`Unexpected original: ${bookmark.url}`);
-    }
-  });
-
-  // Handles URL encoding on load
-  useEffect(() => {
-    if (initialUrlLoaded) {
-      return;
-    }
-    const fetchAndAddBookmarks = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(
-          "/api/retrieveQuestions?flowName=communication" // Change this when new branches are made
-        );
-        const data = await response.json();
-        // Parsing the URL
-        if (typeof router.query.ids === "string") {
-          const refsFromUrl = router.query.ids.split(",");
-          const questionsToAdd = data.questions.filter((question: IQuestion) =>
-            refsFromUrl.includes(question.ref)
-          );
-
-          if (questionsToAdd.length > 0) {
-            // Wipe local storage of bookmarks if url encoded
-            localStorage.setItem("bookmarks", JSON.stringify([]));
-          }
-
-          questionsToAdd.forEach((question: IQuestion) => {
-            const newBookmark = {
-              id: question.ref,
-              title: question.title,
-              url: "Communication", // Change this when new branches are made
-            };
-            addBookmark(newBookmark);
-          });
-        }
-        setInitialUrlLoaded(true);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching bookmark data:", error);
-      }
-    };
-
-    fetchAndAddBookmarks();
-  }, [router.query.refs, addBookmark]);
-
-  // Handles construction of URL
-  useEffect(() => {
-    const sortedBookmarks = [...bookmarks].sort((a, b) =>
-      a.title.localeCompare(b.title)
-    );
-    const bookmarkIds = sortedBookmarks
-      .map((bookmark) => bookmark.id)
-      .join(",");
-    const newUrl = `${APP_URL}bookmarks?ids=${encodeURIComponent(bookmarkIds)}`;
-    setBookmarkUrl(newUrl);
-  }, [bookmarks]);
-
-  return (
-    <div>
-      <Title
-        hasPrev={true}
-        titleImg={image.current}
-        title={"Bookmarks"}
-        onPrevClick={() => {
-          router.push("/communication");
-        }}
-      />
-      {isLoading ? (
-        <div className={styles.loaderContainer}>
-          <Loader color="blue" size={110} />
-        </div>
-      ) : (
-        <div>
-          {bookmarks.length > 0 ? (
-            <div>
-              <EncodedUrlDisplay bookmarkUrl={bookmarkUrl} classes={classes} />
-              <div className={classes.outer}>
-                {originals.map((original: OriginalKeys) =>
-                  categorizedBookmarks[original].length > 0 ? (
-                    <ResourcesHandouts
-                      key={original}
-                      title={original}
-                      data={categorizedBookmarks[original]}
-                    />
-                  ) : (
-                    <></>
-                  )
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className={classes.outer}>
-              <Text className={styles.titleStyle}>
-                You don&#39;t have any bookmarks.
-              </Text>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
 
 type EncodedUrlDisplayProps = {
   bookmarkUrl: string;
@@ -166,10 +17,6 @@ type EncodedUrlDisplayProps = {
   };
 };
 
-/**
- * Displays the section containing the encoded URL
- * @param {EncodedUrlDisplayProps} props - contains url and styles
- */
 const EncodedUrlDisplay = ({
   bookmarkUrl,
   classes,
@@ -183,6 +30,177 @@ const EncodedUrlDisplay = ({
       </Text>
       <div>
         <CopyableLink url={bookmarkUrl} />
+      </div>
+    </div>
+  );
+};
+
+const Bookmarks = () => {
+  const { classes } = bodyContentUseStyles();
+  const { bookmarks, folders, addBookmark, createFolder } = useBookmarks();
+  const image = useRef("/titleimghome.PNG");
+
+  const [bookmarkUrl, setBookmarkUrl] = useState("");
+  const [initialUrlLoaded, setInitialUrlLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+
+  const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
+
+  const [hasRedirected, setHasRedirected] = useState(false);
+
+  const handleCreateFolder = () => {
+    if (newFolderName.trim()) {
+      createFolder(newFolderName.trim());
+      setNewFolderName("");
+      setIsCreateModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    if (router.pathname === "/bookmarks" && !hasRedirected) {
+      if (router.query.ids) {
+        router.replace(`/bookmarks/default?ids=${router.query.ids}`);
+      } else {
+        setHasRedirected(true);
+      }
+    }
+  }, [router.isReady, router.pathname, router.query.ids, hasRedirected]);
+
+  useEffect(() => {
+    if (initialUrlLoaded) {
+      return;
+    }
+    const fetchAndAddBookmarks = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          "/api/retrieveQuestions?flowName=communication"
+        );
+        const data = await response.json();
+        if (typeof router.query.ids === "string") {
+          const refsFromUrl = router.query.ids.split(",");
+          const questionsToAdd = data.questions.filter((question: IQuestion) =>
+            refsFromUrl.includes(question.ref)
+          );
+
+          if (questionsToAdd.length > 0) {
+            localStorage.setItem("bookmarks", JSON.stringify([]));
+          }
+
+          questionsToAdd.forEach((question: IQuestion) => {
+            const newBookmark = {
+              id: question.ref,
+              title: question.title,
+              url: "Communication",
+            };
+            addBookmark(newBookmark);
+          });
+        }
+        setInitialUrlLoaded(true);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching bookmark data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchAndAddBookmarks();
+  }, [router.query.ids, addBookmark, initialUrlLoaded]);
+
+  useEffect(() => {
+    const sortedBookmarks = [...bookmarks].sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
+    const bookmarkIds = sortedBookmarks
+      .map((bookmark) => bookmark.id)
+      .join(",");
+    const newUrl = `${APP_URL}bookmarks?ids=${encodeURIComponent(bookmarkIds)}`;
+    setBookmarkUrl(newUrl);
+  }, [bookmarks]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.loaderContainer}>
+        <Loader color="blue" size={110} />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <Title
+        hasPrev={true}
+        titleImg={image.current}
+        title="Folders"
+        onPrevClick={() => router.push("/communication")}
+      />
+
+      <Button
+        onClick={() => setIsCreateModalOpen(true)}
+        style={{ margin: "20px" }}
+      >
+        + Add Folder
+      </Button>
+
+      <Modal
+        opened={isCreateModalOpen}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+          setNewFolderName("");
+        }}
+        title="Create New Folder"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <TextInput
+            placeholder="Enter folder name"
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+          />
+          <Button
+            onClick={handleCreateFolder}
+            disabled={!newFolderName.trim()}
+          >
+            Create
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Show Bookmark Folder List */}
+      <div className={styles.folderList}>
+        {/* Default folder */}
+        <div
+          className={styles.folderItem}
+          onClick={() => router.push("/bookmarks/default")}
+        >
+          <Text size="lg" weight={500}>
+            Default Folder
+          </Text>
+          <Text size="sm" color="dimmed">
+            {bookmarks.length} bookmark(s)
+          </Text>
+        </div>
+
+        {/* Customize folder list */}
+        {folders.map((folder) => (
+          <div
+            key={folder.id}
+            className={styles.folderItem}
+            onClick={() => router.push(`/bookmarks/${folder.id}`)}
+          >
+            <Text size="lg" weight={500}>
+              {folder.name}
+            </Text>
+            <Text size="sm" color="dimmed">
+              {folder.bookmarks.length} bookmark(s)
+            </Text>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,29 +1,18 @@
-import React from "react";
-import { useState } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import Link from "next/link";
 import {Footer} from "@/components/Footer/Footer";
 import { Header, Container, Group, Burger, rem } from "@mantine/core";
-
 import NavList from "../NavList/NavList";
 import styles from "./Nav.module.css";
 
-const HEADER_HEIGHT = rem(64);
+interface NavProps {
+  isExpanded: boolean;
+  onToggle: () => void;
+}
 
-/**
- *  Nav component for the navigation bar
- */
-const Nav = () => {
-  const [opened, setOpened] = useState(false);
-
-  const toggleMenu = () => {
-    setOpened(!opened);
-  };
-
-  const links = [
-    { title: "Home", path: "/", onClick: toggleMenu },
-    { title: "Bookmarks", path: "/bookmarks", onClick: toggleMenu },
-  ];
+const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
+  const router = useRouter();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
     <Header height={HEADER_HEIGHT} className={styles.header}>

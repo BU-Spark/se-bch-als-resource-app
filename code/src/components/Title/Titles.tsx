@@ -1,39 +1,82 @@
-import { IconChevronLeft } from "@tabler/icons-react";
-
-import { Title } from "@mantine/core";
-
-import { useStyles } from "@/components/Title/TitleStyle";
+import React, { useState } from "react";
+import { IconChevronLeft, IconPrinter } from "@tabler/icons-react";
+import { Title as MantineTitle, Modal, Text } from "@mantine/core";
+import QRCode from "react-qr-code";
+import { useStyles } from "./TitleStyle";
+import CopyableLink from "../CopyURL/CopyUrl";
 
 interface TitlesProps {
   hasPrev: boolean;
   titleImg: string;
   title: string;
   onPrevClick?: () => void;
+  showPrintButton?: boolean;
+  shareUrl?: string;
 }
 
-/**
- * Displays a title banner with an optional back button.
- *
- * @param {boolean} hasPrev - Indicates if the back button should render
- * @param {string} titleImg - The background image URL
- * @param {string} title - The title to display
- * @param {() => void} onPrevClick - Optional click handler for the previous button
- */
-const Titles = ({ hasPrev, titleImg, title, onPrevClick }: TitlesProps) => {
+const Titles = ({
+  hasPrev,
+  titleImg,
+  title,
+  onPrevClick,
+  showPrintButton,
+  shareUrl,
+}: TitlesProps) => {
   const { classes } = useStyles({ backgroundImageUrl: titleImg });
+  const [isPrintOpen, setIsPrintOpen] = useState(false);
   const ChevronIcon = IconChevronLeft;
 
   return (
     <div className={classes.wrapper}>
-      {hasPrev ? (
-        <a onClick={onPrevClick}>
-          <ChevronIcon className={classes.chevron} size="3.4rem" stroke={2} />
-        </a>
-      ) : null}
+    {hasPrev && (
+      <a onClick={onPrevClick}>
+        <ChevronIcon className={classes.chevron} size="3.4rem" stroke={2} />
+      </a>
+    )}
 
-      <div className={classes.inner}>
-        <Title className={classes.title}>{title}</Title>
-      </div>
+    <div className={classes.inner}>
+      <MantineTitle className={classes.title}>{title}</MantineTitle>
+    </div>
+
+      {showPrintButton && (
+        <>
+          <button
+            className={classes.printButton}
+            onClick={() => setIsPrintOpen(true)}
+            aria-label="Share Resources"
+          >
+            <IconPrinter size={20} className={classes.printIcon} stroke={2} />
+            <span>Share</span>
+          </button>
+
+          <Modal
+            opened={isPrintOpen}
+            onClose={() => setIsPrintOpen(false)}
+            title="Share Resources"
+            size="md"
+            centered
+          >
+            <div className={classes.modalContent}>
+              <Text className={classes.modalTitle}>Save Your Resources</Text>
+              <Text className={classes.modalSubtitle}>
+                Use the link below to automatically load and access your bookmarks in
+                the future, from any device.
+              </Text>
+              <div className={classes.modalLinkContainer}>
+                <CopyableLink url={shareUrl || ''} />
+              </div>
+              <div className={classes.qrCodeContainer}>
+                <QRCode 
+                  value={shareUrl || ''}
+                  size={200}
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                  level="H"
+                />
+              </div>
+            </div>
+          </Modal>
+        </>
+      )}
     </div>
   );
 };

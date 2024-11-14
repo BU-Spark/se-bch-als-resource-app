@@ -1,16 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
-
 import { AppProps } from "next/app";
 import { MantineProvider } from "@mantine/core";
-
 import Nav from "@/components/Navbar/Nav";
 import SideBar from "@/components/SideBar/SideBar";
 import { Footer } from "@/components/Footer/Footer";
 import { BookmarkProvider } from "@/contexts/BookmarkContext";
 import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
 import styles from "../styles/Home.module.css";
-
 
 
 export default function App(props: AppProps) {
@@ -29,10 +26,8 @@ export default function App(props: AppProps) {
       <SideBar />
       <div className={styles.mainContainer}>
         <MantineProvider withGlobalStyles withNormalizeCSS>
-
         <div className="main" style={{flexGrow:1,display:"flex",flexDirection:"column",width:"100%"}}>
           <Nav />
-
           <div className={styles.content}>
             <FocusedBookmarkProvider>
               <BookmarkProvider>
@@ -40,7 +35,6 @@ export default function App(props: AppProps) {
               </BookmarkProvider>
             </FocusedBookmarkProvider>
           </div>
-
          <Footer />
           </div>
         </MantineProvider>
