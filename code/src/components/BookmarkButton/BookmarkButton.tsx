@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Text, Button, Modal, TextInput } from "@mantine/core";
+import { Text, Button, Modal, TextInput, Group } from "@mantine/core";
+import { notifications } from '@mantine/notifications';
+import { Save, MoreVertical, Check } from 'lucide-react';
 import { useBookmarks } from "../../contexts/BookmarkContext";
 import { ResourceLink } from "@/types/dataTypes";
 import { bodyContentUseStyles } from "../../utils/BodyContentStyle";
@@ -20,28 +22,40 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   isSolutionPage,
 }) => {
   const { classes } = bodyContentUseStyles();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isNavigateModalOpen, setIsNavigateModalOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
 
-  const { isBookmarked, bookmarks, folders, addBookmark, removeBookmark, createFolder } = useBookmarks();
-  const bookmarked = isBookmarked(id);
-
+  const { folders, addBookmark, createFolder } = useBookmarks();
   const router = useRouter();
 
-  const handleBookmarkClick = () => {
-    if (bookmarked) {
-      removeBookmark(id);
-    } else {
-      setIsModalOpen(true);
-    }
-  };
-
+  // Handle saving bookmark to a specific folder
   const handleSaveToFolder = (folderId?: string) => {
     const newBookmark: ResourceLink = { id, title, url };
     addBookmark(newBookmark, folderId);
-    setIsModalOpen(false);
+    setIsSaveModalOpen(false);
+
+    notifications.show({
+      message: `Successfully saved to ${folderId ? `"${folders.find(f => f.id === folderId)?.name}"` : "Default Folder"}`,
+      icon: <Check size={18} />,
+      color: 'green',
+      autoClose: 3000,
+      withCloseButton: false,
+      styles: (theme) => ({
+        root: {
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(4px)',
+          border: '1px solid rgba(0, 0, 0, 0.1)',
+        },
+        icon: {
+          backgroundColor: theme.colors.green[6],
+          color: 'white',
+        },
+      }),
+    });
   };
 
+  // Handle creating new folder
   const handleCreateFolder = () => {
     if (newFolderName.trim()) {
       createFolder(newFolderName);
@@ -49,43 +63,50 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
     }
   };
 
+  // Handle navigation to bookmarks page
+  const handleNavigateToBookmarks = () => {
+    setIsNavigateModalOpen(true);
+  };
+
   return (
-    <div>
-      <Button
-        className={`${classes.inner} ${styles.button}`}
-        variant="outline"
-        style={{ marginTop: "40px" }}
-        onClick={handleBookmarkClick}
+    <div className={styles.buttonContainer}>
+      <button
+        className={styles.actionButton}
+        onClick={() => setIsSaveModalOpen(true)}
+        aria-label="Save to folder"
       >
-        <Text fz="xl" className={styles.text}>
-          {bookmarked ? "Unsave this resource" : "Save this resource"}
-        </Text>
-      </Button>
+        <Save
+          size={20}
+          color="white"
+          className={styles.actionIcon}
+        />
+      </button>
 
-      {isSolutionPage ? (
-        <Button
-          className={classes.inner}
-          variant="outline"
-          style={{ marginTop: "10px" }}
-          onClick={() => {
-            router.push("/bookmarks");
-          }}
+      {isSolutionPage && (
+        <button
+          className={`${styles.actionButton} ${styles.moreButton}`}
+          onClick={handleNavigateToBookmarks}
+          aria-label="Go to bookmarks"
         >
-          <Text fz="xl" className={styles.text}>
-            Go to your bookmarks
-          </Text>
-        </Button>
-      ) : null}
+          <MoreVertical
+            size={20}
+            color="white"
+            className={styles.actionIcon}
+          />
+        </button>
+      )}
 
+      {/* Save to Folder Modal */}
       <Modal
-        opened={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        opened={isSaveModalOpen}
+        onClose={() => setIsSaveModalOpen(false)}
         title="Save to Folder"
         size="md"
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <Button 
+          <Button
             className={classes.inner}
+            variant="light"
             onClick={() => handleSaveToFolder()}
           >
             <Text>Save to Default Folder</Text>
@@ -117,6 +138,35 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
             </div>
           </div>
         </div>
+      </Modal>
+
+      {/* Navigate to Bookmarks Modal */}
+      <Modal
+        opened={isNavigateModalOpen}
+        onClose={() => setIsNavigateModalOpen(false)}
+        title="Navigate to Bookmarks"
+        size="sm"
+      >
+        <Text size="sm" style={{ marginBottom: "20px" }}>
+          Do you want to go to your bookmarks page?
+        </Text>
+        <Group position="apart">
+          <Button
+            variant="outline"
+            color="gray"
+            onClick={() => setIsNavigateModalOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              setIsNavigateModalOpen(false);
+              router.push("/bookmarks");
+            }}
+          >
+            Go to Bookmarks
+          </Button>
+        </Group>
       </Modal>
     </div>
   );

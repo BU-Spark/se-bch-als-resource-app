@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Text, Button, Modal, TextInput } from "@mantine/core";
+import { Text, Button, Modal, TextInput, Group } from "@mantine/core";
 import { useBookmarks } from "@/contexts/BookmarkContext";
 import Title from "../../components/Title/Titles";
 import ResourcesHandouts from "../../components/ResourcesHandouts/ResourcesHandouts";
@@ -11,18 +11,21 @@ import styles from "../../styles/Bookmark.module.css";
 const FolderDetail = () => {
   const { classes } = bodyContentUseStyles();
   const router = useRouter();
-  const { 
-    bookmarks, 
-    folders, 
-    removeBookmark, 
-    clearBookmarks, 
-    clearFolder, 
-    renameFolder 
+  const {
+    bookmarks,
+    folders,
+    removeBookmark,
+    clearBookmarks,
+    clearFolder,
+    renameFolder
   } = useBookmarks();
-  
+
   // Modal states
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [unsaveModalOpen, setUnsaveModalOpen] = useState(false);
+  const [selectedBookmarkId, setSelectedBookmarkId] = useState<string | null>(null);
   const [newFolderName, setNewFolderName] = useState("");
 
   // Constants
@@ -34,7 +37,7 @@ const FolderDetail = () => {
   const getCurrentFolderContent = () => {
     if (folderId === 'default') {
       return {
-        name: 'Default Folder',
+        name: 'Default',
         bookmarks: bookmarks
       };
     }
@@ -55,15 +58,29 @@ const FolderDetail = () => {
 
   // Event handlers
   const handleClearFolder = () => {
+    setIsClearModalOpen(true);
+  };
+
+  const confirmClearFolder = () => {
     if (folderId === 'default') {
       clearBookmarks();
     } else {
       clearFolder(folderId);
     }
+    setIsClearModalOpen(false);
   };
 
   const handleUnsaveBookmark = (bookmarkId: string) => {
-    removeBookmark(bookmarkId);
+    setSelectedBookmarkId(bookmarkId);
+    setUnsaveModalOpen(true);
+  };
+
+  const confirmUnsave = () => {
+    if (selectedBookmarkId) {
+      removeBookmark(selectedBookmarkId);
+    }
+    setUnsaveModalOpen(false);
+    setSelectedBookmarkId(null);
   };
 
   const handleRename = () => {
@@ -78,8 +95,8 @@ const FolderDetail = () => {
   if (!folderContent.name) {
     return (
       <div>
-        <Text>Folder not found.</Text>
-        <Button 
+        <Text>Collection not found.</Text>
+        <Button
           className={`${classes.inner} ${styles.button}`}
           variant="outline"
           onClick={() => router.push("/bookmarks")}
@@ -91,88 +108,150 @@ const FolderDetail = () => {
   }
 
   return (
-    <div>
-      <Title
-        hasPrev={true}
-        titleImg="/titleimghome.PNG"
-        title={folderContent.name}
-        onPrevClick={() => router.push("/bookmarks")}
-        showPrintButton={hasBookmarks}
-        shareUrl={generateShareUrl()}
-        folderName={folderContent.name}
-        bookmarks={folderContent.bookmarks}
-      />
+      <div>
+        <Title
+            hasPrev={true}
+            titleImg="/titleimghome.PNG"
+            title={folderContent.name}
+            onPrevClick={() => router.push("/bookmarks")}
+            showPrintButton={hasBookmarks}
+            shareUrl={generateShareUrl()}
+            folderName={folderContent.name}
+            bookmarks={folderContent.bookmarks}
+        />
 
-      {folderId !== 'default' && (
-        <Button
-          className={`${classes.inner} ${styles.button}`}
-          variant="outline"
-          style={{ marginTop: "20px", marginBottom: "20px", width: "100%" }}
-          onClick={() => setIsRenameModalOpen(true)}
-        >
-          <Text fz="xl" className={styles.text}>
-            Rename Folder
-          </Text>
-        </Button>
-      )}
+        <div className={styles.folderContent}>
+          {hasBookmarks ? (
+              <>
+                <ResourcesHandouts
+                    title="Bookmarks"
+                    data={folderContent.bookmarks}
+                    onUnsave={handleUnsaveBookmark}
+                    currentFolderId={folderId}
+                />
 
-      <div className={styles.folderContent}>
-        {hasBookmarks ? (
-          <>
-          
-            <ResourcesHandouts
-              title="Bookmarks"
-              data={folderContent.bookmarks}
-              onUnsave={handleUnsaveBookmark}
-              currentFolderId={folderId} 
-            />
+                  <Button
+                      className={`${classes.inner} ${styles.clearFolderButton}`}
+                      variant="outline"
+                      onClick={handleClearFolder}
+                  >
+                    <Text fz="xl" className={styles.text}>
+                      Clear Collection
+                    </Text>
+                  </Button>
 
-            <Button
-              className={`${classes.inner} ${styles.button}`}
-              variant="outline"
-              style={{ width: "100%", marginTop: "20px", marginBottom: "20px"}}
-              onClick={handleClearFolder}
-            >
-              <Text fz="xl" className={styles.text}>
-                Clear Folder
-              </Text>
-            </Button>
-          </>
-        ) : (
-          <div>
-            <Text className={styles.titleStyle}>
-              No bookmarks in this folder.
-            </Text>
-          </div>
-        )}
-      </div>
+                  {folderId !== 'default' && (
+                  <Button
+                      className={`${classes.inner} ${styles.renameButton}`}
+                      variant="outline"
+                      onClick={() => setIsRenameModalOpen(true)}
+                  >
+                    <Text fz="xl" className={styles.text}>
+                      Rename Collection
+                    </Text>
+                  </Button>
+          )}
 
-      <Modal
-        opened={isRenameModalOpen}
-        onClose={() => {
-          setIsRenameModalOpen(false);
-          setNewFolderName("");
-        }}
-        title="Rename Folder"
-        size="md"
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <TextInput
-            placeholder="Enter new folder name"
-            value={newFolderName}
-            onChange={(e) => setNewFolderName(e.target.value)}
-          />
-          <Button
-            className={`${classes.inner} ${styles.button}`}
-            variant="outline"
-            onClick={handleRename}
-            disabled={!newFolderName.trim()}
-          >
-            <Text fz="xl" className={styles.text}>Rename</Text>
-          </Button>
+              </>
+          ) : (
+              <div>
+                <Text className={styles.titleStyle}>
+                  No bookmarks in this collection.
+                </Text>
+              </div>
+          )}
         </div>
-      </Modal>
-    </div>
+
+        {/* Rename Modal */}
+        <Modal
+            opened={isRenameModalOpen}
+            onClose={() => {
+              setIsRenameModalOpen(false);
+              setNewFolderName("");
+            }}
+            title="Rename Collection"
+            size="md"
+            zIndex={1001}
+        >
+          <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+            <TextInput
+                placeholder="Enter new collection name"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+            />
+            <Button
+                className={`${classes.inner} ${styles.button}`}
+                variant="outline"
+                onClick={handleRename}
+                disabled={!newFolderName.trim()}
+            >
+              <Text fz="xl" className={styles.text}>Rename</Text>
+            </Button>
+          </div>
+        </Modal>
+
+        {/* Clear Folder Confirmation Modal */}
+        <Modal
+            opened={isClearModalOpen}
+            onClose={() => setIsClearModalOpen(false)}
+            title="Confirm Clear Collection"
+            size="sm"
+            zIndex={1001}
+        >
+          <Text size="sm" style={{marginBottom: "20px"}}>
+            Are you sure you want to clear all bookmarks from this collection? This action cannot be undone.
+          </Text>
+          <Group position="apart">
+            <Button
+                variant="outline"
+                color="gray"
+                onClick={() => setIsClearModalOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+                color="red"
+                onClick={confirmClearFolder}
+            >
+              Clear Folder
+            </Button>
+          </Group>
+        </Modal>
+
+        {/* Unsave Confirmation Modal */}
+        <Modal
+            opened={unsaveModalOpen}
+            onClose={() => {
+              setUnsaveModalOpen(false);
+              setSelectedBookmarkId(null);
+            }}
+            title="Confirm Unsave"
+            size="sm"
+            zIndex={1001}
+        >
+          <Text size="sm" style={{marginBottom: "20px"}}>
+            Are you sure you want to remove this bookmark?
+          </Text>
+          <Group position="apart">
+            <Button
+                variant="outline"
+                color="gray"
+                onClick={() => {
+                  setUnsaveModalOpen(false);
+                  setSelectedBookmarkId(null);
+                }}
+            >
+              Cancel
+            </Button>
+            <Button
+                color="red"
+                onClick={confirmUnsave}
+            >
+              Unsave
+            </Button>
+          </Group>
+        </Modal>
+      </div>
   );
 };
 

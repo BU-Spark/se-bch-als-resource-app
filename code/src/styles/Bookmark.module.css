@@ -28,7 +28,7 @@
 
 .folderItem {
   background-color: white;
-  border: 2px solid #e0e0e0;
+  border: 2px solid #254885;
   border-radius: 8px;
   padding: 1.5rem;
   cursor: pointer;
@@ -49,22 +49,37 @@
 }
 
 .folderContent {
-  padding: 1.5rem 0;
+  padding: 1.5rem 24px;
   background-color: white;
   border-radius: 8px;
   margin-top: 1rem;
-  width: 100%;
+  width: calc(100% - 48px);
+  margin-left: 24px;
+  margin-right: 24px;
 }
 
 .button {
-  width: 100% !important;
-  margin-bottom: 1rem;
+  width: calc(100% - 48px) !important;
+  margin: 20px 24px !important;
 }
 
 .resourceContainer {
-  width: 100%;
+  width: calc(100% - 48px);
   padding: 0;
   margin-bottom: 1rem;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.clearFolderButton {
+  width: 100% !important;
+  margin: 24px 0 !important;
+}
+
+.renameButton {
+  width: 100% !important;
+  margin: 24px 0 !important;
+
 }
 
 .clearButton {
@@ -74,6 +89,36 @@
   color: #dc3545;
   border: 2px solid #dc3545;
   transition: all 0.3s ease;
+}
+
+
+.addButton {
+  position: absolute;
+  right: 30px;
+  top: 68px;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  padding: 16px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.addButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.addIcon {
+  color: white;
+  min-width: 32px;
+  height: 32px;
+  flex-shrink: 0;
 }
 
 .clearButton:hover {

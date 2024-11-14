@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Plus } from 'lucide-react';
 import { useRouter } from "next/router";
 import { Loader, Text, Button, Modal, TextInput } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
@@ -133,76 +134,78 @@ const Bookmarks = () => {
   }
 
   return (
-    <div>
-      <Title
-        hasPrev={true}
-        titleImg={image.current}
-        title="Folders"
-        onPrevClick={() => router.push("/communication")}
-      />
+      <div>
+        <Title
+            hasPrev={true}
+            titleImg={image.current}
+            title="Collections"
+            onPrevClick={() => router.push("/communication")}
+        />
 
-      <Button
-        onClick={() => setIsCreateModalOpen(true)}
-        style={{ margin: "20px" }}
-      >
-        + Add Folder
-      </Button>
-
-      <Modal
-        opened={isCreateModalOpen}
-        onClose={() => {
-          setIsCreateModalOpen(false);
-          setNewFolderName("");
-        }}
-        title="Create New Folder"
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <TextInput
-            placeholder="Enter folder name"
-            value={newFolderName}
-            onChange={(e) => setNewFolderName(e.target.value)}
-          />
-          <Button
-            onClick={handleCreateFolder}
-            disabled={!newFolderName.trim()}
-          >
-            Create
-          </Button>
-        </div>
-      </Modal>
-
-      {/* Show Bookmark Folder List */}
-      <div className={styles.folderList}>
-        {/* Default folder */}
-        <div
-          className={styles.folderItem}
-          onClick={() => router.push("/bookmarks/default")}
+        <button
+            className={styles.addButton}
+            onClick={() => setIsCreateModalOpen(true)}
+            aria-label="Add Folder"
         >
-          <Text size="lg" weight={500}>
-            Default Folder
-          </Text>
-          <Text size="sm" color="dimmed">
-            {bookmarks.length} bookmark(s)
-          </Text>
-        </div>
+          <Plus
+              size={20}
+              color="white"
+              className={styles.addIcon}
+          />
+        </button>
 
-        {/* Customize folder list */}
-        {folders.map((folder) => (
+        <Modal
+            opened={isCreateModalOpen}
+            onClose={() => {
+              setIsCreateModalOpen(false);
+              setNewFolderName("");
+            }}
+            title="Create New Collection"
+        >
+          <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+            <TextInput
+                placeholder="Enter collection name"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+            />
+            <Button
+                onClick={handleCreateFolder}
+                disabled={!newFolderName.trim()}
+            >
+              Create
+            </Button>
+          </div>
+        </Modal>
+
+        <div className={styles.folderList}>
           <div
-            key={folder.id}
-            className={styles.folderItem}
-            onClick={() => router.push(`/bookmarks/${folder.id}`)}
+              className={styles.folderItem}
+              onClick={() => router.push("/bookmarks/default")}
           >
             <Text size="lg" weight={500}>
-              {folder.name}
+              Default Collection
             </Text>
             <Text size="sm" color="dimmed">
-              {folder.bookmarks.length} bookmark(s)
+              {bookmarks.length} bookmark(s)
             </Text>
           </div>
-        ))}
+
+          {folders.map((folder) => (
+              <div
+                  key={folder.id}
+                  className={styles.folderItem}
+                  onClick={() => router.push(`/bookmarks/${folder.id}`)}
+              >
+                <Text size="lg" weight={500}>
+                  {folder.name}
+                </Text>
+                <Text size="sm" color="dimmed">
+                  {folder.bookmarks.length} bookmark(s)
+                </Text>
+              </div>
+          ))}
+        </div>
       </div>
-    </div>
   );
 };
 

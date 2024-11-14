@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IconChevronLeft, IconPrinter } from "@tabler/icons-react";
-import { Title as MantineTitle, Modal, Text } from "@mantine/core";
+import { Title as MantineTitle, Modal, Text, Button, Group } from "@mantine/core";
 import QRCode from "react-qr-code";
 import { useStyles } from "./TitleStyle";
 import CopyableLink from "../CopyURL/CopyUrl";
@@ -9,6 +9,7 @@ interface TitlesProps {
   hasPrev: boolean;
   titleImg: string;
   title: string;
+  subtitle?: string;
   onPrevClick?: () => void;
   showPrintButton?: boolean;
   shareUrl?: string;
@@ -25,6 +26,7 @@ const Titles = ({
   hasPrev,
   titleImg,
   title,
+  subtitle,
   onPrevClick,
   showPrintButton,
   shareUrl,
@@ -34,6 +36,10 @@ const Titles = ({
   const { classes } = useStyles({ backgroundImageUrl: titleImg });
   const [isPrintOpen, setIsPrintOpen] = useState(false);
   const ChevronIcon = IconChevronLeft;
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -45,6 +51,11 @@ const Titles = ({
 
       <div className={classes.inner}>
         <MantineTitle className={classes.title}>{title}</MantineTitle>
+        {subtitle && (
+          <div className={classes.subtitleWrapper}>
+            <Text className={classes.subtitle}>{subtitle}</Text>
+          </div>
+        )}
       </div>
 
       {showPrintButton && (
@@ -63,6 +74,7 @@ const Titles = ({
             onClose={() => setIsPrintOpen(false)}
             title=""
             size="xl"
+            zIndex={1001}
             centered
           >
             <div className={classes.modalContent}>
@@ -86,7 +98,7 @@ const Titles = ({
 
               <div className={classes.collectionSection}>
                 <Text className={classes.collectionTitle}>
-                  "{folderName || 'Default Folder'}"
+                  &quot;{folderName || 'Default Collection'}&quot;
                 </Text>
                 <div className={classes.bookmarksList}>
                   {bookmarks && bookmarks.map((bookmark) => (
@@ -100,9 +112,40 @@ const Titles = ({
                 </div>
               </div>
 
-              <button className={classes.doneButton} onClick={() => setIsPrintOpen(false)}>
-                Done
-              </button>
+              <Group position="apart" mt="xl">
+                <Button
+                  className={classes.printPreviewButton}
+                  onClick={handlePrint}
+                >
+                  Print Your List
+                </Button>
+                <button className={classes.doneButton} onClick={() => setIsPrintOpen(false)}>
+                  Done
+                </button>
+              </Group>
+            </div>
+
+            <div className={classes.printOnlyContent}>
+              <div className={classes.printQrSection}>
+                <QRCode
+                  value={shareUrl || ''}
+                  size={200}
+                  level="H"
+                />
+              </div>
+              <div className={classes.printUrlSection}>
+                {shareUrl}
+              </div>
+              <div className={classes.printTitleSection}>
+                {folderName || 'Default Collection'}
+              </div>
+              <div className={classes.printBookmarksList}>
+                {bookmarks && bookmarks.map((bookmark) => (
+                  <div key={bookmark.id} className={classes.printBookmarkItem}>
+                    <Text>{bookmark.title}</Text>
+                  </div>
+                ))}
+              </div>
             </div>
           </Modal>
         </>

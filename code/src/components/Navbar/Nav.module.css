@@ -12,31 +12,27 @@
   background-color: white;
 }
 
-/* Logo container styles */
 .logoContainer {
   padding-left: 0;
   margin-left: 0;
 }
 
-/* Sidebar base styles */
+/* Sidebar styles */
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
-  width: 250px;
+  width: 300px;
   height: 100vh;
   background-color: #1E4279;
   color: white;
   z-index: 1000;
-  transition: width 0.3s ease;
 }
 
-/* Collapsed sidebar styles */
 .sidebar.collapsed {
   width: 90px;
 }
 
-/* Inner sidebar container */
 .sidebarInner {
   display: flex;
   flex-direction: column;
@@ -44,7 +40,7 @@
   padding: 20px;
 }
 
-/* Logo wrapper styles */
+/* Logo styles */
 .logoWrapper {
   display: flex;
   justify-content: flex-start;
@@ -52,34 +48,27 @@
   margin: -20px -20px 20px -20px;
   padding: 10px;
   width: calc(100% + 40px);
-  transition: all 0.3s ease; 
+  transition: all 0.15s ease;
 }
 
-/* Logo wrapper styles for collapsed state */
 .sidebar.collapsed .logoWrapper {
   width: 90px;
-  margin: -20px -20px 20px -20px;
-  padding: 10px;
   justify-content: center;
-  transition: all 0.3s ease; 
 }
 
-/* Logo image styles */
 .logo {
   width: 250px;
   height: 100px;
   object-fit: contain;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.15s ease;
 }
 
-/* Logo styles for collapsed state */
 .sidebar.collapsed .logo {
-  width: 70px;
+  width: 60px;
   height: auto;
-  object-fit: contain;
 }
 
-/* Top section styles */
+/* Navigation controls */
 .topSection {
   display: flex;
   flex-direction: row;
@@ -87,7 +76,6 @@
   gap: 15px;
 }
 
-/* Toggle button styles */
 .toggleButton {
   width: 40px;
   height: 40px;
@@ -96,7 +84,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,7 +94,7 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Hamburger menu styles */
+/* Hamburger menu */
 .hamburger {
   width: 20px;
   height: 14px;
@@ -124,18 +112,16 @@
   border-radius: 2px;
 }
 
-/* Menu text styles */
 .menuText {
   color: white;
   font-size: 16px;
 }
 
-/* Spacer for layout */
 .spacer {
   flex: 1;
 }
 
-/* Navigation links container */
+/* Navigation links */
 .navLinks {
   display: flex;
   flex-direction: column;
@@ -144,13 +130,12 @@
   padding-bottom: 20px;
 }
 
-/* Individual navigation link styles */
 .navLink {
   color: white;
   text-decoration: none;
   padding: 12px 16px;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  transition: background-color 0.15s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -159,24 +144,23 @@
   gap: 10px;
 }
 
-/* Icon styles */
 .icon {
   color: white;
   min-width: 20px;
   flex-shrink: 0;
 }
 
-/* Navigation styles for collapsed state */
-.collapsed .navLink {
+/* Collapsed navigation states */
+.sidebar.collapsed .navLink {
   padding: 12px;
   justify-content: center;
 }
 
-.collapsed .navLink span:not(.icon) {
+.sidebar.collapsed .navLink span:not(.icon) {
   display: none;
 }
 
-/* Hover and active states */
+/* Interactive states */
 .navLink:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
@@ -186,19 +170,95 @@
   font-weight: bold;
 }
 
-/* Easter egg style */
 .easteregg {
   color: #FF69B4;
 }
 
-/* Mobile responsiveness */
+/* Mobile styles */
 @media (max-width: 768px) {
   .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: 48px;
+    background-color: transparent;
+    box-shadow: none;
   }
 
-  .sidebar.opened {
-    transform: translateX(0);
+  .sidebarInner {
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 0;
+    background-color: white;
+  }
+
+  .navLinks {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 48px;
+    width: 100%;
+    background-color: white;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 64px 0 16px;
+    gap: 16px;
+    transition: right 0.15s ease;
+  }
+
+  .navLink {
+    color: #1E4279;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .icon {
+    color: #1E4279;
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Mobile specific states */
+
+  .sidebar.collapsed {
+    left: 0;
+    overflow: hidden;
+  }
+  .sidebar.collapsed .navLinks,
+  .menuText,
+  .spacer {
+    display: none;
+  }
+
+  .sidebar.collapsed .icon:not(.hamburger) {
+    display: none;
+  }
+
+  .toggleButton {
+    background: transparent;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    z-index: 1001;
+    position: fixed;
+    right: 16px;
+    top: 8px;
+  }
+
+  .hamburger span {
+    background-color: #1E4279;
+  }
+
+  .sidebar.collapsed .toggleButton {
+    display: flex;
+  }
+
+  .sidebar:not(.collapsed) .navLinks {
+    display: flex;
+    right: 0;
   }
 }
