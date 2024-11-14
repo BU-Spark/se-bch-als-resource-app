@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { fetchMock } from '../../../testSetup'; // Assuming fetchMock setup is done in testSetup
-import CommunicationPage from '../../pages/communication';
+import CommunicationPage from '../../pages/[type].tsx'; //Changing pages/communication to pages/[type].tsx since it is a dynamic route
 import { FocusedBookmarkProvider } from '../../contexts/FocusedBookmarkContext'; 
 import '@testing-library/jest-dom';
 

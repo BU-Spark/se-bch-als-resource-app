@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import {Footer} from "@/components/Footer/Footer";
 import { Header, Container, Group, Burger, rem } from "@mantine/core";
 
 import NavList from "../NavList/NavList";
@@ -39,12 +39,6 @@ const Nav = () => {
             />
           </Link>
         </Group>
-        <Burger
-          size="lg"
-          color="#254885"
-          opened={opened}
-          onClick={toggleMenu}
-        />
         {opened && <NavList links={links} />}
       </Container>
     </Header>

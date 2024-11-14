@@ -33,7 +33,7 @@ const SolutionPage: React.FC<SolutionPageProps> = ({
         solutionContent.attachment.type === "video" && (
           <iframe
             width="100%"
-            height="315"
+            height="600px"
             src={solutionContent.attachment.href}
             allowFullScreen
           ></iframe>
