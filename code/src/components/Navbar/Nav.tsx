@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {Footer} from "@/components/Footer/Footer";
 import { Header, Container, Group, Burger, rem } from "@mantine/core";
