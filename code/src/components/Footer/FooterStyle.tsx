@@ -7,8 +7,8 @@ export const useStyles = createStyles((theme) => ({
 
     height: "120px",
     display: "flex",
-    width: "calc(100% - 250px)",
-    marginLeft: "250px",
+    width: "100%",
+
     bottom: 0,
     
     marginBottom: rem(0),
