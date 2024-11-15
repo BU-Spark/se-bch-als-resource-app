@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from 'next/router';
 import { Popover } from "@mantine/core";
-import { Globe, BookmarkIcon, Settings as SettingsIcon, Menu as MenuIcon } from 'lucide-react';
+import { Globe, BookmarkIcon, Settings as SettingsIcon} from 'lucide-react';
 import styles from "./Nav.module.css";
 import {useState} from "react";
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { AppProps } from "next/app";
@@ -95,7 +95,7 @@ export default function App(props: AppProps) {
                   textAlign: 'left'
                 }}
               >
-                Welcome to Boston Children's Hospital's ALS resource website. Please note that the information provided on this website is for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider for personalized medical guidance.
+                Welcome to Boston Children&#39;s Hospital&#39;s ALS resource website. Please note that the information provided on this website is for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider for personalized medical guidance.
               </Text>
 
               <div style={{ textAlign: 'left' }}>

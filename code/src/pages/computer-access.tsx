@@ -319,7 +319,7 @@ const CommunicationPage: React.FC<Props> = () => {
     };
 
     fetchData();
-  }, []);
+  }, [bodyContent]);
 
   // Checks if the user navigated here from a bookmark
   useEffect(() => {

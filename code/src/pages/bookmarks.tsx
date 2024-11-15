@@ -71,7 +71,7 @@ const Bookmarks = () => {
         setHasRedirected(true);
       }
     }
-  }, [router.isReady, router.pathname, router.query.ids, hasRedirected]);
+  }, [router.isReady, router.pathname, router.query.ids, hasRedirected, router]);
 
   useEffect(() => {
     if (initialUrlLoaded) {

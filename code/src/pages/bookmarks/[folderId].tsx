@@ -4,7 +4,6 @@ import { Text, Button, Modal, TextInput, Group } from "@mantine/core";
 import { useBookmarks } from "@/contexts/BookmarkContext";
 import Title from "../../components/Title/Titles";
 import ResourcesHandouts from "../../components/ResourcesHandouts/ResourcesHandouts";
-import CopyableLink from "../../components/CopyURL/CopyUrl";
 import { bodyContentUseStyles } from "@/utils/BodyContentStyle";
 import styles from "../../styles/Bookmark.module.css";
 
@@ -22,7 +21,6 @@ const FolderDetail = () => {
 
   // Modal states
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
-  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [unsaveModalOpen, setUnsaveModalOpen] = useState(false);
   const [selectedBookmarkId, setSelectedBookmarkId] = useState<string | null>(null);
