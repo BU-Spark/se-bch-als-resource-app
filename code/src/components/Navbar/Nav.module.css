@@ -202,3 +202,12 @@
     transform: translateX(0);
   }
 }
+
+.bold-text * {
+  font-weight: bold !important;
+}
+
+
+.invert-colors {
+  filter: invert(1);
+}

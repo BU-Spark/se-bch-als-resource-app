@@ -30,7 +30,7 @@ const FontSizeSetting: React.FC = () => {
         <span className={styles.label}>大</span>
       </div>
       <div className={styles.fontSizePreview} style={{ fontSize: `${fontSize}px` }}>
-        示例文字大小：{fontSize}px
+        {fontSize}px
       </div>
     </div>
   );

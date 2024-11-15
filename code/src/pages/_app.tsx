@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer/Footer";
 import { BookmarkProvider } from "@/contexts/BookmarkContext";
 import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
 import styles from "../styles/Home.module.css";
+import '../styles/globals.css';
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
