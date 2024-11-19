@@ -36,7 +36,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "^3.0.3",
     "lucide-react": "^0.454.0",
-    "next": "^13.2.4",
+    "next": "^13.5.7",
     "react": "18.2.0",
     "react-aria": "^3.23.1",
     "react-copy-to-clipboard": "^5.1.0",
@@ -65,6 +65,7 @@
     "testEnvironment": "jsdom"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.8.1",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "babel-jest": "^29.7.0",
     "identity-obj-proxy": "^3.0.0",
