@@ -96,7 +96,7 @@ const Resources: React.FC<ResourcesProps> = ({
          setIsMoveModalOpen(false);
          setSelectedBookmark(null);
        }}
-       title="Move to Folder"
+       title="Move to another Collection"
        size="md"
      >
        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -106,7 +106,7 @@ const Resources: React.FC<ResourcesProps> = ({
              variant="light"
              onClick={() => handleMove('default')}
            >
-             <Text>Move to Default Folder</Text>
+             <Text>Move to Default Collection</Text>
            </Button>
          )}
          {folders
