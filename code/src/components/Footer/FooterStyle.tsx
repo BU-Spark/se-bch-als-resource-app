@@ -2,13 +2,15 @@ import { createStyles, rem } from "@mantine/core";
 
 export const useStyles = createStyles((theme) => ({
   footer: {
-    position: "fixed",
+
+    position: "relative",
+
     height: "120px",
     display: "flex",
-    width: "calc(100% - 250px)",
-    marginLeft: "250px",
+    width: "100%",
+
     bottom: 0,
-    marginTop: "60px",
+    
     marginBottom: rem(0),
     paddingTop: `calc(${theme.spacing.xl} * 2)`,
     paddingBottom: `calc(${theme.spacing.xl} * 2)`,

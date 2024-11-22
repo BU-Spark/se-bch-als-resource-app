@@ -3,6 +3,7 @@ export interface IChoice {
   ref: string;
   label: string;
   link?: string;
+  subtitle?: string;
 }
 
 export interface ILogicActionDetail {
