@@ -102,6 +102,7 @@
 }
 
 .addButton {
+ flex-direction: column;
  position: absolute;
  right: 30px;
  top: 68px;

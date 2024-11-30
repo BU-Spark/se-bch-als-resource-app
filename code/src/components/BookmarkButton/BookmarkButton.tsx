@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Text, Button, Modal, TextInput, Group } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
-import { Save, MoreVertical, Check } from 'lucide-react';
+import { notifications } from "@mantine/notifications";
+import { Save, MoreVertical, Check } from "lucide-react";
 import { useBookmarks } from "../../contexts/BookmarkContext";
 import { ResourceLink } from "@/types/dataTypes";
 import { bodyContentUseStyles } from "../../utils/BodyContentStyle";
@@ -24,7 +24,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   const { classes } = bodyContentUseStyles();
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isNavigateModalOpen, setIsNavigateModalOpen] = useState(false);
-  const [newFolderName, setNewFolderName] = useState('');
+  const [newFolderName, setNewFolderName] = useState("");
 
   const { folders, addBookmark, createFolder } = useBookmarks();
   const router = useRouter();
@@ -36,20 +36,24 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
     setIsSaveModalOpen(false);
 
     notifications.show({
-      message: `Successfully saved to ${folderId ? `"${folders.find(f => f.id === folderId)?.name}"` : "Default Folder"}`,
+      message: `Successfully saved to ${
+        folderId
+          ? `"${folders.find((f) => f.id === folderId)?.name}"`
+          : "Default Folder"
+      }`,
       icon: <Check size={18} />,
-      color: 'green',
+      color: "green",
       autoClose: 3000,
       withCloseButton: false,
       styles: (theme) => ({
         root: {
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          backdropFilter: 'blur(4px)',
-          border: '1px solid rgba(0, 0, 0, 0.1)',
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          backdropFilter: "blur(4px)",
+          border: "1px solid rgba(0, 0, 0, 0.1)",
         },
         icon: {
           backgroundColor: theme.colors.green[6],
-          color: 'white',
+          color: "white",
         },
       }),
     });
@@ -59,7 +63,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   const handleCreateFolder = () => {
     if (newFolderName.trim()) {
       createFolder(newFolderName);
-      setNewFolderName('');
+      setNewFolderName("");
     }
   };
 
@@ -75,11 +79,8 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
         onClick={() => setIsSaveModalOpen(true)}
         aria-label="Save to folder"
       >
-        <Save
-          size={20}
-          color="white"
-          className={styles.actionIcon}
-        />
+        <Save size={20} className={styles.actionIcon} />
+        <span className={styles.actionLabel}>Save</span>
       </button>
 
       {isSolutionPage && (
@@ -88,11 +89,8 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
           onClick={handleNavigateToBookmarks}
           aria-label="Go to bookmarks"
         >
-          <MoreVertical
-            size={20}
-            color="white"
-            className={styles.actionIcon}
-          />
+          <MoreVertical size={20} className={styles.actionIcon} />
+          <span className={styles.actionLabel}>Bookmarks</span>
         </button>
       )}
 
@@ -103,7 +101,13 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
         title="Save to Folder"
         size="md"
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
           <Button
             className={classes.inner}
             variant="light"
@@ -112,7 +116,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
             <Text>Save to Default Folder</Text>
           </Button>
 
-          {folders.map(folder => (
+          {folders.map((folder) => (
             <Button
               key={folder.id}
               className={classes.inner}
@@ -123,18 +127,25 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
             </Button>
           ))}
 
-          <div style={{ marginTop: '1rem', padding: '1rem', border: '1px solid #eee', borderRadius: '4px' }}>
-            <Text size="sm" weight={500} mb={10}>Create New Folder</Text>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div
+            style={{
+              marginTop: "1rem",
+              padding: "1rem",
+              border: "1px solid #eee",
+              borderRadius: "4px",
+            }}
+          >
+            <Text size="sm" weight={500} mb={10}>
+              Create New Folder
+            </Text>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
               <TextInput
                 placeholder="Enter folder name"
                 value={newFolderName}
                 onChange={(e) => setNewFolderName(e.target.value)}
                 style={{ flex: 1 }}
               />
-              <Button onClick={handleCreateFolder}>
-                Create
-              </Button>
+              <Button onClick={handleCreateFolder}>Create</Button>
             </div>
           </div>
         </div>
@@ -147,7 +158,12 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
         title="Navigate to Bookmarks"
         size="sm"
       >
-        <Text size="sm" style={{ marginBottom: "20px" }}>
+        <Text
+          size="sm"
+          style={{
+            marginBottom: "20px",
+          }}
+        >
           Do you want to go to your bookmarks page?
         </Text>
         <Group position="apart">

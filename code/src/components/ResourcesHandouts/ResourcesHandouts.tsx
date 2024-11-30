@@ -50,7 +50,7 @@ const Resources: React.FC<ResourcesProps> = ({
  return (
    <div>
      <Stack spacing="xl">
-       <Text className={classes.text}> {title} </Text>
+        <Text className={classes.text}> {title} </Text>
        {data.map((resource, index) => (
          <div className={classes.linkContainer} key={index}>
            <div className={classes.resourceButtonContainer}>

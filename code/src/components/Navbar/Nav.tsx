@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from 'next/router';
+import Image from "next/image"; // Import Image for optimized loading
+import { useRouter } from "next/router";
 import { Popover } from "@mantine/core";
-import { Globe, BookmarkIcon, Settings as SettingsIcon} from 'lucide-react';
+import { Home, BookmarkIcon, Settings as SettingsIcon } from "lucide-react";
 import styles from "./Nav.module.css";
-import {useState} from "react";
+import { useState } from "react";
 
 interface NavProps {
   isExpanded: boolean;
@@ -16,13 +16,14 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
-    <nav className={`${styles.sidebar} ${isExpanded ? '' : styles.collapsed}`}>
+    <nav className={`${styles.sidebar} ${isExpanded ? "" : styles.collapsed}`}>
       <div className={styles.sidebarInner}>
+
         <div className={styles.topSection}>
           <button
             className={styles.toggleButton}
             onClick={onToggle}
-            aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
+            aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
           >
             <div className={styles.hamburger}>
               <span></span>
@@ -38,14 +39,18 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
         <div className={styles.navLinks}>
           <Link
             href="/"
-            className={`${styles.navLink} ${router.pathname === "/" ? styles.active : ''}`}
+            className={`${styles.navLink} ${
+              router.pathname === "/" ? styles.active : ""
+            }`}
           >
-            <Globe size={20} className={styles.icon} />
+            <Home size={20} className={styles.icon} />
             <span>Home</span>
           </Link>
           <Link
             href="/bookmarks"
-            className={`${styles.navLink} ${router.pathname === "/bookmarks" ? styles.active : ''}`}
+            className={`${styles.navLink} ${
+              router.pathname === "/bookmarks" ? styles.active : ""
+            }`}
           >
             <BookmarkIcon size={20} className={styles.icon} />
             <span>Bookmarks</span>
@@ -58,9 +63,11 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
           >
             <Popover.Target>
               <div
-                className={`${styles.navLink} ${isSettingsOpen ? styles.active : ''}`}
+                className={`${styles.navLink} ${
+                  isSettingsOpen ? styles.active : ""
+                }`}
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 <SettingsIcon size={20} className={styles.icon} />
                 <span>Settings</span>

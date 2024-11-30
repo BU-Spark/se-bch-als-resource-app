@@ -3,7 +3,7 @@ import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";
 
-import { Stack, Text, Button } from "@mantine/core";
+import { Stack, Text, Button, Group, SimpleGrid } from "@mantine/core";
 
 import Title from "../components/Title/Titles";
 import { IQuestion, IChoice, IBodyContent } from "../types/api_types";
@@ -32,15 +32,38 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
     type: "multiple_choice",
   });
 
-  const initialChoices = [//Uses [type].tsx
-    { id: "0", ref: "0", label: "Communication", link: "/communication" },
-    { id: "1", ref: "0", label: "Computer Access", link: "/computer-access" },
-    { id: "2", ref: "0", label: "Home Access", link: "/home-access" },
+  const initialChoices = [
+    {
+      id: "0",
+      ref: "0",
+      label: "Communication",
+      link: "/communication",
+      icon: "/Communication.svg",
+      description: "Speech & Communication Solutions"
+    },
+    {
+      id: "1",
+      ref: "0",
+      label: "Computer Access",
+      link: "/computer-access",
+      icon: "/ComputerAccess.svg",
+      description: "Access your computer today"
+    },
+    {
+      id: "2",
+      ref: "0",
+      label: "Home Access",
+      link: "/home-access",
+      icon: "/HomeAccess.svg",
+      description: "Manage your home care services"
+    },
     {
       id: "3",
       ref: "4",
       label: "Smart Phone Access",
       link: "smart-phone-access",
+      icon: "/PhoneAccess.svg",
+      description: "Use our mobile services"
     },
   ];
 
@@ -61,19 +84,41 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
           {currQuestion.description}{" "}
         </Text>
 
-        {currChoices.map((choice) => (
-          <div key={choice.id}>
-            <Button
-              variant="outline"
-              className={classes.inner}
-              onClick={() => {
-                router.push(choice.link || "");
-              }}
-            >
-              <Text className={classes.choiceText}>{choice.label}</Text>
-            </Button>
-          </div>
-        ))}
+        <SimpleGrid
+          cols={2}
+          spacing="xl"
+          breakpoints={[
+          { maxWidth: 'sm', cols: 1 },
+          ]}
+          >
+          {currChoices.map((choice) => (
+            <div key={choice.id}>
+              <Button
+                variant="outline"
+                className={classes.homeButton}
+                onClick={() => {
+                  router.push(choice.link || "");
+                }}
+              >
+                <Group position="left" spacing="xl" style={{ width: '100%' }}>
+                  <div className={classes.homeIconContainer}>
+                    <img
+                      src={choice.icon}
+                      alt={choice.label}
+                      className={classes.homeIconImage}
+                    />
+                  </div>
+                  <div className={classes.homeTextContainer}>
+                    <Text className={classes.choiceText}>{choice.label}</Text>
+                    <Text className={classes.descriptionText}>
+                      {choice.description}
+                    </Text>
+                  </div>
+                </Group>
+              </Button>
+            </div>
+          ))}
+        </SimpleGrid>
       </Stack>
     </div>
   );
