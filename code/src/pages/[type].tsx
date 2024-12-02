@@ -15,8 +15,8 @@ import Title from "../components/Title/Titles";
 import SolutionPage from "@/components/SolutionPage/SolutionPage";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { isTypeformConsistent } from "../utils/QuestionUtils";
+import style from "../styles/choiceBoxes.module.css"
 import styles from "../styles/Communication.module.css";
-
 interface Props {}
 
 /**
@@ -69,15 +69,16 @@ if (typeof window !== "undefined") {
 }
 
 // Base choices on communication page
-const initialChoices = [
-  { id: "695", ref: "0", label: "Communication", link: "/communication" },
-  { id: "696", ref: "0", label: "Computer Access", link: "/computer-access" },
-  { id: "697", ref: "0", label: "Home Access", link: "/home-access" },
+const initialChoices = [//When redirecting, uses [type].tsx. Avoid having .tsx files with names that are in the links below ex. No communication.tsx, etc.
+  { id: "0", ref: "0", label: "Communication", link: "/communication",subtitle:"Speech & Communication Solutions" },
+  { id: "1", ref: "0", label: "Computer Access", link: "/computer-access",subtitle:"Access your computer today" },
+  { id: "2", ref: "0", label: "Home Access", link: "/home-access",subtitle:"Manage your home care services" },
   {
-    id: "698",
-    ref: "0",
+    id: "3",
+    ref: "4",
     label: "Smart Phone Access",
-    link: "/smart-phone-access",
+    link: "smart-phone-access",
+    subtitle:"Use our mobile services",
   },
 ];
 
@@ -85,17 +86,18 @@ const initialChoices = [
 
 const CommunicationPage: React.FC<Props> = () => {
   const router = useRouter();
-  const { type } = router.query; 
+  const { type } = router.query;
   let titleName="";
   if(type=="communication"){
     titleName="Communication";
   }else if(type=="computer-access"){
-    titleName="Computer Access";
+    titleName="Computer\u00A0Access";
   }else if(type=="smart-phone-access"){
-    titleName="Smart Phone Access";
+    titleName="Smart\u00A0Phone\u00A0Access";
   }else{
-    titleName="Home Access";
-  }
+    titleName="Home\u00A0Access";
+  }//\u00A0 makes it so that the text doesn't break at the space. Remove the \u00A0 to see the difference and inspect element on it when running dev server
+  //I literally have no idea how to change mantine settings directly so I'm just going to do this instead. Good luck.
   const { focusedBookmark, setFocusedBookmark } = useFocusedBookmark();
   const { classes } = bodyContentUseStyles();
   const heroImage = useRef("/titleImgCommunication.png");
@@ -380,7 +382,7 @@ const CommunicationPage: React.FC<Props> = () => {
   }, [focusedBookmark, setFocusedBookmark, questionList,type]);
 
   return (
-    <div>
+    <div style={{height:"100%",flexGrow:1,display:"flex",flexDirection:"column"}}>
       <Head>
         <title>{pageTitle.current}</title>
       </Head>
@@ -413,6 +415,7 @@ const CommunicationPage: React.FC<Props> = () => {
             {" "}
             {currQuestion.description}{" "}
           </Text>
+          <div className={style.questionBoxesContainer}>
           {currChoices?.map((choice) => (
             <Tooltip
               key={choice.id}
@@ -421,15 +424,21 @@ const CommunicationPage: React.FC<Props> = () => {
               position="top"
               withArrow
             >
+              <div className={style.questionBoxes}>
               <Button
                 variant="outline"
                 className={classes.inner}
-                onClick={() => handleChoiceClick(choice)}
+                onClick={() => handleChoiceClick(choice) }
+                styles={{
+                  inner:{width:"100%", display:"grid", gridAutoColumns:"1fr 3fr",},
+                label:{width:"100%",alignItems:"center"}}}
               >
+                <div className={classes.textContainer}>
                 <Text className={classes.choiceText}>{choice.label}</Text>
-              </Button>
+                </div>
+              </Button></div>
             </Tooltip>
-          ))}
+          ))}</div>
         </Stack>
       ) : (
         <SolutionPage solutionContent={solutionContent} classes={classes} />

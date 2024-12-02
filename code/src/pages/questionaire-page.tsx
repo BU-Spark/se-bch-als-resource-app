@@ -47,7 +47,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       label: "Computer Access",
       link: "/computer-access",
       icon: "/ComputerAccess.svg",
-      description: "Access your computer today"
+      description: "Make your Computer more Accessible"
     },
     {
       id: "2",
@@ -55,7 +55,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       label: "Home Access",
       link: "/home-access",
       icon: "/HomeAccess.svg",
-      description: "Manage your home care services"
+      description: "Home care services"
     },
     {
       id: "3",
