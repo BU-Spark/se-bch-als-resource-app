@@ -12,6 +12,34 @@
   background-color: white;
 }
 
+.settingsContainer {
+  padding: 20px;
+}
+
+.settingsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.resetButton {
+  font-size: 12px;
+  color: #ff0000;
+}
+
+.settingsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settingsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .logoContainer {
   padding-left: 0;
   margin-left: 0;

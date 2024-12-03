@@ -11,7 +11,7 @@ import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
 import styles from "../styles/Home.module.css";
 import { Notifications } from '@mantine/notifications';
 import CookieConsent from '@/components/CookieConsent';
-
+import '../styles/globals.css';
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
   const [isNavExpanded, setIsNavExpanded] = useState(true);
