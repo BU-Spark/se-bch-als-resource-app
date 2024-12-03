@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Settings.module.css';
-import './GlobalStyles.css';
 
 const DEFAULT_FONT_SIZE = 16;
 const DEFAULT_BOLD_TEXT = false;

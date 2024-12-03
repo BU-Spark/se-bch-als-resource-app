@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Slider } from "@mantine/core";
-import styles from "./Settings.module.css"; 
-import './GlobalStyles.css';
+import styles from "./Settings.module.css";
 const FontSizeSetting: React.FC = () => {
   const [fontSize, setFontSize] = useState(16);
 
