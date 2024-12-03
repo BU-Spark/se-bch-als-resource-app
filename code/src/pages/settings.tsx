@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Settings.module.css';
-import './GlobalStyles.css'; // Assuming you have a global CSS file for the .bold-text class
+import './GlobalStyles.css';
 
 const DEFAULT_FONT_SIZE = 16;
 const DEFAULT_BOLD_TEXT = false;
