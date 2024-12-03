@@ -433,9 +433,7 @@ const CommunicationPage: React.FC<Props> = () => {
                   inner:{width:"100%", display:"grid", gridAutoColumns:"1fr 3fr",},
                 label:{width:"100%",alignItems:"center"}}}
               >
-                <div>
                 <Text className={classes.choiceText}>{choice.label}</Text>
-                </div>
               </Button></div>
             </Tooltip>
           ))}</div>
