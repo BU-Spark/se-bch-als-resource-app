@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface IChoice {
-  description: React.ReactNode;
+  description?: string;
   id: string;
   ref: string;
   label: string;
