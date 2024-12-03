@@ -83,16 +83,6 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
         <span className={styles.actionLabel}>Save</span>
       </button>
 
-      {isSolutionPage && (
-        <button
-          className={`${styles.actionButton} ${styles.moreButton}`}
-          onClick={handleNavigateToBookmarks}
-          aria-label="Go to bookmarks"
-        >
-          <MoreVertical size={20} className={styles.actionIcon} />
-          <span className={styles.actionLabel}>Bookmarks</span>
-        </button>
-      )}
 
       {/* Save to Folder Modal */}
       <Modal

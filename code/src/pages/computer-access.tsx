@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-
+import style from "../styles/choiceBoxes.module.css";
 import { Loader, Stack, Text, Button, Tooltip, Alert } from "@mantine/core";
 
 import {
@@ -349,21 +349,22 @@ const CommunicationPage: React.FC<Props> = () => {
           <Loader color="blue" size={110} />
         </div>
       ) : !hasSolution ? (
-        <Stack spacing="xl" className={classes.outer}>
-          {showResetBanner && (
-            <Alert
-              className={styles.alertBanner}
-              color="blue"
-              title="Questionanaire Updated"
-              onClose={() => setShowResetBanner(false)}
-              withCloseButton
-            >
-              This form has been updated by the administrator. Please re-complete
-              it.
-            </Alert>
-          )}
-          <Text className={classes.text}>{currQuestion.title}</Text>
-          <Text className={classes.descriptionText}>{currQuestion.description}</Text>
+      <Stack spacing="xl" className={classes.outer}>
+        {showResetBanner && (
+          <Alert
+            className={styles.alertBanner}
+            color="blue"
+            title="Questionanaire Updated"
+            onClose={() => setShowResetBanner(false)}
+            withCloseButton
+          >
+            This form has been updated by the administrator. Please re-complete
+            it.
+          </Alert>
+        )}
+        <Text className={classes.text}>{currQuestion.title}</Text>
+        <Text className={classes.descriptionText}>{currQuestion.description}</Text>
+        <div className={style.questionBoxesContainer}>
           {currChoices?.map((choice) => (
             <Tooltip
               key={choice.id}
@@ -372,16 +373,26 @@ const CommunicationPage: React.FC<Props> = () => {
               position="top"
               withArrow
             >
-              <Button
-                variant="outline"
-                className={classes.inner}
-                onClick={() => handleChoiceClick(choice)}
-              >
-                <Text className={classes.choiceText}>{choice.label}</Text>
-              </Button>
+              <div className={style.questionBoxes}>
+                <Button
+                  variant="outline"
+                  className={classes.inner}
+                  onClick={() => handleChoiceClick(choice)}
+                  style={{ width: '100%', height: '100%' }}
+                  styles={{
+                    inner: { width: "100%", display: "grid", gridAutoColumns: "1fr 3fr" },
+                    label: { width: "100%", alignItems: "center" }
+                  }}
+                >
+                  <div className={style.textContainer}>
+                    <Text className={classes.choiceText}>{choice.label}</Text>
+                  </div>
+                </Button>
+              </div>
             </Tooltip>
           ))}
-        </Stack>
+        </div>
+      </Stack>
       ) : (
         <SolutionPage solutionContent={solutionContent} classes={classes} />
       )}

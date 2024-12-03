@@ -90,8 +90,8 @@ export const bodyContentUseStyles = createStyles((theme) => ({
   },
 
   homeIconContainer: {
-    width: "4rem",
-    height: "4rem",
+    width: "3rem",
+    height: "3rem",
     borderRadius: "50%",
     backgroundColor: "#E8EEF8",
     display: "flex",
@@ -100,8 +100,8 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     flexShrink: 0,
     position: "relative",
     [theme.fn.smallerThan("sm")]: {
-      width: "3.5rem",
-      height: "3.5rem",
+      width: "3rem",
+      height: "3rem",
     },
     [theme.fn.smallerThan("xs")]: {
       width: "3rem",

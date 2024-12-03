@@ -55,7 +55,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       label: "Home Access",
       link: "/home-access",
       icon: "/HomeAccess.svg",
-      description: "Home care services"
+      description: "Home Care Devices"
     },
     {
       id: "3",
@@ -63,7 +63,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       label: "Smart Phone Access",
       link: "smart-phone-access",
       icon: "/PhoneAccess.svg",
-      description: "Use our mobile services"
+      description: "Tailoring Your Mobile Device to Your Needs"
     },
   ];
 

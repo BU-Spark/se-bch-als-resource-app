@@ -370,9 +370,11 @@ const CommunicationPage: React.FC<Props> = () => {
                     variant="outline"
                     className={classes.inner}
                     onClick={() => handleChoiceClick(choice)}
+                    style={{ width: '100%', height: '100%' }}
                     styles={{
                       inner: {
                         width: "100%",
+                        height: '100%',
                         display: "grid",
                         gridAutoColumns: "1fr 3fr",
                       },
