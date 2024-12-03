@@ -15,8 +15,9 @@ import Title from "../components/Title/Titles";
 import SolutionPage from "@/components/SolutionPage/SolutionPage";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { isTypeformConsistent } from "../utils/QuestionUtils";
-import style from "../styles/choiceBoxes.module.css"
+import style from "../styles/choiceBoxes.module.css";
 import styles from "../styles/Communication.module.css";
+
 interface Props {}
 
 /**
@@ -69,35 +70,51 @@ if (typeof window !== "undefined") {
 }
 
 // Base choices on communication page
-const initialChoices = [//When redirecting, uses [type].tsx. Avoid having .tsx files with names that are in the links below ex. No communication.tsx, etc.
-  { id: "0", ref: "0", label: "Communication", link: "/communication",subtitle:"Speech & Communication Solutions" },
-  { id: "1", ref: "0", label: "Computer Access", link: "/computer-access",subtitle:"Access your computer today" },
-  { id: "2", ref: "0", label: "Home Access", link: "/home-access",subtitle:"Manage your home care services" },
+const initialChoices = [
+  {
+    id: "0",
+    ref: "0",
+    label: "Communication",
+    link: "/communication",
+    subtitle: "Speech & Communication Solutions",
+  },
+  {
+    id: "1",
+    ref: "0",
+    label: "Computer Access",
+    link: "/computer-access",
+    subtitle: "Access your computer today",
+  },
+  {
+    id: "2",
+    ref: "0",
+    label: "Home Access",
+    link: "/home-access",
+    subtitle: "Manage your home care services",
+  },
   {
     id: "3",
     ref: "4",
     label: "Smart Phone Access",
     link: "smart-phone-access",
-    subtitle:"Use our mobile services",
+    subtitle: "Use our mobile services",
   },
 ];
-
-
 
 const CommunicationPage: React.FC<Props> = () => {
   const router = useRouter();
   const { type } = router.query;
-  let titleName="";
-  if(type=="communication"){
-    titleName="Communication";
-  }else if(type=="computer-access"){
-    titleName="Computer\u00A0Access";
-  }else if(type=="smart-phone-access"){
-    titleName="Smart\u00A0Phone\u00A0Access";
-  }else{
-    titleName="Home\u00A0Access";
-  }//\u00A0 makes it so that the text doesn't break at the space. Remove the \u00A0 to see the difference and inspect element on it when running dev server
-  //I literally have no idea how to change mantine settings directly so I'm just going to do this instead. Good luck.
+  let titleName = "";
+  if (type == "communication") {
+    titleName = "Communication";
+  } else if (type == "computer-access") {
+    titleName = "Computer\u00A0Access";
+  } else if (type == "smart-phone-access") {
+    titleName = "Smart\u00A0Phone\u00A0Access";
+  } else {
+    titleName = "Home\u00A0Access";
+  }
+
   const { focusedBookmark, setFocusedBookmark } = useFocusedBookmark();
   const { classes } = bodyContentUseStyles();
   const heroImage = useRef("/titleImgCommunication.png");
@@ -132,15 +149,12 @@ const CommunicationPage: React.FC<Props> = () => {
 
   const goBackToPreviousQuestion = () => {
     console.log("goBackToPreviousQuestion Triggered");
-    // Check if came from bookmark
     if (fromSolutionPage) {
       setFromSolutionPage(false);
       router.push("/bookmarks");
       return;
     }
-    // Check if there are any previous choices
     if (bodyContent.choiceList.length > 1) {
-      // Create a copy of the current choice list and remove the last choice
       const prevChoices = [...bodyContent.choiceList];
       const lastChoice = prevChoices[prevChoices.length - 2];
       prevChoices.pop();
@@ -165,7 +179,7 @@ const CommunicationPage: React.FC<Props> = () => {
   };
 
   const findPreviousQuestion = (lastChoice: IChoice): IQuestion | null => {
-    const previousQuestionRef = lastChoice.link; // Logic to determine the previous question ref
+    const previousQuestionRef = lastChoice.link;
     return (
       questionList?.questions.find(
         (question) => question.ref === previousQuestionRef
@@ -177,10 +191,9 @@ const CommunicationPage: React.FC<Props> = () => {
     (choice: IChoice) => {
       if (!choice.link) {
         setTooltipChoiceId(choice.id);
-        setTimeout(() => setTooltipChoiceId(""), 2300); // Hide tooltip after 4 seconds
+        setTimeout(() => setTooltipChoiceId(""), 2300);
         return;
       }
-      // Append the selected choice to the choiceList in IBodyContent
       const updatedChoiceList = [...bodyContent.choiceList, choice];
       setBodyContent({
         ...bodyContent,
@@ -188,7 +201,6 @@ const CommunicationPage: React.FC<Props> = () => {
         prevChoice: choice,
       });
 
-      // Find the next question based on the choice (if applicable)
       const nextQuestionId = choice.link;
       const nextQuestion = questionList?.questions.find(
         (q) => q.ref === nextQuestionId
@@ -209,7 +221,7 @@ const CommunicationPage: React.FC<Props> = () => {
     [bodyContent, questionList]
   );
 
-  // Update local storage
+  // First useEffect - for storage
   useEffect(() => {
     if (!isRendering.current) {
       saveToLocalStorage("hasSolution", hasSolution);
@@ -220,52 +232,36 @@ const CommunicationPage: React.FC<Props> = () => {
     }
   }, [hasSolution, solutionContent, currQuestion, currChoices, bodyContent]);
 
-  // Retrieve and set questions for communication branch
+  // Second useEffect - for data fetching
   useEffect(() => {
+    if (!type) return;
+
+    const controller = new AbortController();
+    let isActive = true;
+
     const fetchData = async () => {
-      setIsLoading(true);
       try {
-        console.log("type", type);
-        const response = await fetch(
-          `/api/retrieveQuestions?flowName=${type}`
-        );
-        console.log("response", response);
+        setIsLoading(true);
+        const response = await fetch(`/api/retrieveQuestions?flowName=${type}`, {
+          signal: controller.signal,
+        });
         const data: IQuestionList = await response.json();
+        if (!isActive) return;
+
         setQuestionList(data);
 
-        const savedCurrQuestion = loadFromLocalStorage<IQuestion | null>(
-          "currQuestion"
-        );
+        const savedCurrQuestion = loadFromLocalStorage<IQuestion | null>("currQuestion");
         const savedChoices = loadFromLocalStorage<IChoice[]>("currChoices");
         const savedHasSolution = loadFromLocalStorage<boolean>("hasSolution");
-        const savedSolutionContent = loadFromLocalStorage<IQuestion | null>(
-          "solutionContent"
-        );
-        const savedBodyContent = loadFromLocalStorage<IBodyContent | null>(
-          "bodyContent"
-        );
+        const savedSolutionContent = loadFromLocalStorage<IQuestion | null>("solutionContent");
+        const savedBodyContent = loadFromLocalStorage<IBodyContent | null>("bodyContent");
 
-        // Check if the question list is not empty
         if (data.questions && data.questions.length > 0) {
-          const savedTypeformData =
-            loadFromLocalStorage<IQuestionList>("savedTypeformData");
-          console.log(savedTypeformData);
-          console.log(data);
-          if (
-            savedTypeformData &&
-            isTypeformConsistent(savedTypeformData, data)
-          ) {
-            if (savedCurrQuestion) {
-              setCurrQuestion(savedCurrQuestion);
-            }
-            if (savedChoices) {
-              setCurrChoices(savedChoices);
-            }
-
-            if (savedBodyContent) {
-              setBodyContent(savedBodyContent);
-            }
-
+          const savedTypeformData = loadFromLocalStorage<IQuestionList>("savedTypeformData");
+          if (savedTypeformData && isTypeformConsistent(savedTypeformData, data)) {
+            if (savedCurrQuestion) setCurrQuestion(savedCurrQuestion);
+            if (savedChoices) setCurrChoices(savedChoices);
+            if (savedBodyContent) setBodyContent(savedBodyContent);
             if (savedHasSolution != null) {
               setHasSolution(savedHasSolution);
               if (savedHasSolution && savedSolutionContent) {
@@ -273,16 +269,10 @@ const CommunicationPage: React.FC<Props> = () => {
               }
             }
           } else {
-            // Start from first question
             if (savedTypeformData) {
-              // Typeform has changed
               setShowResetBanner(true);
-              setTimeout(() => {
-                setShowResetBanner(false);
-              }, 5000);
+              setTimeout(() => setShowResetBanner(false), 5000);
             }
-
-            // Reset local storage
             saveToLocalStorage<IQuestion | null>("currQuestion", null);
             saveToLocalStorage<IChoice[]>("currChoices", []);
             saveToLocalStorage<boolean>("hasSolution", false);
@@ -290,99 +280,51 @@ const CommunicationPage: React.FC<Props> = () => {
             saveToLocalStorage<IBodyContent | null>("bodyContent", null);
 
             const firstQuestion = data.questions[0];
-            setCurrQuestion(firstQuestion);
-            setCurrChoices(firstQuestion.choices || []);
-
             const initialChoice: IChoice = {
               id: "0",
               ref: "0",
-              label: "Communication",
+              label: type as string,
               link: firstQuestion.ref,
             };
+
+            setCurrQuestion(firstQuestion);
+            setCurrChoices(firstQuestion.choices || []);
             setBodyContent({
               currentQuestion: firstQuestion,
               prevChoice: initialChoice,
               choiceList: [initialChoice],
               currentCategory: "",
             });
-
-            const choice: IChoice = {
-              id: "0",
-              ref: "0",
-              label: "Communication",
-              link: firstQuestion.ref,
-            };
-
-            const updatedChoiceList = [...bodyContent.choiceList, choice];
-            setBodyContent({
-              ...bodyContent,
-              choiceList: updatedChoiceList,
-              prevChoice: choice,
-            });
-            console.log("updatedChoiceList", updatedChoiceList);
           }
-
           saveToLocalStorage<IQuestionList>("savedTypeformData", data);
         }
-
-        setIsLoading(false);
-        isRendering.current = false;
       } catch (error) {
-        console.error("Failed to fetch questions:", error);
-        setIsLoading(false);
-        isRendering.current = false;
+        if (error instanceof Error) {
+          if (error.name === "AbortError") return;
+          console.error("Failed to fetch questions:", error.message);
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+          isRendering.current = false;
+        }
       }
     };
 
     fetchData();
-  }, []);
 
-  // Checks if the user navigated here from a bookmark
-  useEffect(() => {
-    if (focusedBookmark) {
-      const solutionRef = focusedBookmark.id;
-      setFromSolutionPage(true);
-
-      if (!questionList) {
-        setIsLoading(true);
-
-        const fetchData = async () => {
-          try {
-            const response = await fetch(
-              "/api/retrieveQuestions?flowName=computer-access"
-            );
-            const data = await response.json();
-            setQuestionList(data);
-          } catch (error) {
-            console.error("Failed to fetch questions:", error);
-            setIsLoading(false);
-          }
-        };
-
-        fetchData();
-      }
-
-      if (questionList) {
-        // Find the focused question based on solutionRef
-        const focusedQuestion =
-          questionList.questions.find(
-            (question) => question.ref === solutionRef
-          ) || null;
-
-        if (focusedQuestion) {
-          console.log("Focused question:", focusedQuestion);
-          setSolutionContent(focusedQuestion);
-          setHasSolution(true);
-          setFocusedBookmark(null);
-        }
-      }
-
-      // Set solution state using the focusedBookmark ResourceLink
-    }
-  }, [focusedBookmark, setFocusedBookmark, questionList,type]);
+    return () => {
+      isActive = false;
+      controller.abort();
+    };
+  }, [type]); // Removed isLoading from dependencies
 
   return (
-    <div style={{height:"100%",flexGrow:1,display:"flex",flexDirection:"column"}}>
+    <div
+      style={{ height: "100%", flexGrow: 1, display: "flex", flexDirection: "column" }}
+    >
       <Head>
         <title>{pageTitle.current}</title>
       </Head>
@@ -406,37 +348,43 @@ const CommunicationPage: React.FC<Props> = () => {
               onClose={() => setShowResetBanner(false)}
               withCloseButton
             >
-              This form has been updated by the administrator. Please
-              re-complete it.
+              This form has been updated by the administrator. Please re-complete
+              it.
             </Alert>
           )}
-          <Text className={classes.text}> {currQuestion.title} </Text>
+          <Text className={classes.text}>{currQuestion.title}</Text>
           <Text className={classes.descriptionText}>
-            {" "}
-            {currQuestion.description}{" "}
+            {currQuestion.description}
           </Text>
           <div className={style.questionBoxesContainer}>
-          {currChoices?.map((choice) => (
-            <Tooltip
-              key={choice.id}
-              label="No logic set for this question"
-              opened={tooltipChoiceId === choice.id}
-              position="top"
-              withArrow
-            >
-              <div className={style.questionBoxes}>
-              <Button
-                variant="outline"
-                className={classes.inner}
-                onClick={() => handleChoiceClick(choice) }
-                styles={{
-                  inner:{width:"100%", display:"grid", gridAutoColumns:"1fr 3fr",},
-                label:{width:"100%",alignItems:"center"}}}
+            {currChoices?.map((choice) => (
+              <Tooltip
+                key={choice.id}
+                label="No logic set for this question"
+                opened={tooltipChoiceId === choice.id}
+                position="top"
+                withArrow
               >
-                <Text className={classes.choiceText}>{choice.label}</Text>
-              </Button></div>
-            </Tooltip>
-          ))}</div>
+                <div className={style.questionBoxes}>
+                  <Button
+                    variant="outline"
+                    className={classes.inner}
+                    onClick={() => handleChoiceClick(choice)}
+                    styles={{
+                      inner: {
+                        width: "100%",
+                        display: "grid",
+                        gridAutoColumns: "1fr 3fr",
+                      },
+                      label: { width: "100%", alignItems: "center" },
+                    }}
+                  >
+                    <Text className={classes.choiceText}>{choice.label}</Text>
+                  </Button>
+                </div>
+              </Tooltip>
+            ))}
+          </div>
         </Stack>
       ) : (
         <SolutionPage solutionContent={solutionContent} classes={classes} />

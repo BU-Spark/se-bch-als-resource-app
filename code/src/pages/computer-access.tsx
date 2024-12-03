@@ -118,15 +118,12 @@ const CommunicationPage: React.FC<Props> = () => {
 
   const goBackToPreviousQuestion = () => {
     console.log("goBackToPreviousQuestion Triggered");
-    // Check if came from bookmark
     if (fromSolutionPage) {
       setFromSolutionPage(false);
       router.push("/bookmarks");
       return;
     }
-    // Check if there are any previous choices
     if (bodyContent.choiceList.length > 1) {
-      // Create a copy of the current choice list and remove the last choice
       const prevChoices = [...bodyContent.choiceList];
       const lastChoice = prevChoices[prevChoices.length - 2];
       prevChoices.pop();
@@ -151,7 +148,7 @@ const CommunicationPage: React.FC<Props> = () => {
   };
 
   const findPreviousQuestion = (lastChoice: IChoice): IQuestion | null => {
-    const previousQuestionRef = lastChoice.link; // Logic to determine the previous question ref
+    const previousQuestionRef = lastChoice.link;
     return (
       questionList?.questions.find(
         (question) => question.ref === previousQuestionRef
@@ -163,10 +160,9 @@ const CommunicationPage: React.FC<Props> = () => {
     (choice: IChoice) => {
       if (!choice.link) {
         setTooltipChoiceId(choice.id);
-        setTimeout(() => setTooltipChoiceId(""), 2300); // Hide tooltip after 4 seconds
+        setTimeout(() => setTooltipChoiceId(""), 2300);
         return;
       }
-      // Append the selected choice to the choiceList in IBodyContent
       const updatedChoiceList = [...bodyContent.choiceList, choice];
       setBodyContent({
         ...bodyContent,
@@ -174,7 +170,6 @@ const CommunicationPage: React.FC<Props> = () => {
         prevChoice: choice,
       });
 
-      // Find the next question based on the choice (if applicable)
       const nextQuestionId = choice.link;
       const nextQuestion = questionList?.questions.find(
         (q) => q.ref === nextQuestionId
@@ -195,7 +190,6 @@ const CommunicationPage: React.FC<Props> = () => {
     [bodyContent, questionList]
   );
 
-  // Update local storage
   useEffect(() => {
     if (!isRendering.current) {
       saveToLocalStorage("hasSolution", hasSolution);
@@ -206,15 +200,20 @@ const CommunicationPage: React.FC<Props> = () => {
     }
   }, [hasSolution, solutionContent, currQuestion, currChoices, bodyContent]);
 
-  // Retrieve and set questions for communication branch
   useEffect(() => {
+    const controller = new AbortController();
+    let isActive = true;
+
     const fetchData = async () => {
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const response = await fetch(
-          "/api/retrieveQuestions?flowName=computer-access"
+          "/api/retrieveQuestions?flowName=computer-access",
+          { signal: controller.signal }
         );
         const data: IQuestionList = await response.json();
+
+        if (!isActive) return;
         setQuestionList(data);
 
         const savedCurrQuestion = loadFromLocalStorage<IQuestion | null>(
@@ -229,12 +228,10 @@ const CommunicationPage: React.FC<Props> = () => {
           "bodyContent"
         );
 
-        // Check if the question list is not empty
         if (data.questions && data.questions.length > 0) {
           const savedTypeformData =
             loadFromLocalStorage<IQuestionList>("savedTypeformData");
-          console.log(savedTypeformData);
-          console.log(data);
+
           if (
             savedTypeformData &&
             isTypeformConsistent(savedTypeformData, data)
@@ -245,11 +242,9 @@ const CommunicationPage: React.FC<Props> = () => {
             if (savedChoices) {
               setCurrChoices(savedChoices);
             }
-
             if (savedBodyContent) {
               setBodyContent(savedBodyContent);
             }
-
             if (savedHasSolution != null) {
               setHasSolution(savedHasSolution);
               if (savedHasSolution && savedSolutionContent) {
@@ -257,16 +252,13 @@ const CommunicationPage: React.FC<Props> = () => {
               }
             }
           } else {
-            // Start from first question
             if (savedTypeformData) {
-              // Typeform has changed
               setShowResetBanner(true);
               setTimeout(() => {
                 setShowResetBanner(false);
               }, 5000);
             }
 
-            // Reset local storage
             saveToLocalStorage<IQuestion | null>("currQuestion", null);
             saveToLocalStorage<IChoice[]>("currChoices", []);
             saveToLocalStorage<boolean>("hasSolution", false);
@@ -274,80 +266,58 @@ const CommunicationPage: React.FC<Props> = () => {
             saveToLocalStorage<IBodyContent | null>("bodyContent", null);
 
             const firstQuestion = data.questions[0];
-            setCurrQuestion(firstQuestion);
-            setCurrChoices(firstQuestion.choices || []);
-
             const initialChoice: IChoice = {
               id: "0",
               ref: "0",
-              label: "Communication",
-              link: firstQuestion.ref,
-            };
-            setBodyContent({
-              currentQuestion: firstQuestion,
-              prevChoice: initialChoice,
-              choiceList: [initialChoice],
-              currentCategory: "",
-            });
-
-            const choice: IChoice = {
-              id: "0",
-              ref: "0",
-              label: "Communication",
+              label: "Computer Access",
               link: firstQuestion.ref,
             };
 
-            const updatedChoiceList = [...bodyContent.choiceList, choice];
-            setBodyContent({
-              ...bodyContent,
-              choiceList: updatedChoiceList,
-              prevChoice: choice,
-            });
-            console.log("updatedChoiceList", updatedChoiceList);
+            if (isActive) {
+              setCurrQuestion(firstQuestion);
+              setCurrChoices(firstQuestion.choices || []);
+              setBodyContent({
+                currentQuestion: firstQuestion,
+                prevChoice: initialChoice,
+                choiceList: [initialChoice],
+                currentCategory: "",
+              });
+            }
           }
 
-          saveToLocalStorage<IQuestionList>("savedTypeformData", data);
+          if (isActive) {
+            saveToLocalStorage<IQuestionList>("savedTypeformData", data);
+          }
         }
-
-        setIsLoading(false);
-        isRendering.current = false;
       } catch (error) {
-        console.error("Failed to fetch questions:", error);
-        setIsLoading(false);
-        isRendering.current = false;
+        if (error instanceof Error) {
+          if (error.name === "AbortError") return;
+          console.error("Failed to fetch questions:", error.message);
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+          isRendering.current = false;
+        }
       }
     };
 
     fetchData();
-  }, [bodyContent]);
 
-  // Checks if the user navigated here from a bookmark
+    return () => {
+      isActive = false;
+      controller.abort();
+    };
+  }, []);
+
   useEffect(() => {
     if (focusedBookmark) {
       const solutionRef = focusedBookmark.id;
       setFromSolutionPage(true);
 
-      if (!questionList) {
-        setIsLoading(true);
-
-        const fetchData = async () => {
-          try {
-            const response = await fetch(
-              "/api/retrieveQuestions?flowName=computer-access"
-            );
-            const data = await response.json();
-            setQuestionList(data);
-          } catch (error) {
-            console.error("Failed to fetch questions:", error);
-            setIsLoading(false);
-          }
-        };
-
-        fetchData();
-      }
-
       if (questionList) {
-        // Find the focused question based on solutionRef
         const focusedQuestion =
           questionList.questions.find(
             (question) => question.ref === solutionRef
@@ -360,8 +330,6 @@ const CommunicationPage: React.FC<Props> = () => {
           setFocusedBookmark(null);
         }
       }
-
-      // Set solution state using the focusedBookmark ResourceLink
     }
   }, [focusedBookmark, setFocusedBookmark, questionList]);
 
@@ -390,15 +358,12 @@ const CommunicationPage: React.FC<Props> = () => {
               onClose={() => setShowResetBanner(false)}
               withCloseButton
             >
-              This form has been updated by the administrator. Please
-              re-complete it.
+              This form has been updated by the administrator. Please re-complete
+              it.
             </Alert>
           )}
-          <Text className={classes.text}> {currQuestion.title} </Text>
-          <Text className={classes.descriptionText}>
-            {" "}
-            {currQuestion.description}{" "}
-          </Text>
+          <Text className={classes.text}>{currQuestion.title}</Text>
+          <Text className={classes.descriptionText}>{currQuestion.description}</Text>
           {currChoices?.map((choice) => (
             <Tooltip
               key={choice.id}
