@@ -5,26 +5,39 @@ const DEFAULT_FONT_SIZE = 16;
 const DEFAULT_BOLD_TEXT = false;
 
 const Settings = () => {
-    const [fontSize, setFontSize] = useState(() => {
-        const savedFontSize = localStorage.getItem('fontSize');
-        return savedFontSize ? parseInt(savedFontSize) : DEFAULT_FONT_SIZE;
-    });
+    const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
+    const [boldText, setBoldText] = useState(DEFAULT_BOLD_TEXT);
 
-    const [boldText, setBoldText] = useState(() => {
-        const savedBoldText = localStorage.getItem('boldText');
-        return savedBoldText === 'true';
-    });
+    useEffect(() => {
+        // Check if window and localStorage are available
+        if (typeof window !== 'undefined') {
+            const savedFontSize = localStorage.getItem('fontSize');
+            const savedBoldText = localStorage.getItem('boldText');
+
+            if (savedFontSize) {
+                setFontSize(parseInt(savedFontSize));
+            }
+
+            if (savedBoldText) {
+                setBoldText(savedBoldText === 'true');
+            }
+        }
+    }, []);
 
     useEffect(() => {
         // Persist fontSize to localStorage
-        localStorage.setItem('fontSize', fontSize.toString());
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('fontSize', fontSize.toString());
+        }
         // Update document's font size
         document.documentElement.style.fontSize = `${fontSize}px`;
     }, [fontSize]);
 
     useEffect(() => {
         // Persist boldText to localStorage
-        localStorage.setItem('boldText', boldText.toString());
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('boldText', boldText.toString());
+        }
         // Add or remove bold-text class to the document body
         if (boldText) {
             document.body.classList.add('bold-text');
@@ -45,8 +58,10 @@ const Settings = () => {
         // Reset to default values
         setFontSize(DEFAULT_FONT_SIZE);
         setBoldText(DEFAULT_BOLD_TEXT);
-        localStorage.removeItem('fontSize');
-        localStorage.removeItem('boldText');
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('fontSize');
+            localStorage.removeItem('boldText');
+        }
     };
 
     return (
