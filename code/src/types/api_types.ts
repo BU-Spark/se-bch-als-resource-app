@@ -1,8 +1,12 @@
+import React from "react";
+
 export interface IChoice {
+  description: React.ReactNode;
   id: string;
   ref: string;
   label: string;
   link?: string;
+  icon?: string;
 }
 
 export interface ILogicActionDetail {

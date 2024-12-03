@@ -105,7 +105,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
                     <img
                       src={choice.icon}
                       alt={choice.label}
-                      className={classes.homeIconImage}
+                      className={classes.homeIconContainer}
                     />
                   </div>
                   <div className={classes.homeTextContainer}>
