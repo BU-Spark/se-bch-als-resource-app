@@ -221,9 +221,7 @@ const Bookmarks = () => {
             onClose={() => setIsSettingsModalOpen(false)}
             title={
               <div style={{textAlign: 'center'}}>
-                <div className={styles.settingsIcon}>
-                  <Settings size={24} color="#254885"/>
-                </div>
+
                 <Text size="xl" weight={700}>Bookmark Settings</Text>
               </div>
             }

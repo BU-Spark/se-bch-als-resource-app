@@ -66,7 +66,7 @@ export const bodyContentUseStyles = createStyles((theme) => ({
   },
 
   homeButton: {
-    height: "7.5rem",
+    height: "165px",
     width: "100%",
     display: "flex",
     color: "#254885",
@@ -123,16 +123,16 @@ export const bodyContentUseStyles = createStyles((theme) => ({
   },
 
   choiceText: {
-    fontSize: rem(16),
+    fontSize: rem(21),
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
     textAlign: "left",
     [theme.fn.smallerThan("sm")]: {
-      fontSize: rem(14),
+      fontSize: rem(19),
     },
     [theme.fn.smallerThan("xs")]: {
-      fontSize: rem(12),
+      fontSize: rem(17),
     },
   },
 
