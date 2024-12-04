@@ -53,7 +53,6 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       id: "2",
       ref: "0",
       label: "Home Access",
-      link: "/home-access",
       icon: "/HomeAccess.svg",
       description: "Home Care Devices"
     },
@@ -97,8 +96,9 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
                 variant="outline"
                 className={classes.homeButton}
                 onClick={() => {
-                  router.push(choice.link || "");
-                }}
+
+                router.push(choice.link || "");
+              }}
               >
                 <Group position="left" spacing="xl" style={{ width: '100%' }}>
                   <div className={classes.homeIconContainer}>

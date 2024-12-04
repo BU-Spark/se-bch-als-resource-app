@@ -70,36 +70,39 @@ if (typeof window !== "undefined") {
 }
 
 // Base choices on communication page
-const initialChoices = [
-  {
-    id: "0",
-    ref: "0",
-    label: "Communication",
-    link: "/communication",
-    subtitle: "Speech & Communication Solutions",
-  },
-  {
-    id: "1",
-    ref: "0",
-    label: "Computer Access",
-    link: "/computer-access",
-    subtitle: "Access your computer today",
-  },
-  {
-    id: "2",
-    ref: "0",
-    label: "Home Access",
-    link: "/home-access",
-    subtitle: "Manage your home care services",
-  },
-  {
-    id: "3",
-    ref: "4",
-    label: "Smart Phone Access",
-    link: "smart-phone-access",
-    subtitle: "Use our mobile services",
-  },
-];
+  const initialChoices = [
+    {
+      id: "0",
+      ref: "0",
+      label: "Communication",
+      link: "/communication",
+      icon: "/Communication.svg",
+      description: "Speech & Communication Solutions"
+    },
+    {
+      id: "1",
+      ref: "0",
+      label: "Computer Access",
+      link: "/computer-access",
+      icon: "/ComputerAccess.svg",
+      description: "Make your Computer more Accessible"
+    },
+    {
+      id: "2",
+      ref: "0",
+      label: "Home Access",
+      icon: "/HomeAccess.svg",
+      description: "Home Care Devices"
+    },
+    {
+      id: "3",
+      ref: "4",
+      label: "Smart Phone Access",
+      link: "smart-phone-access",
+      icon: "/PhoneAccess.svg",
+      description: "Tailoring Your Mobile Device to Your Needs"
+    },
+  ];
 
 const CommunicationPage: React.FC<Props> = () => {
   const router = useRouter();
