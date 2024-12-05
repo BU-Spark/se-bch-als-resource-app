@@ -44,15 +44,15 @@ export const bodyContentUseStyles = createStyles((theme) => ({
   text: {
     fontWeight: 600,
     paddingTop: rem(12),
-    width: "80%",
-    fontSize: rem(20),
+    width: "100%",
+    fontSize:"clamp(25px, 1.5vw, 30px)",
     fontStyle: "normal",
     letterSpacing: rem(-1),
     color: "#254885",
     textAlign: "left",
     fontFamily: `Montserrat, ${theme.fontFamily}`,
     [theme.fn.smallerThan("xs")]: {
-      fontSize: rem(20),
+      fontSize: "clamp(20px, 1.5vw, 25px)",
       textAlign: "left",
       width: "80%",
     },
@@ -146,14 +146,44 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     fontStyle: "normal",
     letterSpacing: rem(-0.5),
     textAlign: "left",
-    fontFamily: `Montserrat, ${theme.fontFamily}`,
-    [theme.fn.smallerThan("sm")]: {
-      fontSize: rem(14),
-    },
-    [theme.fn.smallerThan("xs")]: {
-      fontSize: rem(12),
-    },
   },
+
+  solutionsButtonText:{
+    fontSize: "clamp(18px, 1.8vw, 20px)",
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: rem(-0.5),
+    textAlign: "left",
+    textDecoration: "none",
+  },
+
+  questionBoxes: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "start",
+    gap: "10px", // Adjust spacing between the icon and text
+    padding: "20px",
+    border: "1px solid #254885",
+    borderRadius: "8px",
+    width: "100%",
+    boxSizing: "border-box",
+  },
+  
+  textContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center", // Align text to start (left)
+    padding:"0px",
+    width:"100%",
+    
+  },
+
+  image:{
+    marginLeft:"7%",
+    padding:"0",
+  },
+
+  
 
 
   bookmarkContainer: {

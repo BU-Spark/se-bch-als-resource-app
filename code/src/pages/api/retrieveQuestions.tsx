@@ -41,7 +41,7 @@ export default async function retrieveQuestions(
         `${TYPEFORM_API_URL}/forms/${accessName}`
       );
       const data = await response.json();
-
+      console.log("data", data);
       // Transform fields to IQuestion[]
       const questions: IQuestion[] = data.fields.map((field: any) => {
         const descriptionWithResources = field.properties.description || "";
