@@ -22,6 +22,7 @@ const SolutionPage: React.FC<SolutionPageProps> = ({
   solutionContent,
   classes,
 }) => {
+  console.log("Solution Content:", solutionContent); 
   return (
     <Stack spacing="xl" className={classes.outer} styles={{root:{justifyContent:"space-between",},}}>
       <Text className={classes.text}>{solutionContent.title}</Text>
@@ -29,12 +30,12 @@ const SolutionPage: React.FC<SolutionPageProps> = ({
         {solutionContent.description}
       </Text>
       {solutionContent.attachment &&
-        solutionContent.attachment.type === "video" && (
+        (solutionContent.attachment.type === "video" || solutionContent.attachment.type === "image") &&  (
           <iframe
             width="100%"
             height="315"
             src={solutionContent.attachment.href}
-            allowFullScreen
+            allowFullScreen style={{border: "0"}}
           ></iframe>
         )}
       {solutionContent.solutions && (

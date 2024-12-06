@@ -47,14 +47,14 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       label: "Computer Access",
       link: "/computer-access",
       icon: "/ComputerAccess.svg",
-      description: "Make your Computer more Accessible"
+      description: "Ways to make the computer easier to use"
     },
     {
       id: "2",
       ref: "0",
       label: "Home Access",
       icon: "/HomeAccess.svg",
-      description: "Home Care Devices"
+      description: "Control appliances in your home”"
     },
     {
       id: "3",
@@ -62,7 +62,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
       label: "Smart Phone Access",
       link: "smart-phone-access",
       icon: "/PhoneAccess.svg",
-      description: "Tailoring Your Mobile Device to Your Needs"
+      description: "Ways to make your phone easier to use"
     },
   ];
 
