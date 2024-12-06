@@ -27,7 +27,7 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
 
   const [currQuestion, setCurrQuestion] = useState<IQuestion>({
     id: "0",
-    title: "Which area do you want to look into?",
+    title: "How can you assist me today?",
     ref: "0",
     type: "multiple_choice",
   });

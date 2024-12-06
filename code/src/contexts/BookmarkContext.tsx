@@ -11,7 +11,7 @@ type BookmarkContextType = {
   bookmarks: ResourceLink[];
   folders: BookmarkFolder[];
   addBookmark: (newBookmark: ResourceLink, folderId?: string) => void;
-  removeBookmark: (bookmarkId: string) => void;
+  removeBookmark: (bookmarkId: string, currentFolderId: string | undefined) => void;
   createFolder: (name: string) => void;
   deleteFolder: (folderId: string) => void;
   renameFolder: (folderId: string, newName: string) => void;
@@ -81,8 +81,10 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   }, [folders]);
 
+
   const addBookmark = (newBookmark: ResourceLink, folderId?: string) => {
-    if (folderId) {
+    if (folderId && folderId !== 'default') {
+
       setFolders(prev => prev.map(folder => {
         if (folder.id === folderId) {
           const bookmarkExists = folder.bookmarks.some(b => b.id === newBookmark.id);
@@ -105,13 +107,18 @@ export const BookmarkProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
-  const removeBookmark = (bookmarkId: string) => {
-    setBookmarks(prev => prev.filter(bookmark => bookmark.id !== bookmarkId));
+const removeBookmark = (bookmarkId: string, sourceFolderId?: string) => {
+  if (sourceFolderId && sourceFolderId !== 'default') {
     setFolders(prev => prev.map(folder => ({
       ...folder,
-      bookmarks: folder.bookmarks.filter(bookmark => bookmark.id !== bookmarkId)
+      bookmarks: folder.id === sourceFolderId
+        ? folder.bookmarks.filter(bookmark => bookmark.id !== bookmarkId)
+        : folder.bookmarks
     })));
-  };
+  } else {
+    setBookmarks(prev => prev.filter(bookmark => bookmark.id !== bookmarkId));
+  }
+};
 
   const clearBookmarks = () => {
     setBookmarks([]);

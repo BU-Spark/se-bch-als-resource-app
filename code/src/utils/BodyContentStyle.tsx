@@ -45,7 +45,7 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     fontWeight: 600,
     paddingTop: rem(12),
     width: "100%",
-    fontSize:"clamp(25px, 1.5vw, 30px)",
+    fontSize: '1.5rem',
     fontStyle: "normal",
     letterSpacing: rem(-1),
     color: "#254885",

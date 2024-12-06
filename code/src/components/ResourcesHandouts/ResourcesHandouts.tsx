@@ -38,15 +38,14 @@ const Resources: React.FC<ResourcesProps> = ({
    setIsMoveModalOpen(true);
  };
 
- const handleMove = (folderId: string) => {
-   if (selectedBookmark) {
-     removeBookmark(selectedBookmark.id);
-     addBookmark(selectedBookmark, folderId);
-     setIsMoveModalOpen(false);
-     setSelectedBookmark(null);
-   }
- };
-
+const handleMove = (targetFolderId: string) => {
+  if (selectedBookmark) {
+    removeBookmark(selectedBookmark.id, currentFolderId);
+    addBookmark(selectedBookmark, targetFolderId);
+    setIsMoveModalOpen(false);
+    setSelectedBookmark(null);
+  }
+};
  return (
    <div>
      <Stack spacing="xl">
