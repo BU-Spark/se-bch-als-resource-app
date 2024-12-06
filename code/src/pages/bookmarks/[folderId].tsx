@@ -75,7 +75,7 @@ const FolderDetail = () => {
 
   const confirmUnsave = () => {
     if (selectedBookmarkId) {
-      removeBookmark(selectedBookmarkId, currentFolderId);
+      removeBookmark(selectedBookmarkId, folderId);
     }
     setUnsaveModalOpen(false);
     setSelectedBookmarkId(null);
