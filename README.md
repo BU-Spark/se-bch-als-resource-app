@@ -566,17 +566,44 @@ $ npm run test
 
 We have included each of these next steps and new features as an issue. Please seem them at this [link](https://github.com/BU-Spark/se-bch-als-resource-app/issues)
 
-### Summary of we did
+### Summary of 2024 Fall Semester Updates
 
-- Migrated questions, answers, and solutions from Strapi to Typeform
-- Created bookmark saving capacity using contexts
-- Created URL encoding to share resources across devices
-- Added localStorage saving for bookmarks and progress to avoid user accounts
-- Added navigation Burger
-- Added resource-gen-link for client to easily add bookmarks
-- Standardized styling, and fixed styling errors with the header and footer
-- Enabled client to add real-time questions, solutions, and choices in Typeform
-- Created client documentation for using Typeform
+- Restructured navigation system with improved desktop and mobile layouts
+- Implemented comprehensive accessibility settings system
+- Enhanced bookmark management with collections feature
+- Added QR code and URL sharing capabilities
+- Improved UI/UX across all pages
+- Added image support for articles
+- Optimized responsive design for all screen sizes
+
+* Core Enhancements:
+  * Navigation System
+     - Redesigned navbar with left-side panel for desktop
+     - Responsive top navigation for mobile
+     - Improved hamburger menu functionality
+
+  * Accessibility Features
+     - Font size controls
+     - Color scheme customization
+     - Color mode
+     - Font weight adjustment
+     - Contrast controls
+
+  * Collection Management
+     - Folder creation and organization
+     - Bookmark movement between collections
+     - Print preview functionality
+     - URL and QR code sharing
+
+* Known Issues:
+     - Bookmark link generation occasionally leads to 404
+     - Footer/navbar position conflict in inverted color mode
+     - High resolution images causing display issues
+ 
+* Future Development Suggestions:
+     - Fix bookmark link generation system
+     - Resolve layout conflicts in inverted color mode
+     - Implement image optimization for solution pages
 
 ### Deployment
 
