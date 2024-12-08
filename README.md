@@ -97,25 +97,62 @@ File Structure:
     - Title/
       - Titles.tsx
       - TitleStyle.tsx
+    - CookieConsent.tsx
     - Fall2023ComponentDocs.md
     - Spring2024ComponentDocs.md
+    - QuestionsUtils.ts
 
 ### Header
 
      * Nav.tsx
         * Styles
-            - custom styles for the header
-            - wrapper for the logo
-            - styles for props inside the title
+            - Custom styles for the navigation bar are managed using Nav.module.css
+            - Includes styles for:
+              - Collapsed and expanded states: Adjusts appearance dynamically based on isExpanded
+              - Responsive design:
+                  - Desktop: Sidebar layout on the left
+                  - Mobile: Top navigation bar layout
+            - Active links: Highlights the currently active link using router.pathname
         * Links
-            - list of links appearing in the drop-down menu
-            - maps each link to a title with a link
-            - currently statically included in file
+            - The navigation bar includes links to:
+              - Home (/)
+              - Bookmarks (/bookmarks)
+            - Links use the Link component from Next.js
+            - The current active page is determined using router.pathname and is styled accordingly
+        * Settings
+            - Accessibility settings are provided through a Popover dropdown that includes:
+              - Font size adjustment:
+                - Controlled using a Slider component
+                - Dynamically updates the root font-size in real-time
+              - Bold text toggle:
+                - Controlled using a Switch component
+                - Adds or removes the bold-text class to the body element
+              - Invert colors toggle:
+                - Controlled using a Switch component
+                - Adds or removes the invert-colors class to the body element
+              - Contrast adjustment:
+                - Controlled using a Slider component
+                - Dynamically applies a CSS filter: contrast() to the root element
+              - Reset to Default Settings:
+                - A single button to restore all settings to their default values
         * Burger
-            - uses mantine Burger component
-            - Click to display drop-down menu
-            - Drop-down items inherent toggle function to closer Burger
-        * Returns a <div> with the logo and Burger
+            - The Hamburger menu toggles the collapsed or expanded state of the sidebar
+            - Includes a custom animated icon to enhance the user experience
+        * State Management
+            - The component uses React useState hooks to manage the following states:
+              - isSettingsOpen: Controls the visibility of the settings dropdown.
+              - fontSize: Tracks the current font size.
+              - boldText: Tracks whether bold text is enabled.
+              - invertColors: Tracks whether color inversion is enabled.
+              - contrast: Tracks the contrast level.
+        * Returns
+            - A <nav> element containing:
+              - Sidebar structure:
+                - Hamburger menu.
+                - Navigation links (Home, Bookmarks, Settings).
+              - Accessibility settings dropdown:
+                - Opens on clicking the Settings link.
+                - Contains adjustable controls for font size, bold text, contrast, and inverted colors.
      * NavList.tsx
         * Styles
             - styles for list container
@@ -130,21 +167,40 @@ File Structure:
             - receives an onClick function from Nav.tsx
             - all current links use the toggleMenu function from Nav.tsx
             - allows for more dynamic behavior in future iterations
-     * Titles.tsx
-        * useStyles
-            - custom styles for titles (position, size, color)
-            - chevron icon (transition, position, color)
-            - wrapper (background image, size, position, height, padding)
-            - inner (position, width, height, zIndex)
-            - title (font weight, size, style, letterSpacing, paddingRight, color, marginBottom, textAlign, fontFamily, lineHeight)
-            - media queries for smaller than 'xs' screen sizes
-        * Title component
-            - displays the title passed as a prop
-            - applies custom styles from useStyles
-        * ChevronIcon
-            - displays only if hasPrev is true
-            - onClick triggers prevQuestion function
-        * Return a <div> that contains the ChevronIcon and the Title component
+
+    * Titles.tsx
+      * useStyles
+        - custom styles for:
+          - wrapper (background image, dimensions, padding)
+          - title (font size, weight, color, alignment)
+          - chevron icon (size, transition, position)
+          - subtitle (optional, with distinct font and color styling)
+          - buttons (print/share button styling and alignment)
+          - modal (layout for QR code and bookmarks display)
+          - print-only content (specialized styles for print view)
+      * Title Component
+        - displays the title and optional subtitle, styled using useStyles
+        - Chevron icon:
+          - displays if hasPrev is true
+          - onClick triggers onPrevClick
+        - Print/Share button:
+          - opens a modal for sharing the collection
+          - modal contents:
+            - QR code generated using QRCode
+            - copyable share link using CopyableLink component
+            - bookmark list with titles and descriptions
+            - buttons for Print Preview and Close
+      * Print Functionality
+        - print-ready content includes:
+          - QR code
+          - collection title
+          - bookmark list with titles and optional descriptions
+        - window.print() called on "Print Your List" button click
+      *Return
+        - a <div> containing:
+          - Chevron icon for navigation
+          - Title and optional subtitle
+          - Print/Share button and modal for sharing or printing the collection
 
 ### Body
 
@@ -167,77 +223,90 @@ File Structure:
             - changes color to indicate when clicked
             - also highlights the url in the form
         * Return a <div> that contains the copyable link and copy button
-     * ResourcesHandouts
+    * ResourcesHandouts
         * handleBookmarkClick
             - sends user back to the communication branch
-            - currently is statically encoded, next teams will need to send back to respective source branch
-            - sets the value of a global context to a clicked solution, see context documentation for more info
+            - sets the focused bookmark context for navigation
+            - click event triggers page navigation to communication page
         * useStyles
-            - follows global styling conventions for inner and outer, see utils for more details
-            - styling for container for link portion
-            - styling to wrap the BookmarkButton
-            - assumes BookmarkButton isSolutionPage is false when rendered on /bookmark
-            - assumes BookmarkButton isSolutionPage is true when rendered on /communication
-            - only gets rendered to display solutions or bookmarks
-        * Solution button
-            - routes the user back to /communication with the solution state loaded
-            - dependent on the focused bookmark context, see context documentation for more info
-            - used to hold a link to the external solution itself, see old component documentation
-        * BookmarkButton with conditional rendering
-            - always renders the save/unsave button, conditionally renders the 'Go to bookmarks' button
-            - renders 'Go to bookmarks' button on SolutionPage components, not on bookmark page
-            - clicking save adds the resource id to the global context holding bookmarks
-            - click unsave removes the the resource id from the global context
-        * Return a <div> containing a list of resources with a corresponding link
-     * BookmarkButton
+            - follows global styling conventions for layout and components
+            - styling for link containers and button layouts
+            - manages resource list and button positioning
+            - adapts to both collection and communication pages
+        * Resource display
+            - renders a list of resources with titles and icons
+            - integrates with Mantine UI components
+            - supports both viewing and management functions
+        * Collection management
+            - implements move functionality between collections
+            - supports unsave operations with confirmation
+            - handles default and custom collections
+            - modal interface for collection operations
+        * Return a <div> containing resource list with action buttons
+    * BookmarkButton
         * useStyles
-            - uses the inner style for both buttons
-            - all other styles come from CSS file
-        * Styles
-            - styles for text contained within buttons
-            - container for bookmark navigation button
-            - container for save/unsave button
-        * handleBookmarkClick
-            - creates a new bookmark with id, title, and url
-            - adds newly created bookmark to global bookmark context
-            - if bookmark is already in context, removes it instead
-            - see context docs for more information
-        * Conditional button rendering
-            - button is used on SolutionPage and bookmark page
-            - only render navigate to bookmark page on the SolutionPage instances
-            - button containers subject to page styles
-            - may be better to split into two components in the future, SaveButton and BookmarkNavButton
-        * Returns a <div> containing a save button and conditionally a bookmark nav button
-     * SolutionPage
-        * Video display
-            - renders a video if it exists
-            - solution content is passed in as a prop
-            - solution content is originally retrieved from Typeform
-            - uses global styling, see utils for more info
-        * Resource map
-            - Maps out a list of resource links
-            - Links map to external video or article
-            - Uses global styles and additional custom styles
-            - May be replaceable with a ResourcesHandout
-        * BookmarkButton
-            - Renders a save/unsave button using global styling
-            - Renders the 'Go to bookmarks' button, also fitted with global styling
-            - Bookmarks can also be removed from the SolutionPage
-            - See context docs for how bookmarks are added and removed from global context
-        * Returns a <div> containing the corresponding solution and a BookmarkButton
+            - utilizes global styling and CSS modules
+            - manages button and modal appearance
+            - handles notification styling system
+            - implements consistent UI patterns
+        * Save functionality
+            - handles saving to default and custom folders
+            - provides modal interface for folder selection
+            - implements folder creation within modal
+            - displays success notifications after saves
+        * Navigation management 
+            - handles navigation to bookmarks page
+            - provides confirmation dialogs for navigation
+            - maintains modal state for user interactions
+            - separates navigation and save functions
+        * Notification system
+            - shows save confirmation notifications
+            - customizes notification appearance
+            - implements auto-dismiss functionality
+            - provides clear user feedback
+        * Returns a <div> containing save button with modals
+    * SolutionPage
+        * Content display
+            - renders solution title and description
+            - displays attachments (video/image) in iframe
+            - handles content spacing and layout
+            - implements responsive design patterns
+        * Solution content
+            - processes IQuestion type solution data
+            - displays content with consistent styling
+            - handles multiple content types
+            - uses global and module-specific styles
+        * Resource section
+            - renders resource list conditionally
+            - provides external links with icons
+            - implements custom button styling
+            - maintains consistent text formatting
+        * BookmarkButton integration
+            - implements bookmark functionality
+            - passes required props for solution context
+            - maintains communication route information
+            - integrates with global bookmark system
+        * Returns a Stack component containing solution content and interactions
 
 ### Footer
 
-     * Footer.tsx
+    * Footer
         * useStyles
-            - custom styles for footer (flex, center, padded)
-            - logo
-            - grouping links using flexbox and flexwrap
-            - links are colored #FFFFFF, inter font, style normal
-            - on hover underline
-        * Loop through groups, make a <Text> component for mantine.Link
-        * Dynaically expands and shrinks to fit the size of the page no matter how many resources or bookmarks
-        * return <div> with all the links
+            - implements responsive footer styling
+            - handles expanded and collapsed states
+            - manages logo and link layouts
+            - maintains consistent styling across states
+        * Link handling
+            - maps footer link data from constants
+            - implements external link targeting
+            - uses Next.js Link component
+            - maintains consistent link styling
+        * Layout management
+            - adapts to navigation state changes
+            - implements container-based structure
+            - maintains responsive image sizing
+            - provides consistent spacing
+        * Returns a footer element with logo and dynamic links
 
 ### Pages and Utils
 
@@ -246,10 +315,11 @@ Below is the file structure of the pages and utils. Most pages rely on global st
 File Structure:
 
 - public/
-
   - best_childrens_hospital_us_news.png
   - Boston_Children's_Hospital_logo.png
+  - Communication.svg
   - communications.png
+  - ComputerAccess.svg
   - copy-icon.svg
   - doctor.png
   - favicon.ico
@@ -257,6 +327,9 @@ File Structure:
   - footerImg.png
   - friends.png
   - home.png
+  - HomeAccess.svg
+  - new-typeform-architecture.png
+  - PhoneAccess.svg
   - titleImgCommunication.png
   - titleImgHome.PNG
 
@@ -264,23 +337,32 @@ File Structure:
   - pages/
     - api/
       - retrieveQuestions.tsx
+    - bookmarks/
+      - [folderId].tsx
     - \_app.tsx
+    - [type].tsx
     - bookmarks.tsx
-    - communication.tsx
+    - computer-access.tsx
+    - FontSizeSetting.tsx
     - index.tsx
+    - OLDcommunication.tsx
+    - OLDcomputeraccess.tsx
+    - OLDsmart-phone-access.tsx
     - questionnaire-page.tsx
     - resource-link-gen.tsx
+    - Settings.module.css
+    - settings.tsx
   - styles/
     - Bookmark.module.css
+    - choiceBoxes.module.css
     - Communication.module.css
-    - Globals.css
+    - globals.css
     - Home.module.css
     - ResourceLinkGen.module.css
   - utils/
     - BodyContentStyle.tsx
-    - GetSolutionPageForChoice.tsx
-    - QuestionUtils.tsx
-    - Pages&UtilsDocs.md
+    - QuestionUtils.ts
+    - apiUtils.tsx
   - Pages&UtilsDocs.md
 
 ### Pages
@@ -298,59 +380,91 @@ File Structure:
             - Performs an asynchronous fetch request to the Typeform API using form IDs defined in globals
             - Transforms the response into a structure defined by IQuestionList and IQuestion
             - Responds with newly constructed objects, see type definitions for more details
+    * [folderId].tsx
+        * Folder management
+           - handles default and custom collection displays
+           - manages folder content and bookmarks
+           - implements folder renaming functionality
+           - provides folder clearing capabilities
+       * URL functionality
+           - generates shareable URLs for collections
+           - handles folder ID from URL parameters
+           - manages dynamic routing for folders
+           - implements back navigation
+       * Modal interfaces
+           - implements rename collection modal
+           - provides clear collection confirmation
+           - handles bookmark removal confirmation
+           - maintains consistent modal styling
+       * Returns a dynamic page displaying folder content with modals
     * _app.tsx
-        * MantineProvider
-            - Provides global styles and normalization of CSS across the application
-            - Encapsulates the whole application
-        * Nav component
-            - Displays the navigation bar consistently across all pages
-            - Contains hamburder to display the options on-click
-        * Context Providers
-            - Wraps the content with BookmarkProvider and FocusedBookmarkProvider
-            - Passes bookmark-related global states down to the bookmark page
+        * App Configuration
+            - implements Mantine provider with global styles
+            - manages viewport and favicon settings
+            - handles notification system
+            - maintains consistent styling across pages
+        * Welcome Modal
+            - displays initial welcome message
+            - provides medical disclaimer
+            - implements custom styling
+            - manages modal state persistence
+        * Navigation System
+            - manages navigation expansion state
+            - integrates Nav component with layout
+            - handles responsive layout adjustments
+            - synchronizes with Footer component
+        * Global State Management
+            - implements bookmark context providers
+            - handles cookie consent management
+            - maintains state across page navigation
+            - provides notification functionality
     * bookmarks.tsx
-        * URL encoding and loading
-            - On page load, bookmarks are fetched and added through URL encoding
-            - Fetches data using the fetchAndAddBookmarks function inside a useEffect
-            - Sets a loading state while bookmarks are being retrieved
-        * Bookmarks categorization
-            - Sorts and categorizes bookmarks into predefined groups such as Communication
-            - Uses a forEach loop to push bookmarks into their respective array and checks for correct key values
-        * Bookmark URL construction
-            - Constructs a shareable URL with encoded bookmark IDs.
-            - The URL reflects the current state of bookmarks allowing them to be shared across devices
-            - Updates the URL state whenever bookmarks change, and prevent infinite useEffect loop
-        * EncodedUrlDisplay subcomponent
-            - Renders a text prompt for saving resources
-            - Displays the encoded URL which users can copy to save their bookmark state
-            - Uses the CopyableLink component to display the URL
-    * communication.tsx
-        * Local storage utilities
-            - Provides saveToLocalStorage and loadFromLocalStorage functions to load states and bookmarks
-            - Ensures survey progress and bookmarks are saved on page reload, but is overridden by URL encoding
-        * Reset notification
-            - Notifies the user when a change has been made in Typeform that is not reflected on their website
-            - Asks that the user reload the page to maintain consistency with the backend
-            - Dismisses the notification after a few seconds to ensure it is not too distracting
-        * Initial choices state
-            - Defines a base state for choices using initialChoices
-            - These choices act as the starting point for the communication questionnaire
-            - If there are choices saved in local storage upon reload, loads them
-        * Question state management
-            - Manages the state of the current question, available choices, and the question timeline
-            - Includes logic to handle transitions between questions based on user interaction
-            - Loads question from local storage if it exists
-        * SolutionPage rendering
-            - Conditionally renders SolutionPage when a leaf in the question tree is reached
-            - Passes the content down to the component, see component for more details
-            - SolutionPage ids get preserved in the FocusedBookmark context for navigation to /communication
-        * Question fetching and state
-            - Fetches question list from an API and updates local storage accordingly
-            - Checks for typeform consistency and updates the UI if changes are detected
-        * Choice handling
-            - Handles user's choice clicks and determines the next question or solution to display
-            - Provides a notification if logic is not set on the backend for a given choice
-            - Loads choices from local storage if they exist
+        * Collection management
+            - handles folder creation and deletion
+            - implements folder renaming functionality
+            - manages default and custom collections
+            - provides settings interface for folders
+        * Data synchronization
+            - loads bookmarks from URL parameters
+            - handles URL-based bookmark sharing
+            - maintains loading states during data fetch
+            - prevents redundant data loading
+        * Modal interfaces
+            - create folder modal with validation
+            - settings modal for folder operations
+            - rename confirmation interface
+            - delete confirmation dialogue
+        * Interactive components
+            - displays folder list with bookmark counts
+            - implements settings button for each folder
+            - provides navigation between collections
+            - maintains consistent styling across states
+    * [type].tsx
+        * Dynamic routing
+            - handles multiple access types (communication, computer, phone)
+            - manages route-specific content and titles
+            - implements consistent navigation across types
+            - maintains state during type changes
+        * State management
+            - manages question and choice states
+            - implements local storage persistence
+            - handles loading and error states
+            - provides reset functionality for data updates
+        * Question navigation
+            - implements back navigation logic
+            - manages question transitions
+            - handles solution page rendering
+            - preserves navigation history
+        * Data synchronization
+            - fetches type-specific questions from API
+            - implements typeform consistency checking
+            - manages data loading states
+            - provides update notifications
+        * Interactive components
+            - displays question choices with tooltips
+            - handles invalid choice notifications
+            - renders solution pages when applicable
+            - maintains consistent styling across states
     * index.tsx
         * QuestionaireBodyContent component
             - Contains logic to navigate to /communication or other base branches
@@ -387,37 +501,39 @@ File Structure:
         * extractBetweenResources
             - Returns the text value between [*resources*] tags that are passed in the description, typically pasted from /resource-link-gen
         * removeResourcesSection
-            - Returns the text value without [*resources*] tags and the content inside the tags that are passed in the description, typically pasted from /resource-link-gen
+            - Returns the text value without [*resources*] tags and the content inside the tags that are passed in the description, typically pasted from                     /resource-link-gen
     * BodyContentStyle.tsx
-        * Common style traits
-            - Establishes consistent color schemes and border styles
-            - Implements responsive design traits that adapt to smaller screens
-        * Inner style
-            - Styles for button-like components, ensuring they are properly sized within their wrappers
-            - Defines hover effects that change background and text color
-        * Chevron style
-            - Provides a specific style for chevron icons used in the Title
-            - Includes a transition effect
-        * Text styles
-            - Defines the main text style used throughout the application
-            - Ensures text elements maintain their style on smaller devices
-        * Description text style
-            - Sets a slightly smaller and lighter style for description text to differentiate them from primary text
-            - Maintains consistent alignment and font traits with the main text style
-        * Outer container style
-            - Styles the outermost container of components to properly align content within the layout
-        * Bookmark container style
-            - Customizes the look for bookmark display
-            - Ensures that the container is large enough
-        * Copy icon style
-            - Defines styles for icons used in copy functionalities
-            - Ensures copy buttons are visually identifiable within the rest of the applicable
-    * QuestionUtils.tsx
+        * Component styling
+            - defines button and container styles
+            - implements responsive design patterns
+            - maintains consistent color schemes
+            - handles hover and interaction states
+        * Text formatting
+            - manages font sizes and weights
+            - implements responsive text scaling
+            - maintains text alignment rules
+            - handles text overflow states
+        * Layout management
+            - defines flexible grid layouts
+            - handles mobile responsiveness
+            - implements padding and spacing
+            - maintains container structures
+        * Interactive elements
+            - styles navigation elements
+            - manages icon positioning
+            - implements hover effects
+            - handles button states
+        * Home page elements
+            - styles category buttons
+            - manages icon containers
+            - implements description layouts
+            - maintains responsive grids
+    * QuestionUtils.ts
         * Typeform consistency check
             - Defines isTypeformConsistent to compare two sets of typeform data, primarily by comparing the length and the individual questions for equality
             - Useful for detecting changes in questionnaire content over time or between different sessions
         * Question equality
-            - Defines areQuestionsEqual to determine if two questions are identical by comparing various properties including IDs, titles, references, types, descriptions, choices, solutions, and attachments
+            - Defines areQuestionsEqual to determine if two questions are identical by comparing various properties including IDs, titles, references, types,                   descriptions, choices, solutions, and attachments
             - Ensures perfect equality checks within question sets
         * Choices equality
             - Defines areChoicesEqual to check if two arrays of choices are equal by comparing their IDs, labels, and references
