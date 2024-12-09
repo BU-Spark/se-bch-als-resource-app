@@ -41,7 +41,7 @@ For a detailed walkthrough of the backend functionality and setup, please watch 
 
 ### Architecture
 
-Here is the Fall 2024 Midterm [slides]([https://docs.google.com/presentation/d/14D7LLQVyJqyRsZOZrKRtz57jpahWUS9vqxkEOyitveg/edit?usp=sharing](https://docs.google.com/presentation/d/1KAD9bwH4XfIpd7wtVrGWFPx0wrpy3wgOzb7KWwagMgo/edit#slide=id.g1ec9b476133_0_24)) that go over the project.
+Here is the Fall 2024 Final [slides](https://docs.google.com/presentation/d/1KAD9bwH4XfIpd7wtVrGWFPx0wrpy3wgOzb7KWwagMgo/edit#slide=id.g1f8b685d5de_32_0) that go over the project.
 
 Below is a screenshot of the OLD architecture using Strapi. Please see the README is old-backend-strapi for more details.
 
