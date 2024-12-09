@@ -10,15 +10,15 @@ The two primary users of this application (mobile or web app) would be patients 
 
 ### User Stories
 
-As a user, I want to customize font size, contrast and colors so that I can better read and navigate the application.
+As a patient, I want consistent functionality across devices so I can access resources anywhere at any time.
 
-As a patient, I want to organize bookmarks into custom folders so that I can better manage saved resources.
+As a clinician, I want to have the most up-to-date solutions and customizable views so I can effectively assist patients with varying needs.
 
-As a user, I want to share resources via QR codes and links so that I can collaborate with my healthcare team.
+As a caregiver, I want to organize and share resources via QR codes and links so I can better coordinate patient care with the healthcare team.
 
-As a patient, I want to access full functionality on both computer and smartphone so that I can use resources anywhere.
+As a family member, I want accessible features like adjustable fonts and contrast so I can help manage patient information regardless of my own visual needs.
 
-As a user, I want secure access to my saved information so that my privacy is protected.
+As a healthcare provider, I want secure data management and sharing capabilities so I can maintain patient privacy while collaborating with other providers.
 
 ### Run Project
 
