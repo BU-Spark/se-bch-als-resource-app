@@ -15,7 +15,6 @@ import Title from "../components/Title/Titles";
 import SolutionPage from "@/components/SolutionPage/SolutionPage";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { isTypeformConsistent } from "../utils/QuestionUtils";
-import style from "../styles/choiceBoxes.module.css";
 import styles from "../styles/Communication.module.css";
 
 interface Props {}
@@ -87,7 +86,7 @@ if (typeof window !== "undefined") {
       icon: "/ComputerAccess.svg",
       description: "Make your Computer more Accessible"
     },
-    {
+    {//There is no link to /home-access until the Home Access branch is implemented on TypeForm. User should not be able to click on it
       id: "2",
       ref: "0",
       label: "Home Access",
@@ -116,7 +115,7 @@ const CommunicationPage: React.FC<Props> = () => {
     titleName = "Smart\u00A0Phone\u00A0Access";
   } else {
     titleName = "Home\u00A0Access";
-  }
+  }//Use "\u00A0" to ensure the title text doesn't get wrapped
 
   const { focusedBookmark, setFocusedBookmark } = useFocusedBookmark();
   const { classes } = bodyContentUseStyles();
@@ -359,7 +358,7 @@ const CommunicationPage: React.FC<Props> = () => {
           <Text className={classes.descriptionText}>
             {currQuestion.description}
           </Text>
-          <div className={style.questionBoxesContainer}>
+          <div className={styles.questionBoxesContainer}>
             {currChoices?.map((choice) => (
               <Tooltip
                 key={choice.id}
@@ -368,7 +367,7 @@ const CommunicationPage: React.FC<Props> = () => {
                 position="top"
                 withArrow
               >
-                <div className={style.questionBoxes}>
+                <div className={styles.questionBoxes}>
                   <Button
                     variant="outline"
                     className={classes.inner}
