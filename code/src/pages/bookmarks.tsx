@@ -42,7 +42,7 @@ const EncodedUrlDisplay = ({
 const Bookmarks = () => {
   // Custom styles and bookmark context hooks
   const { classes } = bodyContentUseStyles();
-  const { bookmarks, folders, addBookmark, createFolder, deleteFolder, renameFolder } = useBookmarks();
+  const { folders = [], bookmarks, addBookmark, createFolder, deleteFolder, renameFolder } = useBookmarks();
   const image = useRef("/titleimghome.PNG");
 
   // State variables for managing modals and bookmarks
@@ -241,13 +241,18 @@ const Bookmarks = () => {
             size="sm"
         >
           <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-            <button className={styles.modalButton} onClick={handleRenameClick}>
+            <button className={styles.modalButton}
+                    onClick={handleRenameClick}
+             >
               <div className={styles.modalIconWrapper}>
                 <Edit size={18}/>
               </div>
               <span>Rename Collection</span>
             </button>
-            <button className={styles.modalButton} onClick={handleDeleteClick}>
+            <button className={styles.modalButton} onClick={handleDeleteClick}
+
+            data-testid="delete-folder-option" >
+
               <div className={styles.modalIconWrapper}>
                 <Trash2 size={18}/>
               </div>
@@ -316,6 +321,7 @@ const Bookmarks = () => {
                   color="red"
                   onClick={handleDeleteConfirm}
                   style={{flex: 1}}
+                  data-testid="confirm-delete-button"
               >
                 Delete
               </Button>
@@ -345,6 +351,7 @@ const Bookmarks = () => {
                 <button
                     onClick={(e) => handleSettingsClick(e, folder.id)}
                     className={styles.settingsButton}
+                    data-testid="folder-settings-button"
                 >
                   <MoreVertical size={20}/>
                 </button>
