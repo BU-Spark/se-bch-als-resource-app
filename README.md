@@ -64,7 +64,7 @@ To understand the utils, Typeform API, and pages, naviagte to the the Pages&Util
 
 1. Database: The code for storing the data in a database (for this code it is mongodb) has been provided. Since it was not required to do so for our project, we did not do so but for future teams, they can modify this code data storage.
 
-2. Deployment on cloud: The application can easily be deployed on a cloud provider. The tests help users see if the code breaks or not. During the semester, we hosted our test versions for the client on Vercel, which provides automatic CI/CD
+2. Deployment Migration: The application was initially deployed on Vercel but has been migrated to Netlify for improved performance and reliability. The current development branch is hosted on Netlify, demonstrating successful platform transition.
 
 3. Code modification: We have written modular code written, dividing code into components and classes. Furthermore, detailed explanations for each class can be provided below and on the application.
 
@@ -173,7 +173,8 @@ Core Features:
 
 ### Deployment & Contacts
 
-Frontend: [Vercel Deployment](https://se-bch-als-resource-app-zeta.vercel.app/)
+Frontend: Initially deployed on Vercel, now migrated to Netlify
+Current Development Branch: [Netlify Deployment](your-netlify-link-here)
 Note: Access limited on BU Network
 
 Backend: Typeform (buspark@bu.edu)
@@ -182,7 +183,7 @@ API: Managed via /api/retrieveQuestions
 Contact Information:
 Previous Team (2023):
 - Jacob Stein (jmstein@bu.edu)
-- 
+ 
 Current Team (2024 Fall):
 - Brian Zeng (bzeng0@bu.edu)
 - Charles Zhang (zhr114@bu.edu)
