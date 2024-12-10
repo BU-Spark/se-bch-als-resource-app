@@ -1,26 +1,26 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-
 import fetchMock from "jest-fetch-mock";
 import "@testing-library/jest-dom";
 
 import Bookmarks from "../../pages/bookmarks";
 import { BookmarkProvider, useBookmarks } from "@/contexts/BookmarkContext";
-import { FocusedBookmarkProvider } from "@/contexts/FocusedBookmarkContext";
 
+// Enable fetch mocking
 fetchMock.enableMocks();
 
+// Mock Next.js router
 jest.mock("next/router", () => ({
   useRouter: () => ({
     push: jest.fn(),
     query: {},
+    isReady: true,
+    pathname: "/bookmarks"
   }),
 }));
 
-/**
- * Mocks the BookmarkContext
- */
+// Mock BookmarkContext with default values
 jest.mock("@/contexts/BookmarkContext", () => {
   const originalModule = jest.requireActual("@/contexts/BookmarkContext");
   return {
@@ -28,12 +28,16 @@ jest.mock("@/contexts/BookmarkContext", () => {
     ...originalModule,
     useBookmarks: jest.fn(() => ({
       bookmarks: [],
+      folders: [],
       addBookmark: jest.fn(),
-      removeBookmark: jest.fn(),
+      createFolder: jest.fn(),
+      deleteFolder: jest.fn(),
+      renameFolder: jest.fn(),
     })),
   };
 });
 
+// Setup global mocks
 beforeEach(() => {
   jest.spyOn(console, "error").mockImplementation(() => {});
   jest.spyOn(console, "warn").mockImplementation(() => {});
@@ -45,16 +49,34 @@ afterEach(() => {
 
 describe("Bookmarks Page", () => {
   beforeEach(() => {
+    // Reset all mocks before each test
+    jest.clearAllMocks();
+
+    // Reset fetch mock
     fetchMock.resetMocks();
     fetchMock.mockResponseOnce(JSON.stringify({ questions: [] }), {
       status: 200,
     });
+
+    // Set default useBookmarks mock return value
+    useBookmarks.mockReturnValue({
+      bookmarks: [],
+      folders: [],
+      addBookmark: jest.fn(),
+      createFolder: jest.fn(),
+      deleteFolder: jest.fn(),
+      renameFolder: jest.fn(),
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   /**
-   * Tests rendering with no bookmarks
+   * Tests initial render state with default collection
    */
-  it("Should render with no bookmarks", async () => {
+  it("Should render default collection", async () => {
     await act(async () => {
       render(
         <BookmarkProvider>
@@ -62,126 +84,137 @@ describe("Bookmarks Page", () => {
         </BookmarkProvider>
       );
     });
-    const elements = screen.getAllByText(/You don't have any bookmarks/i);
-    expect(elements.length).toBeGreaterThan(0);
+
+    expect(screen.getByText("Default Collection")).toBeInTheDocument();
+    expect(screen.getByText("0 bookmark(s)")).toBeInTheDocument();
   });
 
   /**
-   * Tests rendering a bookmark when added
+   * Tests the folder creation flow including modal interaction
    */
-  it("Should render a bookmark when added", async () => {
+  it("Should open create folder modal and create new folder", async () => {
+    const createFolder = jest.fn();
     useBookmarks.mockReturnValue({
-      bookmarks: [{ id: "1", title: "Bookmark 1", url: "Communication" }],
-      addBookmark: jest.fn(),
-      removeBookmark: jest.fn(),
+      bookmarks: [],
+      folders: [],
+      createFolder,
+      deleteFolder: jest.fn(),
+      renameFolder: jest.fn(),
     });
 
     await act(async () => {
       render(
-        <FocusedBookmarkProvider>
-          <BookmarkProvider>
-            <Bookmarks />
-          </BookmarkProvider>
-        </FocusedBookmarkProvider>
+        <BookmarkProvider>
+          <Bookmarks />
+        </BookmarkProvider>
       );
     });
 
-    await waitFor(
-      () =>
-        expect(
-          screen.getByText(
-            /Use the link below to automatically load and access your bookmarks in the future, from any device./i
-          )
-        ).toBeInTheDocument(),
-      {
-        timeout: 1000,
-      }
-    );
+    fireEvent.click(screen.getByLabelText("Add Folder"));
+    fireEvent.change(screen.getByPlaceholderText("Enter collection name"), {
+      target: { value: "New Folder" },
+    });
+    fireEvent.click(screen.getByText("Create"));
+
+    expect(createFolder).toHaveBeenCalledWith("New Folder");
   });
 
   /**
-   * Tests rendering bookmark categories
+   * Tests folder settings menu display and interactions
    */
-  it("Should render bookmark categories", async () => {
+  it("Should open settings menu for folder", async () => {
     useBookmarks.mockReturnValue({
-      bookmarks: [
-        { id: "1", title: "Bookmark 1", url: "Communication" },
-        { id: "2", title: "Bookmark 2", url: "Computer Access" },
+      bookmarks: [],
+      folders: [{ id: "1", name: "Test Folder", bookmarks: [] }],
+      createFolder: jest.fn(),
+      deleteFolder: jest.fn(),
+      renameFolder: jest.fn(),
+    });
+
+    await act(async () => {
+      render(
+        <BookmarkProvider>
+          <Bookmarks />
+        </BookmarkProvider>
+      );
+    });
+
+    const settingsButton = screen.getByTestId("folder-settings-button");
+    fireEvent.click(settingsButton);
+
+    expect(screen.getByText("Bookmark Settings")).toBeInTheDocument();
+    expect(screen.getByText("Rename Collection")).toBeInTheDocument();
+    expect(screen.getByText("Delete Collection")).toBeInTheDocument();
+  });
+
+  /**
+   * Tests the complete folder deletion flow
+   */
+  it("Should delete folder", async () => {
+    const deleteFolder = jest.fn();
+    useBookmarks.mockReturnValue({
+      bookmarks: [],
+      folders: [{ id: "1", name: "Test Folder", bookmarks: [] }],
+      createFolder: jest.fn(),
+      deleteFolder,
+      renameFolder: jest.fn(),
+    });
+
+    await act(async () => {
+      render(
+        <BookmarkProvider>
+          <Bookmarks />
+        </BookmarkProvider>
+      );
+    });
+
+    const settingsButton = screen.getByTestId("folder-settings-button");
+    fireEvent.click(settingsButton);
+
+    const deleteOption = screen.getByTestId("delete-folder-option");
+    fireEvent.click(deleteOption);
+
+    const confirmDeleteButton = screen.getByTestId("confirm-delete-button");
+    fireEvent.click(confirmDeleteButton);
+
+    expect(deleteFolder).toHaveBeenCalledWith("1");
+  });
+
+  /**
+   * Tests bookmark count display for both default and custom folders
+   */
+  it("Should display correct bookmark counts", async () => {
+    useBookmarks.mockReturnValue({
+      bookmarks: [{ id: "1", title: "Bookmark 1" }],
+      folders: [
+        {
+          id: "1",
+          name: "Test Folder",
+          bookmarks: [{ id: "2", title: "Bookmark 2" }]
+        }
       ],
-      addBookmark: jest.fn(),
-      removeBookmark: jest.fn(),
+      createFolder: jest.fn(),
+      deleteFolder: jest.fn(),
+      renameFolder: jest.fn(),
     });
 
     await act(async () => {
       render(
-        <FocusedBookmarkProvider>
-          <BookmarkProvider>
-            <Bookmarks />
-          </BookmarkProvider>
-        </FocusedBookmarkProvider>
+        <BookmarkProvider>
+          <Bookmarks />
+        </BookmarkProvider>
       );
     });
 
-    const cat1 = screen.getByText("Communication");
-    const cat2 = screen.getByText("Computer Access");
-    expect(cat1).toBeInTheDocument();
-    expect(cat2).toBeInTheDocument();
-  });
+    const bookmarkCounts = screen.getAllByText(/1 bookmark\(s\)/);
+    expect(bookmarkCounts).toHaveLength(2);
 
-  /**
-   * Tests if URL encoding component is rendered correctly
-   */
-  it("Should render the URL component", async () => {
-    useBookmarks.mockReturnValue({
-      bookmarks: [
-        { id: "1", title: "Bookmark 1", url: "Communication" },
-        { id: "2", title: "Bookmark 2", url: "Computer Access" },
-      ],
-      addBookmark: jest.fn(),
-      removeBookmark: jest.fn(),
-    });
+    const defaultFolder = screen.getByText("Default Collection")
+      .nextElementSibling;
+    expect(defaultFolder).toHaveTextContent("1 bookmark(s)");
 
-    await act(async () => {
-      render(
-        <FocusedBookmarkProvider>
-          <BookmarkProvider>
-            <Bookmarks />
-          </BookmarkProvider>
-        </FocusedBookmarkProvider>
-      );
-    });
-
-    const actualText = screen.getByText("Save Your Resources")
-      .nextElementSibling.textContent;
-    const expectedText =
-      "Use the link below to automatically load and access your bookmarks in the future, from any device.";
-    expect(actualText).toBe(expectedText);
-  });
-
-  /**
-   * Tests if unexpected original URLs are handled
-   */
-  it("Should handle unexpected original URLs", async () => {
-    console.warn = jest.fn();
-
-    useBookmarks.mockReturnValue({
-      bookmarks: [{ id: "1", title: "Bookmark 1", url: "Invalid Category" }],
-      addBookmark: jest.fn(),
-      removeBookmark: jest.fn(),
-    });
-
-    await act(async () => {
-      render(
-        <FocusedBookmarkProvider>
-          <BookmarkProvider>
-            <Bookmarks />
-          </BookmarkProvider>
-        </FocusedBookmarkProvider>
-      );
-    });
-
-    expect(console.warn).toHaveBeenCalledWith(
-      "Unexpected original: Invalid Category"
-    );
+    const testFolder = screen.getByText("Test Folder")
+      .nextElementSibling;
+    expect(testFolder).toHaveTextContent("1 bookmark(s)");
   });
 });

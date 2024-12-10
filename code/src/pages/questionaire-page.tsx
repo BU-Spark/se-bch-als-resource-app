@@ -1,31 +1,15 @@
 import { bodyContentUseStyles } from "../utils/BodyContentStyle";
-import style from "../styles/choiceBoxes.module.css"
-import Image from "next/image";
+
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";
 
-import { Stack, Text, Button } from "@mantine/core";
+import { Stack, Text, Button, Group, SimpleGrid } from "@mantine/core";
 
 import Title from "../components/Title/Titles";
 import { IQuestion, IChoice, IBodyContent } from "../types/api_types";
-import { relative } from "path";
 
 interface Props {}
 
-const getImageUrl = (label: string): string => {
-  switch (label) {
-    case "Communication":
-      return "/Communication.svg";
-    case "Computer Access":
-      return "/ComputerAccess.svg";
-    case "Smart Phone Access":
-      return "/PhoneAccess.svg";
-    case "Home Access":
-      return "/HomeAccess.svg";
-    default:
-      return "/Boston_Children's_Hospital_logo.png"; // Fallback image
-  }
-};
 /**
  * Component for displaying the initial choices
  * for the questionnaire. State management used to be
@@ -43,28 +27,49 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
 
   const [currQuestion, setCurrQuestion] = useState<IQuestion>({
     id: "0",
-    title: "Which area do you want to look into?",
+    title: "How can you assist me today?",
     ref: "0",
     type: "multiple_choice",
   });
 
-  const initialChoices = [//When redirecting, uses [type].tsx. Avoid having .tsx files with names that are in the links below ex. No communication.tsx, etc.
-    { id: "0", ref: "0", label: "Communication", link: "/communication",subtitle:"Speech & Communication Solutions" },
-    { id: "1", ref: "0", label: "Computer Access", link: "/computer-access",subtitle:"Access your computer today" },
-    { id: "2", ref: "0", label: "Home Access", link: "/home-access",subtitle:"Manage your home care services" },
+  const initialChoices = [
+    {
+      id: "0",
+      ref: "0",
+      label: "Communication",
+      link: "/communication",
+      icon: "/Communication.svg",
+      description: "Speech & Communication Solutions"
+    },
+    {
+      id: "1",
+      ref: "0",
+      label: "Computer Access",
+      link: "/computer-access",
+      icon: "/ComputerAccess.svg",
+      description: "Ways to make the computer easier to use"
+    },
+    {
+      id: "2",
+      ref: "0",
+      label: "Home Access",
+      icon: "/HomeAccess.svg",
+      description: "Control appliances in your home”"
+    },
     {
       id: "3",
       ref: "4",
       label: "Smart Phone Access",
       link: "smart-phone-access",
-      subtitle:"Use our mobile services",
+      icon: "/PhoneAccess.svg",
+      description: "Ways to make your phone easier to use"
     },
   ];
 
   const [currChoices, setCurrChoices] = useState<IChoice[]>(initialChoices);
-  
+
   return (
-    <div style={{height:"100%",flexGrow:1,display:"flex",flexDirection:"column"}}>
+    <div>
       <Title
         hasPrev={prevSelectedContent.current.length > 1}
         titleImg={heroImage.current}
@@ -77,26 +82,43 @@ const QuestionaireBodyContent: React.FC<Props> = () => {
           {" "}
           {currQuestion.description}{" "}
         </Text>
-        <div className={style.questionBoxesContainer}>
-        {currChoices.map((choice) => (
-          <div key={choice.id} className={style.questionBoxes}>
-            <Button
-              variant="outline"
-              className={classes.inner}
-              onClick={() => {
+
+        <SimpleGrid
+          cols={2}
+          spacing="xl"
+          breakpoints={[
+          { maxWidth: 'sm', cols: 1 },
+          ]}
+          >
+          {currChoices.map((choice) => (
+            <div key={choice.id}>
+              <Button
+                variant="outline"
+                className={classes.homeButton}
+                onClick={() => {
+
                 router.push(choice.link || "");
-              }} styles={{
-                    inner:{width:"100%", display:"grid", gridAutoColumns:"1fr 3fr",},
-                  label:{width:"100%",display:"flex",flexGrow:1},}}
-            >
-              <img className={classes.image} src={getImageUrl(choice.label)} alt={choice.label}/>
-              <div className={classes.textContainer}>
-                <Text className={classes.choiceText}>{choice.label} </Text>
-                <Text className={classes.subtitleText}>{choice.subtitle}</Text>
-              </div>
-            </Button>
-          </div>
-        ))}</div>
+              }}
+              >
+                <Group position="left" spacing="xl" style={{ width: '100%' }}>
+                  <div className={classes.homeIconContainer}>
+                    <img
+                      src={choice.icon}
+                      alt={choice.label}
+                      className={classes.homeIconContainer}
+                    />
+                  </div>
+                  <div className={classes.homeTextContainer}>
+                    <Text className={classes.choiceText}>{choice.label}</Text>
+                    <Text className={classes.descriptionText}>
+                      {choice.description}
+                    </Text>
+                  </div>
+                </Group>
+              </Button>
+            </div>
+          ))}
+        </SimpleGrid>
       </Stack>
     </div>
   );

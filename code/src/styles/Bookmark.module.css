@@ -1,95 +1,226 @@
 .loaderContainer {
-  display: flex;
-  margin-top: 15vh;
-  justify-content: center;
-  align-items: center;
+ display: flex;
+ margin-top: 15vh;
+ justify-content: center;
+ align-items: center;
 }
 
 .titleStyle {
-  color: #254885;
-  margin-bottom: 0px;
-  font-weight: bold;
-  font-size: 1.7em;
+ color: #254885;
+ margin-bottom: 0;
+ font-weight: bold;
+ font-size: 1.7em;
 }
 
 .subtitleStyle {
-  color: #68759c;
-  font-weight: normal;
-  margin-bottom: 10px;
-  font-size: 0.8em;
+ color: #68759c;
+ font-weight: normal;
+ margin-bottom: 10px;
+ font-size: 0.8em;
 }
 
 .folderList {
-  padding: 2rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+ padding: 2rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+ gap: 1.5rem;
 }
 
 .folderItem {
-  background-color: white;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  animation: fadeIn 0.3s ease-out;
+ background-color: white;
+ border: 2px solid #254885;
+ border-radius: 8px;
+ padding: 1.5rem;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ position: relative;
+ overflow: hidden;
+ animation: fadeIn 0.3s ease-out;
 }
 
 .folderItem:hover {
-  border-color: #254885;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 72, 133, 0.15);
+ border-color: #254885;
+ transform: translateY(-2px);
+ box-shadow: 0 4px 12px rgba(37, 72, 133, 0.15);
 }
 
 .folderItem:active {
-  transform: translateY(0);
+ transform: translateY(0);
 }
 
 .folderContent {
-  padding: 1.5rem 0;
-  background-color: white;
-  border-radius: 8px;
-  margin-top: 1rem;
-  width: 100%;
+ padding: 1.5rem 24px;
+ background-color: white;
+ border-radius: 8px;
+ margin-top: 1rem;
+ width: calc(100% - 48px);
+ margin-left: 24px;
+ margin-right: 24px;
 }
 
 .button {
-  width: 100% !important;
-  margin-bottom: 1rem;
+ width: calc(100% - 48px) !important;
+ margin: 20px 24px !important;
 }
 
 .resourceContainer {
-  width: 100%;
-  padding: 0;
-  margin-bottom: 1rem;
+ width: calc(100% - 48px);
+ padding: 0;
+ margin-bottom: 1rem;
+ margin-left: 24px;
+ margin-right: 24px;
 }
 
+.clearFolderButton {
+ width: 100% !important;
+ margin: 24px 0 !important;
+}
+
+.renameButton {
+ width: 100% !important;
+ margin: 24px 0 !important;
+}
+
+.customModal {
+  position: relative;
+}
+
+.customModal > button {
+  position: absolute;
+  top: 8px !important;
+  right: 8px;
+}
+
+
 .clearButton {
-  width: 100%;
-  margin-top: 1rem;
-  background-color: transparent;
-  color: #dc3545;
-  border: 2px solid #dc3545;
-  transition: all 0.3s ease;
+ width: 100%;
+ margin-top: 1rem;
+ background-color: transparent;
+ color: #dc3545;
+ border: 2px solid #dc3545;
+ transition: all 0.3s ease;
+}
+
+.addButton {
+ flex-direction: column;
+ position: absolute;
+ right: 30px;
+ top: 68px;
+ color: white;
+ background: transparent;
+ border: none;
+ cursor: pointer;
+ transition: background-color 0.2s, transform 0.2s;
+ padding: 16px 16px;
+ border-radius: 8px;
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ justify-content: center;
+}
+
+.addButton:hover {
+ background: rgba(255, 255, 255, 0.2);
+ transform: scale(1.05);
+}
+
+.addIcon {
+ color: white;
+ min-width: 32px;
+ height: 32px;
+ flex-shrink: 0;
+}
+
+.settingsButton {
+ position: absolute;
+ right: 12px;
+ top: 12px;
+ background: none;
+ border: none;
+ cursor: pointer;
+ padding: 8px;
+ border-radius: 4px;
+ color: #254885;
+ opacity: 0.7;
+ transition: all 0.2s ease;
+}
+
+.settingsButton:hover {
+ background-color: rgba(37, 72, 133, 0.1);
+ opacity: 1;
+}
+
+.settingsButton:active {
+ transform: scale(0.95);
+}
+
+
+.confirmButton {
+  background-color: #254885 !important;
+  color: white !important;
+}
+
+.confirmButton:hover {
+  background-color: #1c365f !important;
+}
+
+.modalIconWrapper {
+ width: 40px;
+ height: 40px;
+ background-color: #254885;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-right: 12px;
+}
+
+.modalIconWrapper svg {
+ color: white;
+}
+
+.settingsIcon {
+ width: 48px;
+ height: 48px;
+ background-color: #f8f9fa;
+ border-radius: 12px;
+ padding: 12px;
+ margin-bottom: 16px;
+}
+
+.modalButton {
+ display: flex;
+ align-items: center;
+ width: 100%;
+ padding: 12px;
+ border: 1px solid #e9ecef;
+ border-radius: 4px;
+ transition: all 0.2s ease;
+ background: none;
+ cursor: pointer;
+}
+
+.modalButton:hover {
+ background-color: #f8f9fa;
+}
+
+.modalContent {
+ display: flex;
+ align-items: center;
 }
 
 .clearButton:hover {
-  background-color: #dc3545;
-  color: white;
+ background-color: #dc3545;
+ color: white;
 }
 
-
-
 @media (max-width: 768px) {
-  .folderList {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-  }
+ .folderList {
+   grid-template-columns: 1fr;
+   padding: 1rem;
+ }
 
-  .folderItem {
-    padding: 1rem;
-  }
+ .folderItem {
+   padding: 1rem;
+ }
 }

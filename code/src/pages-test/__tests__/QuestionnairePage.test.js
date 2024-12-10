@@ -19,7 +19,7 @@ const initialChoices = [
 
 const currQuestion = {
   id: "0",
-  title: "Which area do you want to look into?",
+  title: "How can you assist me today?",
   ref: "0",
   type: "multiple_choice",
 };
@@ -62,7 +62,7 @@ describe("QuestionaireBodyContent", () => {
   it("Should display the correct title", () => {
     setup();
     expect(
-      screen.getByText("Which area do you want to look into?")
+      screen.getByText("How can you assist me today?")
     ).toBeInTheDocument();
   });
 

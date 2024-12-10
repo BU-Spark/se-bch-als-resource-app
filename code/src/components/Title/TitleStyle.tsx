@@ -20,11 +20,11 @@ export const useStyles = createStyles(
 
     inner: {
       position: "absolute",
-      width: rem(132),
-      height: rem(41),
       left: rem(24),
       bottom: rem(24),
       zIndex: 1,
+      width: "auto",
+      height: "auto",
     },
 
     title: {
@@ -34,7 +34,7 @@ export const useStyles = createStyles(
       letterSpacing: rem(-1),
       paddingRight: theme.spacing.xs,
       color: theme.white,
-      marginBottom: theme.spacing.xs,
+      marginBottom: rem(8),
       textAlign: "left",
       fontFamily: `Montserrat, ${theme.fontFamily}`,
       lineHeight: rem(51),
@@ -45,6 +45,21 @@ export const useStyles = createStyles(
         textAlign: "left",
         paddingLeft: rem(10),
       },
+    },
+
+    subtitleWrapper: {
+      backgroundColor: "rgba(0, 0, 0, 0.3)",
+      padding: "8px 16px",
+      borderRadius: "4px",
+      display: "inline-block",
+      marginTop: rem(4),
+    },
+
+    subtitle: {
+      color: theme.white,
+      fontSize: rem(16),
+      fontWeight: 400,
+      lineHeight: 1.4,
     },
 
     printButton: {
@@ -62,7 +77,7 @@ export const useStyles = createStyles(
       alignItems: "center",
       gap: "8px",
       justifyContent: "center",
-      
+
       "&:hover": {
         background: "rgba(255, 255, 255, 0.2)",
         transform: "scale(1.05)",
@@ -71,47 +86,198 @@ export const useStyles = createStyles(
 
     printIcon: {
       color: "white",
-      minWidth: "24px",
-      height: "24px",
+      minWidth: "32px",
+      height: "32px",
       flexShrink: 0,
     },
 
     modalContent: {
-      padding: "20px",
+      padding: "24px",
       display: "flex",
       flexDirection: "column",
-      gap: rem(20),
+      gap: "24px",
+      transition: "all 0.3s ease",
+
+      "@media print": {
+        display: "none",
+      },
+
+      [`@media (max-width: ${theme.breakpoints.sm})`]: {
+        padding: "16px",
+      },
+    },
+
+    modalTopSection: {
+      display: "flex",
+      gap: "24px",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+
+      [`@media (max-width: ${theme.breakpoints.sm})`]: {
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "16px",
+      },
+    },
+
+    qrCodeContainer: {
+      flex: "0 0 auto",
+      padding: "20px",
+      backgroundColor: "transparent",
+      border: "1px solid #eaeaea",
+      borderRadius: theme.radius.md,
+      marginRight: "24px",
+
+      [`@media (max-width: ${theme.breakpoints.sm})`]: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        marginRight: 0,
+      },
+    },
+
+    shareLinkSection: {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      gap: "16px",
+
+      [`@media (max-width: ${theme.breakpoints.sm})`]: {
+        width: "100%",
+        alignItems: "center",
+        textAlign: "center",
+      },
     },
 
     modalTitle: {
       color: "#254885",
-      marginBottom: rem(8),
       fontWeight: "bold",
       fontSize: "1.7em",
+      marginBottom: "8px",
     },
 
-    modalSubtitle: {
+    shareText: {
       color: "#68759c",
-      fontWeight: "normal",
-      marginBottom: rem(16),
-      fontSize: "0.8em",
+      fontSize: "14px",
+      marginBottom: "8px",
     },
 
-    modalLinkContainer: {
-      marginBottom: rem(20),
+    collectionSection: {
+      marginTop: "20px",
     },
 
-    qrCodeContainer: {
+    collectionTitle: {
+      fontSize: "20px",
+      fontWeight: 600,
+      color: "#254885",
+      marginBottom: "16px",
+    },
+
+    bookmarksList: {
       display: "flex",
-      justifyContent: "center",
-      padding: rem(20),
-      backgroundColor: "white",
-      borderRadius: theme.radius.md,
-      
-      "& svg": {
-        maxWidth: "200px",
+      flexDirection: "column",
+      gap: "12px",
+
+      [`@media (max-width: ${theme.breakpoints.sm})`]: {
+        width: "100%",
+      },
+    },
+
+    bookmarkItem: {
+      padding: "16px",
+      backgroundColor: theme.colors.gray[0],
+      borderRadius: "4px",
+
+      [`@media (max-width: ${theme.breakpoints.sm})`]: {
+        padding: "12px",
+      },
+    },
+
+    bookmarkDescription: {
+      color: "#68759c",
+      fontSize: "14px",
+      marginTop: "4px",
+    },
+
+    doneButton: {
+      width: "100%",
+      padding: "12px",
+      backgroundColor: "#1E4279",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      fontSize: "16px",
+      marginTop: "16px",
+
+      "&:hover": {
+        backgroundColor: "#15325d",
+      },
+    },
+
+    printPreviewButton: {
+      backgroundColor: "#1E4279",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      padding: "12px 24px",
+      fontSize: "16px",
+      height: "auto",
+      minHeight: "44px",
+      lineHeight: "1.5",
+
+      "&:hover": {
+        backgroundColor: "#15325d",
+      },
+    },
+
+    printOnlyContent: {
+      display: "none",
+      "@media print": {
+        display: "block",
+        padding: "40px",
+        position: "static",
+        width: "auto",
         height: "auto",
       },
+    },
+
+    printQrSection: {
+      marginBottom: "30px",
+      display: "flex",
+      justifyContent: "center",
+      padding: "20px",
+      border: "1px solid #eaeaea",
+      borderRadius: "8px",
+      width: "fit-content",
+      margin: "0 auto 30px auto",
+      backgroundColor: "white",
+    },
+
+    printUrlSection: {
+      marginBottom: "30px",
+      wordBreak: "break-all",
+      textAlign: "center",
+      fontSize: "14px",
+    },
+
+    printTitleSection: {
+      fontSize: "24px",
+      fontWeight: 600,
+      textAlign: "center",
+      marginBottom: "30px",
+    },
+
+    printBookmarksList: {
+      display: "block",
+      gap: "16px",
+    },
+
+    printBookmarkItem: {
+      padding: "12px 0",
+      borderBottom: "1px solid #eaeaea",
+      display: "block",
     },
 
     [theme.fn.smallerThan("xs")]: {
