@@ -5,6 +5,7 @@ import QRCode from "react-qr-code";
 import { useStyles } from "./TitleStyle";
 import CopyableLink from "../CopyURL/CopyUrl";
 
+// Define the properties for the Titles component
 interface TitlesProps {
   hasPrev: boolean;
   titleImg: string;
@@ -22,6 +23,7 @@ interface TitlesProps {
   }[];
 }
 
+// Main Titles component
 const Titles = ({
   hasPrev,
   titleImg,
@@ -33,22 +35,26 @@ const Titles = ({
   folderName,
   bookmarks,
 }: TitlesProps) => {
+  // Retrieve styles and manage state for the print/share modal
   const { classes } = useStyles({ backgroundImageUrl: titleImg });
   const [isPrintOpen, setIsPrintOpen] = useState(false);
   const ChevronIcon = IconChevronLeft;
 
+  // Printing
   const handlePrint = () => {
     window.print();
   };
 
   return (
     <div className={classes.wrapper}>
+      {/* Display a "back" button if hasPrev is true */}
       {hasPrev && (
         <a onClick={onPrevClick}>
           <ChevronIcon className={classes.chevron} size="3.4rem" stroke={2} />
         </a>
       )}
 
+      {/* Display the title and subtitle */}
       <div className={classes.inner}>
         <MantineTitle className={classes.title}>{title}</MantineTitle>
         {subtitle && (
@@ -58,6 +64,7 @@ const Titles = ({
         )}
       </div>
 
+      {/* Display a "Share" button and modal if showPrintButton is true */}
       {showPrintButton && (
         <>
           <button
@@ -69,6 +76,7 @@ const Titles = ({
             <span>Share</span>
           </button>
 
+          {/* Modal for sharing and printing the collection */}
           <Modal
             opened={isPrintOpen}
             onClose={() => setIsPrintOpen(false)}
@@ -78,10 +86,11 @@ const Titles = ({
             centered
           >
             <div className={classes.modalContent}>
+              {/* Display a QR code and share link */}
               <div className={classes.modalTopSection}>
                 <div className={classes.qrCodeContainer}>
                   <QRCode
-                    value={shareUrl || ''}
+                    value={shareUrl || ''} // The URL or data to encode in the QR code
                     size={200}
                     level="H"
                   />
@@ -96,6 +105,7 @@ const Titles = ({
                 </div>
               </div>
 
+              {/* Display the collection name and list of bookmarks */}
               <div className={classes.collectionSection}>
                 <Text className={classes.collectionTitle}>
                   &quot;{folderName || 'Default Collection'}&quot;
@@ -112,6 +122,7 @@ const Titles = ({
                 </div>
               </div>
 
+              {/* Buttons for printing or closing the modal */}
               <Group position="apart" mt="xl">
                 <Button
                   className={classes.printPreviewButton}
@@ -125,6 +136,7 @@ const Titles = ({
               </Group>
             </div>
 
+            {/* Content that appears only in the print view */}
             <div className={classes.printOnlyContent}>
               <div className={classes.printQrSection}>
                 <QRCode

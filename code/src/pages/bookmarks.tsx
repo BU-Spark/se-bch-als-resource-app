@@ -11,6 +11,7 @@ import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import { useBookmarks } from "../contexts/BookmarkContext";
 import styles from "../styles/Bookmark.module.css";
 
+// Component for displaying a shareable URL
 type EncodedUrlDisplayProps = {
   bookmarkUrl: string;
   classes: {
@@ -18,6 +19,7 @@ type EncodedUrlDisplayProps = {
   };
 };
 
+// Functional component to render the shareable URL section
 const EncodedUrlDisplay = ({
   bookmarkUrl,
   classes,
@@ -36,11 +38,14 @@ const EncodedUrlDisplay = ({
   );
 };
 
+// Main component for managing bookmarks
 const Bookmarks = () => {
+  // Custom styles and bookmark context hooks
   const { classes } = bodyContentUseStyles();
   const { bookmarks, folders, addBookmark, createFolder, deleteFolder, renameFolder } = useBookmarks();
   const image = useRef("/titleimghome.PNG");
 
+  // State variables for managing modals and bookmarks
   const [bookmarkUrl, setBookmarkUrl] = useState("");
   const [initialUrlLoaded, setInitialUrlLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,6 +62,7 @@ const Bookmarks = () => {
   const router = useRouter();
   const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
 
+  // Function to handle creating a new folder
   const handleCreateFolder = () => {
     if (newFolderName.trim()) {
       createFolder(newFolderName.trim());
@@ -65,12 +71,14 @@ const Bookmarks = () => {
     }
   };
 
+ // Handle opening settings for a specific folder
   const handleSettingsClick = (e: React.MouseEvent, folderId: string) => {
     e.stopPropagation();
     setSelectedFolderId(folderId);
     setIsSettingsModalOpen(true);
   };
 
+  // Handle renaming a folder
   const handleRenameClick = () => {
     const folder = folders.find(f => f.id === selectedFolderId);
     if (folder) {
@@ -79,12 +87,13 @@ const Bookmarks = () => {
       setIsRenameModalOpen(true);
     }
   };
-
+  // Handle deleting a folder
   const handleDeleteClick = () => {
     setIsSettingsModalOpen(false);
     setIsDeleteModalOpen(true);
   };
 
+  // Confirm renaming a folder
   const handleRenameConfirm = () => {
     if (selectedFolderId && renameFolderValue.trim()) {
       renameFolder(selectedFolderId, renameFolderValue.trim());
@@ -92,7 +101,7 @@ const Bookmarks = () => {
       setRenameFolderValue("");
     }
   };
-
+  // Confirm deleting a folder
   const handleDeleteConfirm = () => {
     if (selectedFolderId) {
       deleteFolder(selectedFolderId);
@@ -100,7 +109,7 @@ const Bookmarks = () => {
       setSelectedFolderId(null);
     }
   };
-
+  // Redirect to default folder if query has specific IDs
   useEffect(() => {
     if (!router.isReady) return;
 
@@ -113,6 +122,7 @@ const Bookmarks = () => {
     }
   }, [router.isReady, router.pathname, router.query.ids, hasRedirected, router]);
 
+  // Fetch bookmarks from the query parameter and API
   useEffect(() => {
     if (initialUrlLoaded) {
       return;
@@ -129,7 +139,7 @@ const Bookmarks = () => {
           const questionsToAdd = data.questions.filter((question: IQuestion) =>
             refsFromUrl.includes(question.ref)
           );
-
+          // Add bookmarks to local storage
           if (questionsToAdd.length > 0) {
             localStorage.setItem("bookmarks", JSON.stringify([]));
           }
@@ -154,6 +164,7 @@ const Bookmarks = () => {
     fetchAndAddBookmarks();
   }, [router.query.ids, addBookmark, initialUrlLoaded]);
 
+  // Generate a shareable URL for bookmarks
   useEffect(() => {
     const sortedBookmarks = [...bookmarks].sort((a, b) =>
       a.title.localeCompare(b.title)
@@ -165,6 +176,7 @@ const Bookmarks = () => {
     setBookmarkUrl(newUrl);
   }, [bookmarks]);
 
+  // If data is loading, show a loader
   if (isLoading) {
     return (
       <div className={styles.loaderContainer}>
@@ -173,6 +185,7 @@ const Bookmarks = () => {
     );
   }
 
+  // Render main content
   return (
       <div>
         <Title

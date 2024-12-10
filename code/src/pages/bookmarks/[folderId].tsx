@@ -8,6 +8,7 @@ import { bodyContentUseStyles } from "@/utils/BodyContentStyle";
 import styles from "../../styles/Bookmark.module.css";
 
 const FolderDetail = () => {
+  // Use custom styles and hooks
   const { classes } = bodyContentUseStyles();
   const router = useRouter();
   const {
@@ -19,19 +20,21 @@ const FolderDetail = () => {
     renameFolder
   } = useBookmarks();
 
-  // Modal states
+  // Modal visibility states
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [unsaveModalOpen, setUnsaveModalOpen] = useState(false);
+
+  // State to manage selected bookmark and folder renaming
   const [selectedBookmarkId, setSelectedBookmarkId] = useState<string | null>(null);
   const [newFolderName, setNewFolderName] = useState("");
 
-  // Constants
+  // Constants for application URL and folder management
   const APP_URL = "https://se-bch-als-resource-app-zeta.vercel.app/";
   const folderIdParam = router.query.folderId;
   const folderId = Array.isArray(folderIdParam) ? folderIdParam[0] : folderIdParam || 'default';
 
-  // Folder content management
+  // Retrieve the current folder content
   const getCurrentFolderContent = () => {
     if (folderId === 'default') {
       return {
@@ -46,7 +49,7 @@ const FolderDetail = () => {
   const folderContent = getCurrentFolderContent();
   const hasBookmarks = folderContent.bookmarks.length > 0;
 
-  // URL generation
+  // Generate shareable URL for the current folder
   const generateShareUrl = () => {
     const bookmarkIds = folderContent.bookmarks
       .map((bookmark) => bookmark.id)
@@ -54,7 +57,7 @@ const FolderDetail = () => {
     return `${APP_URL}bookmarks/${folderId}?ids=${encodeURIComponent(bookmarkIds)}`;
   };
 
-  // Event handlers
+  // Event handlers for folder actions
   const handleClearFolder = () => {
     setIsClearModalOpen(true);
   };
@@ -89,7 +92,7 @@ const FolderDetail = () => {
     }
   };
 
-  // Folder not found handler
+  // Handle case where folder is not found
   if (!folderContent.name) {
     return (
       <div>
@@ -105,8 +108,10 @@ const FolderDetail = () => {
     );
   }
 
+  // Render the main folder detail page
   return (
       <div>
+        {/* Title component with navigation and sharing options */}
         <Title
             hasPrev={true}
             titleImg="/titleimghome.PNG"
@@ -118,9 +123,11 @@ const FolderDetail = () => {
             bookmarks={folderContent.bookmarks}
         />
 
+        {/* Display folder content */}
         <div className={styles.folderContent}>
           {hasBookmarks ? (
               <>
+                {/* Render bookmark list */}
                 <ResourcesHandouts
                     title="Bookmarks"
                     data={folderContent.bookmarks}
@@ -128,6 +135,7 @@ const FolderDetail = () => {
                     currentFolderId={folderId}
                 />
 
+                {/* Button to clear the folder */}
                   <Button
                       className={`${classes.inner} ${styles.clearFolderButton}`}
                       variant="outline"
@@ -138,6 +146,7 @@ const FolderDetail = () => {
                     </Text>
                   </Button>
 
+                  {/* Button to rename the folder (if not default) */}
                   {folderId !== 'default' && (
                   <Button
                       className={`${classes.inner} ${styles.renameButton}`}
@@ -153,6 +162,7 @@ const FolderDetail = () => {
               </>
           ) : (
               <div>
+                {/* Message for empty folder */}
                 <Text className={styles.titleStyle}>
                   No bookmarks in this collection.
                 </Text>
@@ -160,7 +170,7 @@ const FolderDetail = () => {
           )}
         </div>
 
-        {/* Rename Modal */}
+        {/* Rename folder modal */}
         <Modal
             opened={isRenameModalOpen}
             onClose={() => {
@@ -188,7 +198,7 @@ const FolderDetail = () => {
           </div>
         </Modal>
 
-        {/* Clear Folder Confirmation Modal */}
+        {/* Clear folder confirmation modal */}
         <Modal
             opened={isClearModalOpen}
             onClose={() => setIsClearModalOpen(false)}
@@ -216,7 +226,7 @@ const FolderDetail = () => {
           </Group>
         </Modal>
 
-        {/* Unsave Confirmation Modal */}
+        {/* Unsave bookmark confirmation modal */}
         <Modal
             opened={unsaveModalOpen}
             onClose={() => {

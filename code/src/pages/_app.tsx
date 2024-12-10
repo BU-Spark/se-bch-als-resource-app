@@ -12,12 +12,17 @@ import styles from "../styles/Home.module.css";
 import { Notifications } from '@mantine/notifications';
 import CookieConsent from '@/components/CookieConsent';
 import '../styles/globals.css';
+
+// Main App component
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
+
+  // State for navigation, welcome modal, and cookie consent
   const [isNavExpanded, setIsNavExpanded] = useState(true);
   const [showCookieNotice, setShowCookieNotice] = useState(true);
   const [isWelcomeOpen, setIsWelcomeOpen] = useState(true);
 
+  // Handle cookie consent acceptance
   const handleCookieAccept = () => {
     localStorage.setItem('cookieConsent', 'accepted');
     setShowCookieNotice(false);
@@ -25,6 +30,7 @@ export default function App(props: AppProps) {
 
   return (
     <>
+      {/* Set up head tags for metadata and page title */}
       <Head>
         <title>ALS Resource App</title>
         <meta
@@ -33,9 +39,15 @@ export default function App(props: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      {/* Main app container */}
       <div className={styles.mainContainer}>
+        {/* MantineProvider for styling and global configuration */}
         <MantineProvider withGlobalStyles withNormalizeCSS>
+          {/* Notifications for displaying alerts */}
           <Notifications position="bottom-right" />
+
+          {/* Welcome modal displayed when the app is first opened */}
           <Modal
             opened={isWelcomeOpen}
             onClose={() => setIsWelcomeOpen(false)}
@@ -58,6 +70,7 @@ export default function App(props: AppProps) {
               }
             }}
           >
+            {/* Close button for the welcome modal */}
             <button
               onClick={() => setIsWelcomeOpen(false)}
               style={{
@@ -73,6 +86,7 @@ export default function App(props: AppProps) {
               <X size={24} color="#1a1b1e" />
             </button>
 
+            {/* Modal content: welcome message and acknowledgment button */}
             <div style={{ maxWidth: '600px', margin: '0 auto' }}>
               <Title
                 order={1}
@@ -98,6 +112,7 @@ export default function App(props: AppProps) {
                 Welcome to Boston Children&#39;s Hospital&#39;s ALS resource website. Please note that the information provided on this website is for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider for personalized medical guidance.
               </Text>
 
+              {/* Button to close the welcome modal */}
               <div style={{ textAlign: 'left' }}>
                 <Button
                   onClick={() => setIsWelcomeOpen(false)}
@@ -124,13 +139,18 @@ export default function App(props: AppProps) {
             </div>
           </Modal>
 
+          {/* Page layout with navigation and footer */}
           <div className={`${styles.pageWrapper} ${isNavExpanded ? styles.collapsed : ''}`}>
+            {/* Navigation bar with toggle option */}
             <Nav
               isExpanded={!isNavExpanded}
               onToggle={() => setIsNavExpanded(!isNavExpanded)}
             />
+
+            {/* Main content area */}
             <div className={styles.mainContent}>
               <div className={styles.contentContainer}>
+                {/* Header with logo */}
                 <header className={styles.header}>
                   <div className={styles.inner}>
                     <div className={styles.logoContainer}>
@@ -144,6 +164,8 @@ export default function App(props: AppProps) {
                     </div>
                   </div>
                 </header>
+
+                {/* Wrapping the main component with context providers */}
                 <FocusedBookmarkProvider>
                   <BookmarkProvider>
                     <Component {...pageProps} />
@@ -151,8 +173,11 @@ export default function App(props: AppProps) {
                 </FocusedBookmarkProvider>
               </div>
             </div>
+
+            {/* Footer component */}
             <Footer isNavExpanded={!isNavExpanded} />
 
+            {/* Cookie consent banner */}
             <CookieConsent
               isOpen={showCookieNotice}
               onClose={handleCookieAccept}
