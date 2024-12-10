@@ -34,7 +34,7 @@ Backend: <br>
 
 Backend is hosted on Typeform.
 
-For a detailed walkthrough of the backend functionality and setup, please watch our guide video: [Backend Tutorial] (https://drive.google.com/file/d/1d9_V7mGNgFwFdflefdp7k5er5ok1WIl4/view)
+For a detailed walkthrough of the backend functionality and setup, please watch our guide video: [Backend Tutorial] (https://drive.google.com/file/d/1uM52anHaMsm0mzD6Js-F3NWjqLc3ZW2d/view?usp=drive_link and https://drive.google.com/file/d/1d9_V7mGNgFwFdflefdp7k5er5ok1WIl4/view) (First video will be likely all you need for development.)
 
 
 ## Getting Started
