@@ -115,12 +115,19 @@ For implementation details, refer to inline documentation and respective .md fil
 ### Tests
 
 Docs Written by @jacob-stein1, contact for assistance
+
+Updated Bookmarks test suite by Charles Zhang (zhr114@bu.edu), contact for assistance with bookmark testing
 DOCUMENTATION
 
-We have written test cases to check the rendering of components, the function of contexts, and more. Testing is written using the Jest JavaScript testing framework. See their [documentation](https://jestjs.io/docs/getting-started) for more info.
+We have written test cases to check the rendering of components, the function of contexts, and more. Testing is written using the Jest JavaScript testing framework. See their documentation for more info.
+The Bookmarks test suite has been enhanced to include:
 
-Tests are contained within a '**tests**' directory within each sub-directory of the project. For example /pages/**tests**/'page'.test.js contains the test cases for each page in the pages directory.
+  -Improved folder management testing
+  -New test cases for bookmark counts
+  -Updated settings menu interaction tests
+  -Better modal interaction coverage
 
+Tests are contained within a 'tests' directory within each sub-directory of the project. For example /pages/tests/'page'.test.js contains the test cases for each page in the pages directory.
 To run all tests:
 
 $ npm run test
