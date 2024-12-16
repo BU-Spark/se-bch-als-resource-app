@@ -22,7 +22,7 @@ const DEFAULT_FONT_SIZE = 16;
 const DEFAULT_BOLD_TEXT = false;
 const DEFAULT_INVERT_COLORS = false;
 
-const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
+const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => { //local condition
   const router = useRouter();//check which page is the current active page
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
