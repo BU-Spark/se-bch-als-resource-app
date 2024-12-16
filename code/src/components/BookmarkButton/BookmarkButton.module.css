@@ -1,14 +1,45 @@
-.button {
-  margin-top: 40px;
+.buttonContainer {
+ position: absolute;
+ right: 36px;
+ top: 68px;
+ display: flex;
+ flex-direction: row-reverse;
+ gap: 16px;
+ z-index: 1000;
 }
 
-.text {
-  font-size: 16px;
-  white-space: normal;
+.actionButton {
+ position: relative;
+ color: white;
+ background: transparent;
+ border: none;
+ cursor: pointer;
+ transition: background-color 0.2s, transform 0.2s;
+ padding: 12px;
+ border-radius: 8px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ flex-direction: column;
+ gap: 4px;
+
+}
+
+.actionButton:hover {
+ background: rgba(255, 255, 255, 0.2);
+ transform: scale(1.05);
+}
+
+.actionIcon {
+ color: white;
+ width: 32px;
+ height: 32px;
+}
+
+.actionLabel {
+  color: white;
+  font-size: 10px;
   text-align: center;
-  text-decoration: none;
-}
-
-.buttonBookmarkPage {
-  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }

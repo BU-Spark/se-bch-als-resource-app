@@ -41,22 +41,37 @@ export default async function retrieveQuestions(
         `${TYPEFORM_API_URL}/forms/${accessName}`
       );
       const data = await response.json();
-
+      console.log("data", data);
       // Transform fields to IQuestion[]
       const questions: IQuestion[] = data.fields.map((field: any) => {
         const descriptionWithResources = field.properties.description || "";
         const descriptionWithoutResources = field.properties.description
           ? removeResourcesSection(field.properties.description)
           : "";
-        const attachmentUrl = field.attachment
-          ? getYouTubeEmbedUrl(field.attachment.href)
-          : null;
-        const attachmentItem: IAttachment | undefined = attachmentUrl
-          ? {
-              type: field.attachment.type,
-              href: attachmentUrl,
-            }
-          : undefined;
+          const attachmentUrl = field.attachment?.href;
+
+        let attachmentItem: IAttachment | undefined = undefined;
+
+        // Determine if the attachment is a video or image
+        if (attachmentUrl) {
+          const embedUrl = getYouTubeEmbedUrl(attachmentUrl); // May return string or null
+          if (embedUrl) {
+            // Valid YouTube video
+            attachmentItem = {
+              type: "video",
+              href: embedUrl, // embedUrl is guaranteed to be string here
+            };
+          } else {
+            // Assume it's an image if not a YouTube video
+            attachmentItem = {
+              type: "image",
+              href: attachmentUrl, // Use original attachment URL
+            };
+          }
+        }
+
+          
+          
         const question: IQuestion = {
           id: field.id, 
           title: field.title,

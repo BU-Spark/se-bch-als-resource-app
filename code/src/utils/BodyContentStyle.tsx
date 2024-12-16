@@ -2,9 +2,8 @@ import { createStyles, rem } from "@mantine/core";
 
 export const bodyContentUseStyles = createStyles((theme) => ({
   inner: {
-    height: "100%",
+    height: "57px",
     display: "flex",
-    flexDirection: "row",
     width: "100%",
     color: "#254885",
     border: "2px solid #254885",
@@ -12,8 +11,6 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    gap:"15px",
-    padding:"0px",
     cursor: "pointer",
     "&:hover": {
       backgroundColor: "#254885",
@@ -21,16 +18,14 @@ export const bodyContentUseStyles = createStyles((theme) => ({
       "& svg": {
         color: "#FFFFFF",
       },
-      
     },
-
     [theme.fn.smallerThan("xs")]: {
+      height: "57px",
       display: "flex",
       width: "100%",
       justifyContent: "center",
       alignItems: "center",
       alignContent: "center",
-      gap:"15px",
       "&:hover": {
         backgroundColor: "#254885",
         color: "#FFFFFF",
@@ -50,49 +45,116 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     fontWeight: 600,
     paddingTop: rem(12),
     width: "100%",
-    fontSize: rem(20),
+    fontSize: '1.5rem',
     fontStyle: "normal",
     letterSpacing: rem(-1),
     color: "#254885",
     textAlign: "left",
-    alignContent: "center",
     fontFamily: `Montserrat, ${theme.fontFamily}`,
-
     [theme.fn.smallerThan("xs")]: {
-      fontSize: rem(16),
+      fontSize: "clamp(20px, 1.5vw, 25px)",
       textAlign: "left",
       width: "80%",
     },
   },
 
-  descriptionText: {
-    fontSize: rem(16), // smaller font size than 'text'
-    fontWeight: "normal", // less bold than 'text'
-    color: "#254885", // same color as 'text'
-    paddingTop: rem(1), // add some space above the description
-    fontStyle: "normal",
-    letterSpacing: rem(-0.5),
-    textAlign: "left",
-    fontFamily: `Montserrat, ${theme.fontFamily}`,
+  outer: {
+    paddingTop: rem(26),
+    paddingBottom: "10%",
+    paddingLeft: "10%",
+    paddingRight: "10%",
+  },
+
+  homeButton: {
+    height: "165px",
+    width: "100%",
+    display: "flex",
+    color: "#254885",
+    border: "2px solid #254885",
+    borderRadius: rem(10),
+    justifyContent: "flex-start",
+    alignItems: "center",
+    padding: rem(16),
+    cursor: "pointer",
+    gap: rem(12),
+    [theme.fn.smallerThan("sm")]: {
+      height: "auto",
+      flexDirection: "row",
+      padding: rem(12),
+      gap: rem(8),
+    },
     [theme.fn.smallerThan("xs")]: {
-      fontSize: rem(16),
-      textAlign: "left",
+      padding: rem(8),
+      gap: rem(4),
+    },
+  },
+
+  homeIconContainer: {
+    width: "3rem",
+    height: "3rem",
+    borderRadius: "50%",
+    backgroundColor: "#E8EEF8",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+    position: "relative",
+    [theme.fn.smallerThan("sm")]: {
+      width: "3rem",
+      height: "3rem",
+    },
+    [theme.fn.smallerThan("xs")]: {
+      width: "3rem",
+      height: "3rem",
+    },
+  },
+
+  homeTextContainer: {
+    flexGrow: 1,
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
+    gap: rem(4),
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    [theme.fn.smallerThan("sm")]: {
+      gap: rem(2),
     },
   },
 
   choiceText: {
-    fontSize: "clamp(18px, 2vw, 24px)",
-    whiteSpace: "normal",
-    textAlign: "center",
-    textDecoration: "none",
+    fontSize: rem(21),
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    textAlign: "left",
+    [theme.fn.smallerThan("sm")]: {
+      fontSize: rem(19),
+    },
+    [theme.fn.smallerThan("xs")]: {
+      fontSize: rem(17),
+    },
   },
 
-  subtitleText:{
-    fontSize: "clamp(14px, 1.5vw, 18px)",
+  descriptionText: {
+    fontSize: rem(16),
+    fontWeight: "normal",
+    color: "#254885",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    fontStyle: "normal",
+    letterSpacing: rem(-0.5),
+    textAlign: "left",
+  },
+
+  solutionsButtonText:{
+    fontSize: "clamp(18px, 1.8vw, 20px)",
     fontWeight: "normal",
     fontStyle: "normal",
     letterSpacing: rem(-0.5),
     textAlign: "left",
+    textDecoration: "none",
   },
 
   questionBoxes: {
@@ -121,16 +183,8 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     padding:"0",
   },
 
-  outer: {
-    paddingTop: rem(26),
-    pddingBottom: "10%",
-    width: "100%",
-    paddingLeft: "10%",
-    paddingRight: "10%",
-    height: "100%",
-    flexGrow:1,
-  },
   
+
 
   bookmarkContainer: {
     height: "80px",
@@ -145,11 +199,13 @@ export const bodyContentUseStyles = createStyles((theme) => ({
     paddingLeft: "20px",
     cursor: "pointer",
   },
+
   copyIcon: {
     marginRight: "20px",
     width: "30px",
     height: "30px",
   },
+
   iconColor: {
     color: "#254885",
   },

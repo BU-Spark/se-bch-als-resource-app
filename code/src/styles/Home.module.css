@@ -3,29 +3,25 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-height: 100%;
-  
+  min-height: 100vh;
 }
 
 .mainContainer {
   min-height: 100vh;
-  position:relative;
-  height:100%;
-  display:flex;
-  flex-direction: column;
-  flex-grow: 1;
-  max-height:100vh;
-overflow-y: auto;
+  position: relative;
 }
 
-.content{
-  padding-bottom:0px;
-  min-height: 100%;
-  height:100%;
-  display:flex;
-  flex-grow:1;
-  align-items: stretch;
-  flex-direction: column;
+.mainContent {
+  flex: 1;
+  margin-left: 300px;
+  min-height: calc(100vh - 180px);
+  width: calc(100% - 300px);
+  overflow-y: auto;
+  position: relative;
+}
+
+.content {
+  padding-bottom: 180px;
 }
 
 .description {
@@ -151,7 +147,6 @@ overflow-y: auto;
   z-index: -1;
 }
 
-/* Conic Gradient Animation */
 .thirteen::before {
   animation: 6s rotate linear infinite;
   width: 200%;
@@ -159,7 +154,6 @@ overflow-y: auto;
   background: var(--tile-border);
 }
 
-/* Inner Square */
 .thirteen::after {
   inset: 0;
   padding: 1px;
@@ -172,31 +166,104 @@ overflow-y: auto;
   background-clip: content-box;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    background: rgba(var(--card-rgb), 0.1);
-    border: 1px solid rgba(var(--card-border-rgb), 0.15);
-  }
-
-  .card:hover span {
-    transform: translateX(4px);
-  }
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion) {
-  .thirteen::before {
-    animation: none;
+/* Header styles for all screens */
+.header {
+  width: 100%;
+  height: 60px;
+  border-bottom: 0;
+  padding: 8px 16px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.inner {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.logoContainer {
+
+  margin-left: 0;
+  height: 100%;
+  transform: translateY(-5px);
+}
+
+.logoContainer img {
+  height: 125%;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Collapsed nav styles */
+.collapsed .mainContent {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+  max-width: 100%;
+}
+
+.contentContainer {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  position: relative;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .pageWrapper {
+    flex-direction: column;
+    min-height: 100vh;
   }
 
-  .card:hover span {
+  .header {
+  display: none;
+  }
+
+  .inner {
+    width: 100%;
+  }
+
+  .logoContainer {
     transform: none;
   }
-}
 
-/* Mobile */
-@media (max-width: 700px) {
+  .logoContainer img {
+    height: 100%;
+    padding: 4px 0;
+  }
 
+  .mainContent {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 48px;
+    min-height: calc(100vh - 48px);
+    padding-bottom: 180px;
+  }
+
+  .collapsed .mainContent {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 48px;
+  }
+
+  .contentContainer {
+    padding: 0;
+    width: 100%;
+  }
 
   .grid {
     grid-template-columns: 1fr;
@@ -269,58 +336,14 @@ overflow-y: auto;
   }
 }
 
-
-.pageWrapper {
-  display: flex;
-  min-height: 100vh;
-  position: relative;
-}
-
-.mainContent {
-  flex: 1;
-  margin-left: 300px;
-  transition: margin-left 0.3s ease;
-  padding: 20px;
-  min-height: calc(100vh - 180px);
-  width: calc(100% - 250px);
-  padding-bottom: 140px;
-  overflow-y: auto;
-  position: relative;
-}
-
-/* When nav is collapsed */
-.collapsed .mainContent {
-  margin-left: 60px;
-  width: calc(100% - 60px);
-  max-width: 100%;
-}
-
-.contentContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  width: 100%;
-  min-height: 100%;
-  position: relative; 
-}
-
-@media (max-width: 768px) {
-  .mainContent {
-    margin-left: 0;
-  }
-
-  .collapsed ~ .mainContent {
-    margin-left: 0;
-  }
-}
-
-/* Tablet and Smaller Desktop */
+/* Tablet styles */
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
   }
 }
 
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   .vercelLogo {
     filter: invert(1);

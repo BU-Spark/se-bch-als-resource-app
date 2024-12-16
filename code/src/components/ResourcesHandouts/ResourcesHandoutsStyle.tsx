@@ -58,5 +58,7 @@ export const useStyles = createStyles((theme) => ({
   actionButton: {
     marginTop: "0 !important",
     height: "57px",
+    flex: 1,
+    justifyContent: "center",
   }
 }));
