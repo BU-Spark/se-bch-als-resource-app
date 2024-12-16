@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; //use for manage the local condition
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Popover, Slider, Switch, Group, Text, Button } from "@mantine/core";
+import { Popover, Slider, Switch, Group, Text, Button } from "@mantine/core";//UI
 import {
   Home,
   BookmarkIcon,
@@ -12,18 +12,18 @@ import {
 } from "lucide-react";
 import styles from "./Nav.module.css";
 
-interface NavProps {
+interface NavProps { //check if the nav bar is expanded or not
   isExpanded: boolean;
   onToggle: () => void;
 }
 
-// Default values for settings
+//Default values for settings
 const DEFAULT_FONT_SIZE = 16;
 const DEFAULT_BOLD_TEXT = false;
 const DEFAULT_INVERT_COLORS = false;
 
 const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
-  const router = useRouter();
+  const router = useRouter();//check which page is the current active page
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
   const [boldText, setBoldText] = useState(DEFAULT_BOLD_TEXT);
@@ -73,11 +73,11 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => {
   return (
     <nav className={`${styles.sidebar} ${isExpanded ? "" : styles.collapsed}`}>
       <div className={styles.sidebarInner}>
-        <div className={styles.topSection}>
+        <div className={styles.topSection}>//top section of navbar
           <button
             className={styles.toggleButton}
             onClick={onToggle}
-            aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
+            aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"} //for accesablilty
           >
             <div className={styles.hamburger}>
               <span></span>
