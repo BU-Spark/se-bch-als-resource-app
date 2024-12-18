@@ -7,12 +7,13 @@ import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { useBookmarks } from "@/contexts/BookmarkContext";
 import { useStyles } from "@/components/ResourcesHandouts/ResourcesHandoutsStyle";
+import { PageType, EnhancedResourceLink } from '@/contexts/BookmarkContext';
 
 // Define properties for the Resources component
 interface ResourcesProps {
   title: String;
-  data: ResourceLink[];
-  onUnsave?: (bookmarkId: string) => void; // Callback function to handle unsaving bookmarks
+  data: EnhancedResourceLink[];
+  onUnsave?: (bookmarkId: string) => void; // unsaving bookmarks
   currentFolderId?: string; // ID of the current folder
 }
 
@@ -34,10 +35,26 @@ const Resources: React.FC<ResourcesProps> = ({
   const [selectedBookmark, setSelectedBookmark] = useState<ResourceLink | null>(null);
 
   // Handle clicking on a bookmark to navigate to the "communication" page
-  const handleBookmarkClick = (bookmark: ResourceLink) => {
-    setFocusedBookmark(bookmark);
-    router.push("/communication");
-  };
+const handleBookmarkClick = (bookmark: EnhancedResourceLink) => {
+  setFocusedBookmark(bookmark);
+
+  let targetPage = '/communication';
+
+  switch (bookmark.pageType) {
+    case PageType.ComputerAccess:
+      targetPage = '/computer-access';
+      break;
+    case PageType.SmartPhoneAccess:
+      targetPage = '/smart-phone-access';
+      break;
+    case PageType.Communication:
+    default:
+      targetPage = '/communication';
+      break;
+  }
+
+  router.push(targetPage);
+};
 
   // Handle clicking the "Move" button for a bookmark
   const handleMoveClick = (bookmark: ResourceLink) => {

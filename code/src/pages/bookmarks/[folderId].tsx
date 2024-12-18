@@ -92,7 +92,7 @@ const FolderDetail = () => {
     }
   };
 
-  // Handle case where folder is not found
+  // Handle case where folder is not found(Not used now)
   if (!folderContent.name) {
     return (
       <div>

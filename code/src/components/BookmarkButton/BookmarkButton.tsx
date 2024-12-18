@@ -70,7 +70,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
     }
   };
 
-  // Handle navigation to the bookmarks page
+  // Handle navigation to the bookmarks page(Not use now)
   const handleNavigateToBookmarks = () => {
     setIsNavigateModalOpen(true); // Open the Navigate modal
   };

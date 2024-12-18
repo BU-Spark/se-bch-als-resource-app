@@ -10,7 +10,7 @@ import CopyableLink from "../components/CopyURL/CopyUrl";
 import { bodyContentUseStyles } from "../utils/BodyContentStyle";
 import { useBookmarks } from "../contexts/BookmarkContext";
 import styles from "../styles/Bookmark.module.css";
-
+import { PageType } from '@/contexts/BookmarkContext';
 // Component for displaying a shareable URL
 type EncodedUrlDisplayProps = {
   bookmarkUrl: string;
@@ -144,14 +144,31 @@ const Bookmarks = () => {
             localStorage.setItem("bookmarks", JSON.stringify([]));
           }
 
-          questionsToAdd.forEach((question: IQuestion) => {
-            const newBookmark = {
-              id: question.ref,
-              title: question.title,
-              url: "Communication",
-            };
-            addBookmark(newBookmark);
-          });
+        questionsToAdd.forEach((question: IQuestion) => {
+          const currentPath = router.pathname.toLowerCase();
+          let pageType: PageType;
+          let pageUrl: string;
+
+          if (currentPath.includes('computer')) {
+            pageType = PageType.ComputerAccess;
+            pageUrl = 'computer-access';
+          } else if (currentPath.includes('smart')) {
+            pageType = PageType.SmartPhoneAccess;
+            pageUrl = 'smart-phone-access';
+          } else {
+            pageType = PageType.Communication;
+            pageUrl = 'communication';
+          }
+
+          const newBookmark = {
+            id: question.ref,
+            title: question.title,
+            url: pageUrl,
+            pageType: pageType
+          };
+
+          addBookmark(newBookmark);
+        });
         }
         setInitialUrlLoaded(true);
         setIsLoading(false);

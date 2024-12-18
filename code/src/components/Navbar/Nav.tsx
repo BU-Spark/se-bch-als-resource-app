@@ -73,11 +73,11 @@ const Nav: React.FC<NavProps> = ({ isExpanded, onToggle }) => { //local conditio
   return (
     <nav className={`${styles.sidebar} ${isExpanded ? "" : styles.collapsed}`}>
       <div className={styles.sidebarInner}>
-        <div className={styles.topSection}>//top section of navbar
+        <div className={styles.topSection}>
           <button
             className={styles.toggleButton}
             onClick={onToggle}
-            aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"} //for accesablilty
+            aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"} //for accessibility
           >
             <div className={styles.hamburger}>
               <span></span>
