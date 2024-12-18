@@ -1,6 +1,5 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-
 import { BookmarkProvider, useBookmarks } from "@/contexts/BookmarkContext";
 
 function TestComponent({ onBookmarkChange }) {
@@ -12,7 +11,12 @@ function TestComponent({ onBookmarkChange }) {
       ))}
       <button
         onClick={() =>
-          addBookmark({ id: "1", title: "Google", url: "https://google.com" })
+          addBookmark({
+            id: "1",
+            title: "Google",
+            url: "communication",
+            pageType: 0 // PageType.Communication
+          })
         }
       >
         Add Google
@@ -40,24 +44,29 @@ describe("BookmarkContext", () => {
     fireEvent.click(screen.getByText("Test Output"));
   });
 
-  /**
-   * Tests the ability to add a single bookmark
-   */
-  it("Should add a bookmark", () => {
-    render(
-      <BookmarkProvider>
-        <TestComponent
-          onBookmarkChange={(bookmarks) => {
-            expect(bookmarks).toEqual([
-              { id: "1", title: "Google", url: "https://google.com" },
-            ]);
-          }}
-        />
-      </BookmarkProvider>
-    );
-    fireEvent.click(screen.getByText("Add Google"));
-    fireEvent.click(screen.getByText("Test Output"));
-  });
+    /**
+     * Tests the ability to add a single bookmark
+     */
+    it("Should add a bookmark", () => {
+      render(
+        <BookmarkProvider>
+          <TestComponent
+            onBookmarkChange={(bookmarks) => {
+              expect(bookmarks).toEqual([
+                {
+                  id: "1",
+                  title: "Google",
+                  url: "communication",
+                  pageType: 0
+                },
+              ]);
+            }}
+          />
+        </BookmarkProvider>
+      );
+      fireEvent.click(screen.getByText("Add Google"));
+      fireEvent.click(screen.getByText("Test Output"));
+    });
 
   /**
    * Tests the ability to remove a bookmark

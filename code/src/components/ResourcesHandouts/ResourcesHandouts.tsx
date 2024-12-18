@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { IconFileDescription } from "@tabler/icons-react";
 import { Stack, Text, Button, Modal } from "@mantine/core";
 import { ResourceLink } from "@/types/dataTypes";
-import BookmarkButton from "@/components/BookmarkButton/BookmarkButton";
 import { useFocusedBookmark } from "@/contexts/FocusedBookmarkContext";
 import { useBookmarks } from "@/contexts/BookmarkContext";
 import { useStyles } from "@/components/ResourcesHandouts/ResourcesHandoutsStyle";
@@ -37,7 +36,6 @@ const Resources: React.FC<ResourcesProps> = ({
   // Handle clicking on a bookmark to navigate to the "communication" page
 const handleBookmarkClick = (bookmark: EnhancedResourceLink) => {
   setFocusedBookmark(bookmark);
-
   let targetPage = '/communication';
 
   switch (bookmark.pageType) {
