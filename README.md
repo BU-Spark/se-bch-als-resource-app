@@ -138,6 +138,8 @@ $ npm run test
   - Fix bookmark link generation (404 errors)
   - Resolve layout conflicts in inverted color mode
   - Implement image optimization
+  - Fixed bookmark navigation issue: Links now correctly navigate to their original pages
+  - Known limitation: Page refreshes when switching between questionnaires, causing return to initial page
 
 2. Technical Debt
   - Build custom backend with ReactFlow
