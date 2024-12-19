@@ -33,9 +33,24 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
 
   // Handle saving a bookmark to a specific folder
   const handleSaveToFolder = (folderId?: string) => {
-    const newBookmark: ResourceLink = { id, title, url }; // Define the new bookmark
-    addBookmark(newBookmark, folderId); // Add the bookmark to the specified folder
-    setIsSaveModalOpen(false); // Close the Save modal
+    const path = typeof window !== 'undefined' ? window.location.pathname : '';
+    let pageType = 0; // default is Communication
+
+    // Determine page type based on current path
+    if (path.includes('computer')) {
+      pageType = 1;  // ComputerAccess
+    } else if (path.includes('smart')) {
+      pageType = 2;  // SmartPhoneAccess
+    }
+    const newBookmark: ResourceLink = {
+      id,
+      title,
+      url,
+      pageType
+    };
+
+    addBookmark(newBookmark, folderId);
+    setIsSaveModalOpen(false);
 
     // Show a notification after saving the bookmark
     notifications.show({
